@@ -10,6 +10,10 @@ const Authentication = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = () => {
+    console.log("Login");
+  }
+
   return (
     <div className="bg-blue flex flex-col min-h-screen justify-between">
       <div className="flex justify-center items-center h-full min-h-[50dvh]">
@@ -30,7 +34,7 @@ const Authentication = () => {
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <Button label="Log In" submit={true} />
+          <Button label="Log In" submit={true} action={() => handleLogin()} />
           <Link
             to={"/register"}
             className="font-light text-sm text-black70 mt-2"
