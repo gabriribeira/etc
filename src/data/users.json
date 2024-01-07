@@ -1,0 +1,34 @@
+{
+  "1": {
+    "username": "gabriribeira",
+    "name": "Gabriel Ribeira",
+    "email": "gabriel@ua.pt",
+    "img": "gabriribeira.webp",
+    "password": "gabriel123",
+    "households": ["1"]
+  },
+  "2": {
+    "username": "carolinabaptista",
+    "name": "Carolina Baptista",
+    "email": "carolina@ua.pt",
+    "img": "carolina.webp",
+    "password": "carolina123",
+    "households": ["1"]
+  },
+  "3": {
+    "username": "inesmsucena",
+    "name": "Inês Sucena",
+    "email": "ines@ua.pt",
+    "img": "ines.webp",
+    "password": "ines123",
+    "households": ["1"]
+  },
+  "4": {
+    "username": "larammendes",
+    "name": "Lara Mendes",
+    "email": "lara@ua.pt",
+    "img": "lara.webp",
+    "password": "lara123",
+    "households": ["1"]
+  }
+}
