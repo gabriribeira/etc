@@ -21,12 +21,12 @@ const Authentication = () => {
           <Input label="Password" value={password} onChange={setPassword} />
           <div className="flex items-center justify-between mt-2 text-sm font-light">
             <div className="flex items-center ">
-              <button className="mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black focus:outline-none focus:border-black"></button>
+              <button type="button" className="mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black focus:outline-none focus:border-black"></button>
               <p className="font-light text-sm text-black70">Remember me</p>
             </div>
-            <a href="#" className="font-light underline text-sm text-black70">
+            <button className="font-light underline text-sm text-black70">
               Forgot password?
-            </a>
+            </button>
           </div>
         </div>
         <div className="flex flex-col items-end">
