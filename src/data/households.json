@@ -5,10 +5,32 @@
     "img": "household_amizade.webp",
     "description": "A Casa da Amizade é uma instituição sem fins lucrativos que tem como objetivo promover ações sociais e culturais para a comunidade do bairro da Amizade, em Joinville.",
     "goals": ["eco-friendly", "recycle", "vegetarian"],
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Clean the Living Room",
+        "details": "Clean the living room and make it look nice",
+        "periodicity": "weekly",
+        "household_id": 1,
+        "automatic": true,
+        "category": "Living Room",
+        "color": "#ffA9a0"
+      },
+      {
+        "id": 2,
+        "title": "Clean the Bathroom",
+        "details": "Clean the bathroom. PS: I'm sorry",
+        "periodicity": "weekly",
+        "household_id": 1,
+        "automatic": true,
+        "category": "Bathroom",
+        "color": "#b5d2b6"
+      }
+    ],
     "notifications": [
       {
         "id": 1,
-        "text": "Ação de Natal",
+        "text": "Gabriel Ribeira criou o evento Ação de Natal",
         "date": "2020-12-25",
         "time": "10:00"
       },
