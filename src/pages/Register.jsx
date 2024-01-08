@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import ImageUpload from "../components/common/ImageUpload";
+import UserData from "../data/users.json";
 
 const Register = () => {
+  const users = UserData;
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -13,6 +16,30 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+
+  const handleRegister = async () => {
+    if (password === confirmPassword) {
+
+      const newUser = {
+        username: username,
+        name: `${firstName} ${lastName}`,
+        email: email,
+        img: "https://picsum.photos/200",
+        password: password,
+        households: [],
+      };
+
+      try {
+        users.push(newUser);
+        console.log("User registered successfully!");
+        navigate("/onboarding");
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
+    } else {
+      console.log("Passwords do not match!");
+    }
+  };
 
   return (
     <div className="bg-blue min-h-screen h-full flex flex-col justify-between">
@@ -57,7 +84,7 @@ const Register = () => {
           <Input label="First Name" value={firstName} onChange={setFirstName} />
           <Input label="Last Name" value={lastName} onChange={setLastName} />
           <div className="flex flex-col items-end">
-            <Button label="Create Account" to={"/onboarding"} />
+            <Button label="Create Account" action={handleRegister} />
             <Link
               to={"/login"}
               className="font-light text-sm text-black70 mt-2"
