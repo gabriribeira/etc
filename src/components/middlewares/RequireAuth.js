@@ -22,10 +22,9 @@ const RequireAuth = () => {
   if (user) {
     return <Outlet />;
   } else {
-    let response = getCookieValue("user");
-    if (response) {
+    if (getCookieValue("user")) {
       return <Outlet />;
-    } else if (response == false) {
+    } else {
       return <Navigate to="/login" />;
     }
   }
