@@ -21,7 +21,12 @@
             {
                 "id": 1,
                 "user_id": 2,
-                "comment": "Please don't be afraid to clean the toilet..."
+                "comment": "Please don't be afraid to clean the toilet... ola o jfnakf f aw fliaw fawuifbiawnf awfoinawlnfaw fbiaowufbnliaw fawoifa fawioflaw faw faw f dhabfdfawlfba fiulawbfoabw" 
+            },
+            {
+                "id": 2,
+                "user_id": 3,
+                "comment": "Hey this is another comment!"
             }
         ]
     },
