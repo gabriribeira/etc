@@ -39,3 +39,7 @@ jobs:
       - name: Run Prettier
         run: npm run format
         if: success()
+
+      - name: Run ESLint
+        run: npm run lint
+        if: success()
