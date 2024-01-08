@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "username": "gabriribeira",
     "name": "Gabriel Ribeira",
     "email": "gabriribeira@ua.pt",
@@ -8,6 +9,7 @@
     "households": [1]
   },
   {
+    "id": 2,
     "username": "carolinabaptista",
     "name": "Carolina Baptista",
     "email": "carolina@ua.pt",
@@ -16,6 +18,7 @@
     "households": [1]
   },
   {
+    "id": 3,
     "username": "inesmsucena",
     "name": "Inês Sucena",
     "email": "ines@ua.pt",
@@ -24,6 +27,7 @@
     "households": [1]
   },
   {
+    "id": 4,
     "username": "larammendes",
     "name": "Lara Mendes",
     "email": "lara@ua.pt",
