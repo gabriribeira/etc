@@ -40,7 +40,7 @@ const TaskManager = () => {
       const userTasks = userData.filter((user) => user.id === authUser.id);
       setUserTasks(userTasks[0].tasks);
     }
-  }, [households]);
+  }, [households, userData, authUser]);
   return (
     <div>
       <TopBar />
