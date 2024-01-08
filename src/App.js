@@ -26,6 +26,8 @@ import Task from "./pages/Task";
 import TaskManager from "./pages/TaskManager";
 import Tasks from "./pages/Tasks";
 import User from "./pages/User";
+import NotFound from "./pages/NotFound";
+import About from "./pages/About";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -38,6 +40,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Authentication />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/event/:event/edit" element={<EditEvent />} />
@@ -63,6 +66,7 @@ function App() {
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/users/:user" element={<User />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
