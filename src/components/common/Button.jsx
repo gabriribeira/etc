@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const Button = ({ label, submit, action, to, bg, lg }) =>
+const Button = ({ label, submit, action, to, bg, lg, stroke }) =>
   to && to !== "" ? (
     <Link
       to={to}
@@ -17,8 +17,8 @@ const Button = ({ label, submit, action, to, bg, lg }) =>
       onClick={() => action()}
       type={submit ? "submit" : "button"}
       className={`${
-        (bg && bg != '') ? bg : "bg-blue"
-      } text-white rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
+        stroke ? "bg-white" : (bg && bg != '') ? bg : "bg-blue"
+      } ${stroke && "border-2 border-blue"} ${stroke ? "text-blue" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
     >
       {label}
     </button>
@@ -31,6 +31,7 @@ Button.propTypes = {
   to: PropTypes.string,
   bg: PropTypes.string,
   lg: PropTypes.bool,
+  stroke: PropTypes.bool,
 };
 
 export default Button;
