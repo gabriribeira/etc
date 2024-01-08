@@ -1,5 +1,5 @@
 import React from "react";
-import ProfilePicture from "../../assets/data/users/gabriel.webp";
+import ProfilePicture from "../../assets/data/users/gabriribeira.webp";
 import { RxPlus } from "react-icons/rx";
 
 const AddMembers = () => {
