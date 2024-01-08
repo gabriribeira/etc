@@ -92,3 +92,17 @@ p {
 body {
   background-color: #fcfcfc;
 }
+
+.toggle-switch {
+  transition: background-color 0.3s;
+}
+
+.toggle-knob {
+  transform: translate(0, -50%);
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.toggle-switch.checked .toggle-knob {
+  transform: translate(32px, -50%);
+}
+
