@@ -4,6 +4,7 @@ import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import UserData from "../data/users.json";
+import Cookies from 'js-cookie';
 
 const Authentication = () => {
   const users = UserData;
@@ -15,6 +16,7 @@ const Authentication = () => {
     const user = users.find((user) => user.username === username);
     if (user && user.password === password) {
       console.log("Login successful");
+      Cookies.set('user', JSON.stringify(user), { path: '/' });
       setTimeout(() => {
         navigate("/");
       }, 1000);

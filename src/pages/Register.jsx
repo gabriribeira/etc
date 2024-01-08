@@ -5,6 +5,7 @@ import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import ImageUpload from "../components/common/ImageUpload";
 import UserData from "../data/users.json";
+import Cookies from 'js-cookie';
 
 const Register = () => {
   const users = UserData;
@@ -21,6 +22,7 @@ const Register = () => {
     if (password === confirmPassword) {
 
       const newUser = {
+        id: users.length + 1,
         username: username,
         name: `${firstName} ${lastName}`,
         email: email,
@@ -32,6 +34,7 @@ const Register = () => {
       try {
         users.push(newUser);
         console.log("User registered successfully!");
+        Cookies.set('user', JSON.stringify(newUser), { path: '/' });
         navigate("/onboarding");
       } catch (error) {
         console.error("Error registering user:", error);
