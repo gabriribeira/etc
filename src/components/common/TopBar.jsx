@@ -44,7 +44,7 @@ const TopBar = () => {
         setShowBackButton(true);
         setIcon(null);
         break;
-      case "/tasks-manager":
+      case "/task-manager":
         setTitle("MANAGE TASKS");
         setShowBackButton(true);
         setIcon(null);
