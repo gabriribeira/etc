@@ -31,7 +31,9 @@ const Input = ({ label, value, onChange, error }) => {
               (label === "Password" || label === "Confirm Password") &&
               !showPassword
                 ? "password"
-                : "text"
+                : label === "Email"
+                  ? "email"
+                  : "text"
             }
             onChange={(e) => onChange(e.target.value)}
             className={`border-2 rounded-xl p-2 border-black40 focus:border-black focus:outline-none ${
