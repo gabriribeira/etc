@@ -7,8 +7,8 @@ const Button = ({ label, submit, action, to, bg, lg, stroke }) =>
     <Link
       to={to}
       className={`${
-        (bg && bg != '') ? bg : "bg-blue"
-      } text-white rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
+        stroke ? "bg-white" : (bg && bg != '') ? bg : "bg-blue"
+      }  ${stroke && "border-2 border-blue"} ${stroke ? "text-blue" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
     >
       {label}
     </Link>
