@@ -118,7 +118,7 @@ const TopBar = () => {
   return (
     <div className="flex items-center gap-x-2 sticky w-screen py-7 px-5">
       {showBackButton && <BackButton />}
-      {icon && <div>{icon}</div>}
+      {icon && <div className="text-3xl">{icon}</div>}
       <h4 className="">{title}</h4>
     </div>
   );
