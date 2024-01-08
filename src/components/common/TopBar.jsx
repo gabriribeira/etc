@@ -116,7 +116,7 @@ const TopBar = () => {
     }
   }, [location]);
   return (
-    <div className="flex items-center gap-x-2 sticky w-screen py-5 px-5">
+    <div className="flex items-center gap-x-2 sticky w-screen py-7 px-5">
       {showBackButton && <BackButton />}
       {icon && <div>{icon}</div>}
       <h4 className="">{title}</h4>
