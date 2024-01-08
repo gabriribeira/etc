@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/imgs/etc/logo_salmon.webp";
-
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
+import UserData from "../data/users.json";
 
 const Authentication = () => {
+  const users = UserData;
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    console.log("Login");
-  }
+    const user = users.find((user) => user.username === username);
+    if (user && user.password === password) {
+      console.log("Login successful");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } else {
+      console.log("Login failed");
+    }
+  };
 
   return (
     <div className="bg-blue flex flex-col min-h-screen justify-between">
@@ -25,7 +34,10 @@ const Authentication = () => {
           <Input label="Password" value={password} onChange={setPassword} />
           <div className="flex items-center justify-between mt-2 text-sm font-light">
             <div className="flex items-center ">
-              <button type="button" className="mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black focus:outline-none focus:border-black"></button>
+              <button
+                type="button"
+                className="mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black focus:outline-none focus:border-black"
+              ></button>
               <p className="font-light text-sm text-black70">Remember me</p>
             </div>
             <button className="font-light underline text-sm text-black70">
@@ -34,7 +46,7 @@ const Authentication = () => {
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <Button label="Log In" submit={true} action={() => handleLogin()} />
+          <Button label="Log In" action={() => handleLogin()} />
           <Link
             to={"/register"}
             className="font-light text-sm text-black70 mt-2"
