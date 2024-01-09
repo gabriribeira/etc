@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import ToggleSwitch from "../components/common/ToggleSwitch";
-import HoseholdData from "../data/households.json";
 import Task from "../components/tasks/Task";
-import UserData from "../data/users.json";
+import TasksData from "../data/tasks.json";
 
 const TaskManager = () => {
-  const households = HoseholdData;
-  const userData = UserData;
+  const tasks = TasksData;
   const [householdTasks, setHouseholdTasks] = useState(null);
   const [userTasks, setUserTasks] = useState(null);
   const [authUser, setAuthUser] = useState(null);
@@ -30,17 +28,15 @@ const TaskManager = () => {
     }
   }, []);
   useEffect(() => {
-    if (households) {
-      const householdTasks = households.filter(
-        (household) => household.id === 1
-      ); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
-      setHouseholdTasks(householdTasks[0].tasks);
+    if (tasks) {
+      const householdTasks = tasks.filter((task) => task.household_id === 1); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+      setHouseholdTasks(householdTasks);
     }
-    if (userData && authUser) {
-      const userTasks = userData.filter((user) => user.id === authUser.id);
-      setUserTasks(userTasks[0].tasks);
+    if (tasks && authUser) {
+      const userTasks = tasks.filter((task) => task.user_id === authUser.id && task.isPrivate === true);
+      setUserTasks(userTasks);
     }
-  }, [households, userData, authUser]);
+  }, [tasks, authUser]);
   return (
     <div>
       <TopBar />

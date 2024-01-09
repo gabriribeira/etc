@@ -4,20 +4,17 @@ import TopBar from "../components/common/TopBar";
 import Button from "../components/common/Button";
 import Task from "../components/tasks/Task";
 import { TbArrowsSort } from "react-icons/tb";
-import HouseholdData from "../data/households.json";
-import TasksLogsData from "../data/task_logs.json";
+import TasksData from "../data/tasks.json";
 
 const Tasks = () => {
   const [householdTasks, setHouseholdTasks] = useState(null);
-  const households = HouseholdData;
+  const tasks = TasksData;
   useEffect(() => {
-    if (households) {
-      const householdTasks = households.filter((household) => household.id === 1); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
-      setHouseholdTasks(householdTasks[0].tasks);
+    if (tasks) {
+      const householdTasks = tasks.filter((task) => task.household_id === 1); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+      setHouseholdTasks(householdTasks);
     }
-  }, [households]);
-  //eslint-disable-next-line
-  const logs = TasksLogsData;
+  }, [tasks]);
   return (
     <div>
       <TopBar />

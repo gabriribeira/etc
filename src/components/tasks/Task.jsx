@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Logs from "../../data/task_logs.json";
 import Users from "../../data/users.json";
 import { BsArrowReturnRight } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Task = ({ task, defaultTask }) => {
   const logs = Logs;
@@ -35,30 +36,53 @@ const Task = ({ task, defaultTask }) => {
     if (task && logs && users) {
       const isTaskThisWeek = logs.filter(
         (log) =>
-          log.household_id === 1 &&
+          log.household_id === 1 && // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
           log.task_id === task.id &&
           log.start == getWeekInterval().startDate &&
           log.end == getWeekInterval().endDate
       );
-      if (isTaskThisWeek) {
+      if (!defaultTask) {
+        if (isTaskThisWeek) {
+          setTaskThisWeek(isTaskThisWeek[0]);
+          if (isTaskThisWeek[0] && isTaskThisWeek[0].completed) {
+            setIsCompleted(true);
+          } else {
+            setIsCompleted(false);
+          }
+          if (
+            isTaskThisWeek[0] &&
+            isTaskThisWeek[0].comments &&
+            isTaskThisWeek[0].comments.length > 0
+          ) {
+            setHasComments(isTaskThisWeek[0].comments);
+          } else {
+            setHasComments(null);
+          }
+          const userWhoDidTheTask = users.filter(
+            (user) => user.id === isTaskThisWeek[0].user_id
+          );
+          if (userWhoDidTheTask) {
+            setUserWhoDidTheTask(userWhoDidTheTask[0]);
+          }
+        } else {
+          return null;
+        }
+      } else {
         setTaskThisWeek(isTaskThisWeek[0]);
-        if (isTaskThisWeek[0].completed) {
+        if (isTaskThisWeek[0] && isTaskThisWeek[0].completed) {
           setIsCompleted(true);
+        } else {
+          setIsCompleted(false);
         }
         if (
+          isTaskThisWeek[0] &&
           isTaskThisWeek[0].comments &&
           isTaskThisWeek[0].comments.length > 0
         ) {
           setHasComments(isTaskThisWeek[0].comments);
+        } else {
+          setHasComments(null);
         }
-        const userWhoDidTheTask = users.filter(
-          (user) => user.id === isTaskThisWeek[0].user_id
-        );
-        if (userWhoDidTheTask) {
-          setUserWhoDidTheTask(userWhoDidTheTask[0]);
-        }
-      } else {
-        return null;
       }
     }
   }, [task, logs, users]);
@@ -85,7 +109,7 @@ const Task = ({ task, defaultTask }) => {
         }`}
         style={{ backgroundColor: task.color }}
       >
-        <div className="flex items-center gap-x-2">
+        <Link to={`/tasks/${task.id}`} className="flex items-center gap-x-2">
           {!defaultTask && (
             <img
               src={
@@ -97,8 +121,13 @@ const Task = ({ task, defaultTask }) => {
               className="w-[40px] h-[40px] rounded-full object-cover object-center"
             />
           )}
-          <h1 className="text-xl text-white font-medium">{task.title}</h1>
-        </div>
+          <Link
+            to={`/tasks/${task.id}`}
+            className="text-xl text-white font-medium"
+          >
+            {task.title}
+          </Link>
+        </Link>
         <button className="text-2xl text-white">
           <RxDotsVertical />
         </button>
