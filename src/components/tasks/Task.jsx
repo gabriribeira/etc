@@ -6,7 +6,7 @@ import Users from "../../data/users.json";
 import { BsArrowReturnRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-const Task = ({ task, defaultTask }) => {
+const Task = ({ task, defaultTask, logProp }) => {
   const logs = Logs;
   const users = Users;
   //eslint-disable-next-line
@@ -34,58 +34,62 @@ const Task = ({ task, defaultTask }) => {
 
   useEffect(() => {
     if (task && logs && users) {
-      const isTaskThisWeek = logs.filter(
-        (log) =>
-          log.household_id === 1 && // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
-          log.task_id === task.id &&
-          log.start == getWeekInterval().startDate &&
-          log.end == getWeekInterval().endDate
-      );
-      if (!defaultTask) {
-        if (isTaskThisWeek) {
-          setTaskThisWeek(isTaskThisWeek[0]);
-          if (isTaskThisWeek[0] && isTaskThisWeek[0].completed) {
+      if (!logProp) {
+        const isTaskThisWeek = logs.filter(
+          (log) =>
+            log.household_id === 1 && // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+            log.task_id === task.id &&
+            log.start === getWeekInterval().startDate &&
+            log.end === getWeekInterval().endDate
+        );
+
+        if (!defaultTask && isTaskThisWeek.length > 0) {
+          const thisWeekTask = isTaskThisWeek[0];
+          setTaskThisWeek(thisWeekTask);
+          if (thisWeekTask.completed) {
             setIsCompleted(true);
           } else {
             setIsCompleted(false);
           }
-          if (
-            isTaskThisWeek[0] &&
-            isTaskThisWeek[0].comments &&
-            isTaskThisWeek[0].comments.length > 0
-          ) {
-            setHasComments(isTaskThisWeek[0].comments);
+          if (thisWeekTask.comments && thisWeekTask.comments.length > 0) {
+            setHasComments(thisWeekTask.comments);
           } else {
             setHasComments(null);
           }
-          const userWhoDidTheTask = users.filter(
-            (user) => user.id === isTaskThisWeek[0].user_id
+          const userWhoDidTheTask = users.find(
+            (user) => user.id === thisWeekTask.user_id
           );
           if (userWhoDidTheTask) {
-            setUserWhoDidTheTask(userWhoDidTheTask[0]);
+            console.log(userWhoDidTheTask);
+            setUserWhoDidTheTask(userWhoDidTheTask);
           }
         } else {
-          return null;
+          setTaskThisWeek(null);
+          setIsCompleted(false);
+          setHasComments(null);
+          setUserWhoDidTheTask(null);
         }
       } else {
-        setTaskThisWeek(isTaskThisWeek[0]);
-        if (isTaskThisWeek[0] && isTaskThisWeek[0].completed) {
+        setTaskThisWeek(task);
+        if (logProp.completed) {
           setIsCompleted(true);
         } else {
           setIsCompleted(false);
         }
-        if (
-          isTaskThisWeek[0] &&
-          isTaskThisWeek[0].comments &&
-          isTaskThisWeek[0].comments.length > 0
-        ) {
-          setHasComments(isTaskThisWeek[0].comments);
+        if (logProp.comments && logProp.comments.length > 0) {
+          setHasComments(logProp.comments);
         } else {
           setHasComments(null);
         }
+        const userWhoDidTheTask = users.find(
+          (user) => user.id === logProp.user_id
+        );
+        if (userWhoDidTheTask) {
+          setUserWhoDidTheTask(userWhoDidTheTask);
+        }
       }
     }
-  }, [task, logs, users]);
+  }, [task, logs, users, defaultTask, logProp]);
 
   useEffect(() => {
     if (hasComments) {
@@ -105,7 +109,7 @@ const Task = ({ task, defaultTask }) => {
     <>
       <div
         className={`w-full rounded-2xl flex items-center justify-between py-3 px-2 ${
-          isCompleted && !defaultTask && "opacity-60"
+          !isCompleted && !defaultTask && "opacity-60"
         }`}
         style={{ backgroundColor: task.color }}
       >
@@ -138,8 +142,8 @@ const Task = ({ task, defaultTask }) => {
         usersWhoCommented != [] &&
         hasComments.map((comment, index) => (
           <div
-            className={`w-full flex items-start pl-5 bg-transparent ${
-              isCompleted && "opacity-60"
+            className={`w-full flex items-start pl-5 bg-transparent ${logProp && "mt-2"} ${
+              !isCompleted && "opacity-60"
             }`}
             key={index}
           >
@@ -147,17 +151,19 @@ const Task = ({ task, defaultTask }) => {
               <div className="text-black text-2xl">
                 <BsArrowReturnRight />
               </div>
-              <img
-                src={
-                  usersWhoCommented[index] &&
-                  //eslint-disable-next-line
-                  require(
-                    `../../assets/data/users/${usersWhoCommented[index].img}`
-                  )
-                }
-                alt="User Profile Picture"
-                className="w-[30px] h-[30px] rounded-full object-cover object-center"
-              />
+              <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center relative shrink-0">
+                <img
+                  src={
+                    usersWhoCommented[index] &&
+                    //eslint-disable-next-line
+                    require(
+                      `../../assets/data/users/${usersWhoCommented[index].img}`
+                    )
+                  }
+                  alt="User Profile Picture"
+                  className="w-full h-full rounded-full absolute top-0 left-0 object-cover object-center shrink-0"
+                />
+              </div>
               <div className="flex flex-col">
                 <h1 className="text-base font-semibold">
                   {usersWhoCommented[index] && usersWhoCommented[index].name}
@@ -176,6 +182,7 @@ const Task = ({ task, defaultTask }) => {
 Task.propTypes = {
   task: PropTypes.object,
   defaultTask: PropTypes.bool,
+  logProp: PropTypes.object,
 };
 
 export default Task;

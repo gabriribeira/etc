@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import ToggleSwitch from "../components/common/ToggleSwitch";
+//import ToggleSwitch from "../components/common/ToggleSwitch";
 import Task from "../components/tasks/Task";
 import TasksData from "../data/tasks.json";
 
@@ -33,7 +33,9 @@ const TaskManager = () => {
       setHouseholdTasks(householdTasks);
     }
     if (tasks && authUser) {
-      const userTasks = tasks.filter((task) => task.user_id === authUser.id && task.isPrivate === true);
+      const userTasks = tasks.filter(
+        (task) => task.user_id === authUser.id && task.isPrivate === true
+      );
       setUserTasks(userTasks);
     }
   }, [tasks, authUser]);
@@ -41,6 +43,7 @@ const TaskManager = () => {
     <div>
       <TopBar />
       <div className="flex flex-col px-5 gap-y-6">
+        {/*
         <div className="flex flex-col">
           <div className=" flex items-center gap-x-3">
             <ToggleSwitch />
@@ -51,6 +54,7 @@ const TaskManager = () => {
             members weekly. You can always change the assigned user.
           </p>
         </div>
+  */}
         <div className="flex flex-col gap-y-3">
           <h1 className="font-semibold text-lg">Household Tasks</h1>
           {householdTasks &&
