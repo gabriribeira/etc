@@ -52,13 +52,13 @@ const TopBar = ({ text, description }) => {
         break;
       case "/expenses":
         setTitle("EXPENSES");
-        setShowBackButton(true);
-        setIcon(null);
+        setShowBackButton(false);
+        setIcon(<IoWalletOutline />);
         break;
       case "/expenses/:expense":
         setTitle("EXPENSES");
-        setShowBackButton(false);
-        setIcon(<IoWalletOutline />);
+        setShowBackButton(true);
+        setIcon(null);
         break;
       case "/expenses/new":
         setTitle("NEW EXPENSE");
