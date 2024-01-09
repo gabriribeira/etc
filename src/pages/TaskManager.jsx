@@ -4,6 +4,7 @@ import TopBar from "../components/common/TopBar";
 //import ToggleSwitch from "../components/common/ToggleSwitch";
 import Task from "../components/tasks/Task";
 import TasksData from "../data/tasks.json";
+import NewButton from "../components/common/NewButton";
 
 const TaskManager = () => {
   const tasks = TasksData;
@@ -76,6 +77,7 @@ const TaskManager = () => {
             ))}
         </div>
       </div>
+      <NewButton path={"/tasks/new"} />
       <BottomBar />
     </div>
   );
