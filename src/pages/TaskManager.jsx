@@ -31,6 +31,7 @@ const TaskManager = () => {
   useEffect(() => {
     if (tasks) {
       const householdTasks = tasks.filter((task) => task.household_id === 1); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+      console.log(householdTasks);
       setHouseholdTasks(householdTasks);
     }
     if (tasks && authUser) {
@@ -57,7 +58,13 @@ const TaskManager = () => {
         </div>
   */}
         <div className="flex flex-col gap-y-3">
-          <h1 className="font-semibold text-lg">Household Tasks</h1>
+          <div className="flex flex-col">
+            <h1 className="font-semibold text-lg">Household Tasks</h1>
+            <p className="text-black60 text-base">
+              Every member of the household can see these tasks and they can be
+              attributed to anyone.
+            </p>
+          </div>
           {householdTasks &&
             householdTasks.map((task, index) => (
               <Task task={task} key={index} defaultTask={true} />
@@ -73,7 +80,7 @@ const TaskManager = () => {
           </div>
           {userTasks &&
             userTasks.map((task, index) => (
-              <Task task={task} key={index} defaultTask={true} />
+              <Task task={task} key={index} defaultTask={true} isPrivate={true} />
             ))}
         </div>
       </div>
