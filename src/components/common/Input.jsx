@@ -12,7 +12,7 @@ const Input = ({ label, value, onChange, error }) => {
         {label}
       </label>
       <div className="flex relative w-full items-center">
-        {label === "Description" ? (
+        {label === "Description" || label === "Details" ? (
           <textarea
             name={label}
             id={label}
@@ -28,12 +28,8 @@ const Input = ({ label, value, onChange, error }) => {
             id={label}
             value={value}
             type={
-              (label === "Password" || label === "Confirm Password") &&
-              !showPassword
-                ? "password"
-                : label === "Email"
-                  ? "email"
-                  : "text"
+              (label === "Password" || label === "Confirm Password") && !showPassword
+                ? "password" : label === "Email" ? "email" : label == "Date" ? "date" : "text"
             }
             onChange={(e) => onChange(e.target.value)}
             className={`border-2 rounded-xl p-2 border-black40 focus:border-black focus:outline-none ${
