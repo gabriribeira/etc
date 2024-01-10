@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const ToggleSwitch = ({ checked }) => {
+const ToggleSwitch = ({ checked, onChange }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleToggle = () => {
+    onChange(!isChecked);
     setIsChecked(!isChecked);
   };
 
@@ -28,6 +29,7 @@ const ToggleSwitch = ({ checked }) => {
 
 ToggleSwitch.propTypes = {
   checked: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 export default ToggleSwitch;
