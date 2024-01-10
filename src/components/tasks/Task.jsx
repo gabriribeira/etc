@@ -5,8 +5,9 @@ import Logs from "../../data/task_logs.json";
 import Users from "../../data/users.json";
 import { BsArrowReturnRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { PiLockSimpleThin } from "react-icons/pi";
 
-const Task = ({ task, defaultTask, logProp }) => {
+const Task = ({ task, defaultTask, logProp, isPrivate }) => {
   const logs = Logs;
   const users = Users;
   //eslint-disable-next-line
@@ -127,9 +128,12 @@ const Task = ({ task, defaultTask, logProp }) => {
           )}
           <Link
             to={`/tasks/${task.id}`}
-            className="text-xl text-white font-medium"
+            className="text-xl text-white font-medium flex items-center gap-x-2"
           >
             {task.title}
+            {isPrivate && (
+              <PiLockSimpleThin className="text-2xl" />
+            )}
           </Link>
         </Link>
         <button className="text-2xl text-white">
@@ -183,6 +187,7 @@ Task.propTypes = {
   task: PropTypes.object,
   defaultTask: PropTypes.bool,
   logProp: PropTypes.object,
+  isPrivate: PropTypes.bool,
 };
 
 export default Task;
