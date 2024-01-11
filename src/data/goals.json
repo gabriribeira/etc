@@ -1,0 +1,172 @@
+[
+    {
+      "id": 1,
+      "title": "Reduce",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "reduce.webp"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Reuse",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "reuse.webp"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Recycle",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "recycle.webp"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Energy Efficiency",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "energy_efficiency.webp"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Composting",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "composting.webp"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Green Transportation",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "green_transportation.webp"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Local Shopping",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "local_shopping.webp"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Second-Hand Shopping",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "second_hand_shopping.webp"
+      }
+    },
+    {
+      "id": 9,
+      "title": "Tree Planting",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "tree_planting.webp"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Second-Hand Shopping",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "second_hand_shopping.webp"
+      }
+    },
+    {
+      "id": 11,
+      "title": "Energy Saving",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "energy_saving.webp"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Eco-Friendly",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "eco_friendly.webp"
+      }
+    },
+    {
+      "id": 13,
+      "title": "Digital Detox",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "digital_detox.webp"
+      }
+    },
+    {
+      "id": 14,
+      "title": "Sharing",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "sharing.webp"
+      }
+    },
+    {
+      "id": 15,
+      "title": "Volunteer",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "volunteer.webp"
+      }
+    },
+    {
+      "id": 16,
+      "title": "Ethical Fashion",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "ethical_fashion.webp"
+      }
+    },
+    {
+      "id": 17,
+      "title": "Pet Care",
+      "goal": {
+        "title": "Eliminate or reduce waste for 30 days",
+        "details": "Implement a recycling system and take note of all the waste your household generates!",
+        "slug": "Zero-Waste Month",
+        "img": "pet_care.webp"
+      }
+    }
+  ]
