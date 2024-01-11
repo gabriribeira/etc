@@ -18,24 +18,44 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
         )}
         <div className="flex flex-wrap gap-3 w-full">
           {filter && (
-            <button
-              className="w-auto py-1 px-4 rounded-2xl text-base font-normal text-center transition-all duration-300 cursor-pointer border-2 border-black/50"
-              type="button"
-            >
-              All
-            </button>
+            <>
+              <p>a</p>
+              <button
+                onClick={() => {
+                  handleChange("AllTag");
+                }}
+                className={`w-auto py-1 px-4 rounded-2xl text-base font-normal text-center transition-all duration-300 cursor-pointer`}
+                style={{
+                  backgroundColor: categorySelected.includes("AllTag")
+                    ? "#0f4c81"
+                    : "#fcfcfc",
+                  border: `2px solid #0f4c81"`,
+                  color: categorySelected.includes("AllTag")
+                    ? "#fcfcfc"
+                    : "#0f4c81",
+                }}
+                type="button"
+              >
+                All
+              </button>
+            </>
           )}
           {categories.map((category, index) => (
             <Category
               key={index}
               category={category}
               onChange={handleChange}
+              filter={filter ? true : false}
               value={
-                categorySelected
-                  ? categorySelected.id === category.id
+                filter
+                  ? categorySelected.includes(category.title)
                     ? true
                     : false
-                  : false
+                  : categorySelected
+                    ? categorySelected.id === category.id
+                      ? true
+                      : false
+                    : false
               }
             />
           ))}
