@@ -4,49 +4,13 @@
     "name": "Casa da Amizade",
     "img": "household_amizade.webp",
     "description": "A Casa da Amizade é uma instituição sem fins lucrativos que tem como objetivo promover ações sociais e culturais para a comunidade do bairro da Amizade, em Joinville.",
-    "goals": ["eco-friendly", "recycle", "vegetarian"],
-    "tasks": [
-      {
-        "id": 1,
-        "title": "Clean the Living Room",
-        "details": "Clean the living room and make it look nice",
-        "periodicity": "weekly",
-        "household_id": 1,
-        "automatic": true,
-        "category": "Living Room",
-        "color": "#ffA9a0"
-      },
-      {
-        "id": 2,
-        "title": "Clean the Bathroom",
-        "details": "Clean the bathroom. PS: I'm sorry",
-        "periodicity": "weekly",
-        "household_id": 1,
-        "automatic": true,
-        "category": "Bathroom",
-        "color": "#b5d2b6"
-      }
-    ],
-    "notifications": [
-      {
-        "id": 1,
-        "text": "Gabriel Ribeira criou o evento Ação de Natal",
-        "date": "2020-12-25",
-        "time": "10:00"
-      },
-      {
-        "id": 2,
-        "text": "Ação de Páscoa",
-        "date": "2021-04-04",
-        "time": "10:00"
-      }
-    ]
+    "tags": [3, 7, 15]
   },
   {
     "id": 2,
     "name": "Casa dos Inimigos",
     "img": "household_inimigos.webp",
     "description": "A Casa dos Inimigos não é uma instituição sem fins lucrativos que tem como objetivo promover ações sociais e culturais para a comunidade do bairro dos Inimigos, em Joinville ao contrário.",
-    "goals": ["eco-friendly", "recycle", "vegetarian"]
+    "tags": [3, 7, 15]
   }
 ]

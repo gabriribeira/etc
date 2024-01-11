@@ -1,43 +1,79 @@
 [
-    {
+  {
+    "id": 1,
+    "user_id": 1,
+    "household_id": 1,
+    "task_id": 1,
+    "start": "2024-01-08",
+    "end": "2024-01-14",
+    "completed": "2024-01-09",
+    "comments": []
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "household_id": 1,
+    "task_id": 2,
+    "start": "2024-01-08",
+    "end": "2024-01-14",
+    "completed": "2024-01-10",
+    "comments": [
+      {
         "id": 1,
-        "user_id": 1,
-        "household_id": 1,
-        "task_id": 1,
-        "start": "2024-01-08",
-        "end": "2024-01-14",
-        "completed": "2024-01-09",
-        "comments": []
-    },
-    {
-        "id": 1,
-        "user_id": 1,
-        "household_id": 1,
-        "task_id": 2,
-        "start": "2024-01-08",
-        "end": "2024-01-14",
-        "completed": "2024-01-10",
-        "comments": [
-            {
-                "id": 1,
-                "user_id": 2,
-                "comment": "Please don't be afraid to clean the toilet... ola o jfnakf f aw fliaw fawuifbiawnf awfoinawlnfaw fbiaowufbnliaw fawoifa fawioflaw faw faw f dhabfdfawlfba fiulawbfoabw" 
-            },
-            {
-                "id": 2,
-                "user_id": 3,
-                "comment": "Hey this is another comment!"
-            }
-        ]
-    },
-    {
-        "id": 1,
+        "user_id": 2,
+        "comment": "Please don't be afraid to clean the toilet... ola o jfnakf f aw fliaw fawuifbiawnf awfoinawlnfaw fbiaowufbnliaw fawoifa fawioflaw faw faw f dhabfdfawlfba fiulawbfoabw"
+      },
+      {
+        "id": 2,
         "user_id": 3,
-        "household_id": 2,
-        "task_id": 2,
-        "start": "2024-01-01",
-        "end": "2024-01-07",
-        "completed": null,
-        "comments": []
-    }
+        "comment": "Hey this is another comment!"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "user_id": 1,
+    "household_id": 1,
+    "task_id": 3,
+    "start": "2024-01-01",
+    "end": "2024-01-07",
+    "completed": "2024-01-05",
+    "comments": []
+  },
+  {
+    "id": 4,
+    "user_id": 1,
+    "household_id": 1,
+    "task_id": 3,
+    "start": "2023-12-25",
+    "end": "2023-12-31",
+    "completed": null,
+    "comments": [
+        {
+            "id": 1,
+            "user_id": 1,
+            "comment": "Epa, sinceramente, não tive tempo nem quero saber"
+          }
+    ]
+  },
+  {
+    "id": 5,
+    "user_id": 1,
+    "household_id": 1,
+    "task_id": 3,
+    "start": "2023-12-18",
+    "end": "2023-12-24",
+    "completed": "2023-12-20",
+    "comments": []
+  },
+  {
+    "id": 6,
+    "user_id": 1,
+    "household_id": 1,
+    "task_id": 3,
+    "start": "2023-12-11",
+    "end": "2023-12-17",
+    "completed": "2023-12-13",
+    "comments": []
+  }
 ]

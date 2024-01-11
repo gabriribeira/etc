@@ -44,12 +44,12 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/event/:event/edit" element={<EditEvent />} />
-          <Route path="/task/:task/edit" element={<EditTask />} />
+          <Route path="/tasks/:task/edit" element={<EditTask />} />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/" element={<Homepage />} />
-          <Route path="/household/:household" element={<Household />} />
+          <Route path="/households/:household" element={<Household />} />
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item" element={<ItemDetails />} />
           <Route path="/join" element={<JoinHousehold />} />

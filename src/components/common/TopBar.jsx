@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BackButton from "./BackButton";
+import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { IoWalletOutline, IoCheckboxOutline } from "react-icons/io5";
 import { TbShoppingCart, TbUsers, TbUser } from "react-icons/tb";
@@ -7,7 +8,7 @@ import { MdCalendarToday } from "react-icons/md";
 import { GoHome } from "react-icons/go";
 import { VscBell } from "react-icons/vsc";
 
-const TopBar = () => {
+const TopBar = ({ text, description }) => {
   const location = useLocation();
   const [title, setTitle] = useState("");
   const [showBackButton, setShowBackButton] = useState(false);
@@ -34,11 +35,6 @@ const TopBar = () => {
         setShowBackButton(false);
         setIcon(<IoCheckboxOutline />);
         break;
-      case "/tasks/:task":
-        setTitle("TASK");
-        setShowBackButton(true);
-        setIcon(null);
-        break;
       case "/tasks/new":
         setTitle("NEW TASK");
         setShowBackButton(true);
@@ -56,13 +52,13 @@ const TopBar = () => {
         break;
       case "/expenses":
         setTitle("EXPENSES");
-        setShowBackButton(true);
-        setIcon(null);
+        setShowBackButton(false);
+        setIcon(<IoWalletOutline />);
         break;
       case "/expenses/:expense":
         setTitle("EXPENSES");
-        setShowBackButton(false);
-        setIcon(<IoWalletOutline />);
+        setShowBackButton(true);
+        setIcon(null);
         break;
       case "/expenses/new":
         setTitle("NEW EXPENSE");
@@ -114,13 +110,28 @@ const TopBar = () => {
         setShowBackButton(false);
         setIcon(null);
     }
-  }, [location]);
+    if (text) {
+      console.log();
+      setTitle(text.toUpperCase());
+      setShowBackButton(true);
+      setIcon(null);
+    }
+  }, [location.pathname, text]);
   return (
-    <div className="flex items-center gap-x-2 sticky w-screen py-7 px-5">
-      {showBackButton && <BackButton />}
-      {icon && <div className="text-3xl">{icon}</div>}
-      <h4 className="">{title}</h4>
+    <div className="flex flex-col sticky w-screen py-7 px-5">
+      <div className="flex items-center gap-x-2">
+        {showBackButton && <BackButton />}
+        {icon && <div className="text-3xl">{icon}</div>}
+        <h4 className="">{title}</h4>
+      </div>
+      {description && <p className="text-black60 text-base mt-2">{description}</p>}
     </div>
   );
 };
+
+TopBar.propTypes = {
+  text: PropTypes.string,
+  description: PropTypes.string,
+};
+
 export default TopBar;

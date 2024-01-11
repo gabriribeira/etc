@@ -19,7 +19,7 @@ const BottomBar = () => {
       <Link to="/lists" className={`flex flex-col items-center leading-5 ${location.pathname === '/lists' && 'text-blue'}`}><TbShoppingCart /><p className="text-[12px]">Lists</p></Link>
       <Link to="/" className={`flex flex-col items-center leading-5 ${location.pathname === '/' && 'text-blue'}`}><GoHome /><p className="text-[12px]">Home</p></Link>
       <Link to="/tasks" className={`flex flex-col items-center leading-5 ${location.pathname === '/tasks' && 'text-blue'}`}><IoCheckboxOutline /><p className="text-[12px]">Tasks</p></Link>
-      <Link to="/households" className={`flex flex-col items-center leading-5 ${location.pathname === '/households' && 'text-blue'}`}><TbUsers /><p className="text-[12px]">Household</p></Link>
+      <Link to="/households" className={`flex flex-col items-center leading-5 ${location.pathname === '/households/1' && 'text-blue'}`}><TbUsers /><p className="text-[12px]">Household</p></Link> {/* TODO: Mudar para o id do household correto */}
     </div>
     </>
   );

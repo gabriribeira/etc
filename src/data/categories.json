@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "title": "Kitchen",
+        "color": "#ffA9a0"
+    },
+    {
+        "id": 2,
+        "title": "Living Room",
+        "color": "#6f94b3"
+    },
+    {
+        "id": 3,
+        "title": "Bathroom",
+        "color": "#b5d2b6"
+    },
+    {
+        "id": 4,
+        "title": "Private",
+        "color": "#2b2b2b"
+    },
+    {
+        "id": 5,
+        "title": "Other",
+        "color": "#ffA9a0"
+    }
+]
