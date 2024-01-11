@@ -5,32 +5,45 @@ import CategoriesInput from "./CategoriesInput";
 import { IoCheckmark } from "react-icons/io5";
 
 const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
-    const handleFilters = (filterItem) => {
-        setFilter((prevFilters) => {
-          const isStateFilter = ["All", "Active", "Done"].includes(filterItem);
-          const isIncludeFilter = ["Everyone", "Only you"].includes(filterItem);
-      
-          // If the selected filter is "All", "Active", or "Done", remove the other state filters
-          if (isStateFilter) {
-            return ["All", "Active", "Done"].includes(filterItem)
-              ? [filterItem]
-              : [filterItem];
-          }
-      
-          // If the selected filter is "Everyone" or "Only you", remove the other include filters
-          if (isIncludeFilter) {
-            return ["Everyone", "Only you"].includes(filterItem)
-              ? [filterItem]
-              : [filterItem];
-          }
-      
-          // If the selected filter is a category, toggle its presence in the filters
-          return prevFilters.includes(filterItem)
-            ? prevFilters.filter((item) => item !== filterItem)
-            : [...prevFilters, filterItem];
-        });
-      };
-      
+  const handleFilters = (filterItem) => {
+    setFilter((prevFilters) => {
+      if (prevFilters.includes(filterItem)) {
+        return prevFilters.filter((item) => item !== filterItem);
+      } else {
+        if (["All", "Active", "Done"].includes(filterItem)) {
+          return ["All", "Active", "Done"].includes(filterItem)
+            ? filterItem == "All"
+              ? [...prevFilters, filterItem].filter(
+                  (item) => item !== "Active" && item !== "Done"
+                )
+              : filterItem == "Active"
+                ? [...prevFilters, filterItem].filter(
+                    (item) => item !== "All" && item !== "Done"
+                  )
+                : filterItem == "Done"
+                  ? [...prevFilters, filterItem].filter(
+                      (item) => item !== "All" && item !== "Active"
+                    )
+                  : [...prevFilters, filterItem]
+            : ["Everyone", "Only you"].filter((item) => item !== filterItem);
+        } else if (["Everyone", "Only you"].includes(filterItem)) {
+          return ["Everyone", "Only you"].includes(filterItem)
+            ? filterItem == "Everyone"
+              ? [...prevFilters, filterItem].filter(
+                  (item) => item !== "Only you"
+                )
+              : filterItem == "Only you"
+                ? [...prevFilters, filterItem].filter(
+                    (item) => item !== "Everyone"
+                  )
+                : [...prevFilters, filterItem]
+            : ["Everyone", "Only you"].filter((item) => item !== filterItem);
+        } else {
+          return [...prevFilters, filterItem];
+        }
+      }
+    });
+  };
 
   const checkIfFilterIsApplied = (filterItem) => {
     if (appliedFilters.filter((item) => item == filterItem).length > 0) {
@@ -111,6 +124,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
         return "All";
     }
   };
+
   return (
     <div className="fixed h-screen w-screen top-0 left-0">
       <div
@@ -130,6 +144,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
                   key={index}
                   label={"Categories"}
                   filter={true}
+                  onChange={handleFilters}
+                  categorySelected={appliedFilters}
                 />
               ) : (
                 <div key={index} className="flex flex-col">
