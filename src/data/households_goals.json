@@ -1,0 +1,26 @@
+[
+    {
+      "id": 1,
+      "goal_id": 3,
+      "household_id": 1,
+      "amount": 10,
+      "created_at": "2024/01/01",
+      "finished": false
+    },
+    {
+      "id": 2,
+      "goal_id": 15,
+      "household_id": 1,
+      "amount": 10,
+      "created_at": "2023/12/20",
+      "finished": false
+    },
+    {
+      "id": 3,
+      "goal_id": 7,
+      "household_id": 2,
+      "amount": 10,
+      "created_at": "2023/12/10",
+      "finished": false
+    }
+  ]
