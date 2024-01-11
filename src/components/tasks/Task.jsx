@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import Logs from "../../data/task_logs.json";
 import Users from "../../data/users.json";
 import { BsArrowReturnRight } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import { PiLockSimpleThin } from "react-icons/pi";
 
-const Task = ({ task, defaultTask }) => {
+const Task = ({ task, defaultTask, logProp, isPrivate }) => {
   const logs = Logs;
   const users = Users;
   //eslint-disable-next-line
@@ -33,35 +35,62 @@ const Task = ({ task, defaultTask }) => {
 
   useEffect(() => {
     if (task && logs && users) {
-      const isTaskThisWeek = logs.filter(
-        (log) =>
-          log.household_id === 1 &&
-          log.task_id === task.id &&
-          log.start == getWeekInterval().startDate &&
-          log.end == getWeekInterval().endDate
-      );
-      if (isTaskThisWeek) {
-        setTaskThisWeek(isTaskThisWeek[0]);
-        if (isTaskThisWeek[0].completed) {
-          setIsCompleted(true);
-        }
-        if (
-          isTaskThisWeek[0].comments &&
-          isTaskThisWeek[0].comments.length > 0
-        ) {
-          setHasComments(isTaskThisWeek[0].comments);
-        }
-        const userWhoDidTheTask = users.filter(
-          (user) => user.id === isTaskThisWeek[0].user_id
+      if (!logProp) {
+        const isTaskThisWeek = logs.filter(
+          (log) =>
+            log.household_id === 1 && // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+            log.task_id === task.id &&
+            log.start === getWeekInterval().startDate &&
+            log.end === getWeekInterval().endDate
         );
-        if (userWhoDidTheTask) {
-          setUserWhoDidTheTask(userWhoDidTheTask[0]);
+
+        if (!defaultTask && isTaskThisWeek.length > 0) {
+          const thisWeekTask = isTaskThisWeek[0];
+          setTaskThisWeek(thisWeekTask);
+          if (thisWeekTask.completed) {
+            setIsCompleted(true);
+          } else {
+            setIsCompleted(false);
+          }
+          if (thisWeekTask.comments && thisWeekTask.comments.length > 0) {
+            setHasComments(thisWeekTask.comments);
+          } else {
+            setHasComments(null);
+          }
+          const userWhoDidTheTask = users.find(
+            (user) => user.id === thisWeekTask.user_id
+          );
+          if (userWhoDidTheTask) {
+            console.log(userWhoDidTheTask);
+            setUserWhoDidTheTask(userWhoDidTheTask);
+          }
+        } else {
+          setTaskThisWeek(null);
+          setIsCompleted(false);
+          setHasComments(null);
+          setUserWhoDidTheTask(null);
         }
       } else {
-        return null;
+        setTaskThisWeek(task);
+        if (logProp.completed) {
+          setIsCompleted(true);
+        } else {
+          setIsCompleted(false);
+        }
+        if (logProp.comments && logProp.comments.length > 0) {
+          setHasComments(logProp.comments);
+        } else {
+          setHasComments(null);
+        }
+        const userWhoDidTheTask = users.find(
+          (user) => user.id === logProp.user_id
+        );
+        if (userWhoDidTheTask) {
+          setUserWhoDidTheTask(userWhoDidTheTask);
+        }
       }
     }
-  }, [task, logs, users]);
+  }, [task, logs, users, defaultTask, logProp]);
 
   useEffect(() => {
     if (hasComments) {
@@ -81,11 +110,11 @@ const Task = ({ task, defaultTask }) => {
     <>
       <div
         className={`w-full rounded-2xl flex items-center justify-between py-3 px-2 ${
-          isCompleted && !defaultTask && "opacity-60"
+          !isCompleted && !defaultTask && "opacity-60"
         }`}
         style={{ backgroundColor: task.color }}
       >
-        <div className="flex items-center gap-x-2">
+        <Link to={`/tasks/${task.id}`} className="flex items-center gap-x-2">
           {!defaultTask && (
             <img
               src={
@@ -97,8 +126,16 @@ const Task = ({ task, defaultTask }) => {
               className="w-[40px] h-[40px] rounded-full object-cover object-center"
             />
           )}
-          <h1 className="text-xl text-white font-medium">{task.title}</h1>
-        </div>
+          <Link
+            to={`/tasks/${task.id}`}
+            className="text-xl text-white font-medium flex items-center gap-x-2"
+          >
+            {task.title}
+            {isPrivate && (
+              <PiLockSimpleThin className="text-2xl" />
+            )}
+          </Link>
+        </Link>
         <button className="text-2xl text-white">
           <RxDotsVertical />
         </button>
@@ -109,8 +146,8 @@ const Task = ({ task, defaultTask }) => {
         usersWhoCommented != [] &&
         hasComments.map((comment, index) => (
           <div
-            className={`w-full flex items-start pl-5 bg-transparent ${
-              isCompleted && "opacity-60"
+            className={`w-full flex items-start pl-5 bg-transparent ${logProp && "mt-2"} ${
+              !isCompleted && "opacity-60"
             }`}
             key={index}
           >
@@ -118,17 +155,19 @@ const Task = ({ task, defaultTask }) => {
               <div className="text-black text-2xl">
                 <BsArrowReturnRight />
               </div>
-              <img
-                src={
-                  usersWhoCommented[index] &&
-                  //eslint-disable-next-line
-                  require(
-                    `../../assets/data/users/${usersWhoCommented[index].img}`
-                  )
-                }
-                alt="User Profile Picture"
-                className="w-[30px] h-[30px] rounded-full object-cover object-center"
-              />
+              <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center relative shrink-0">
+                <img
+                  src={
+                    usersWhoCommented[index] &&
+                    //eslint-disable-next-line
+                    require(
+                      `../../assets/data/users/${usersWhoCommented[index].img}`
+                    )
+                  }
+                  alt="User Profile Picture"
+                  className="w-full h-full rounded-full absolute top-0 left-0 object-cover object-center shrink-0"
+                />
+              </div>
               <div className="flex flex-col">
                 <h1 className="text-base font-semibold">
                   {usersWhoCommented[index] && usersWhoCommented[index].name}
@@ -147,6 +186,8 @@ const Task = ({ task, defaultTask }) => {
 Task.propTypes = {
   task: PropTypes.object,
   defaultTask: PropTypes.bool,
+  logProp: PropTypes.object,
+  isPrivate: PropTypes.bool,
 };
 
 export default Task;

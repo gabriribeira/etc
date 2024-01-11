@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import ToggleSwitch from "../components/common/ToggleSwitch";
-import HoseholdData from "../data/households.json";
+//import ToggleSwitch from "../components/common/ToggleSwitch";
 import Task from "../components/tasks/Task";
-import UserData from "../data/users.json";
+import TasksData from "../data/tasks.json";
+import NewButton from "../components/common/NewButton";
 
 const TaskManager = () => {
-  const households = HoseholdData;
-  const userData = UserData;
+  const tasks = TasksData;
   const [householdTasks, setHouseholdTasks] = useState(null);
   const [userTasks, setUserTasks] = useState(null);
   const [authUser, setAuthUser] = useState(null);
@@ -30,21 +29,23 @@ const TaskManager = () => {
     }
   }, []);
   useEffect(() => {
-    if (households) {
-      const householdTasks = households.filter(
-        (household) => household.id === 1
-      ); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
-      setHouseholdTasks(householdTasks[0].tasks);
+    if (tasks) {
+      const householdTasks = tasks.filter((task) => task.household_id === 1); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+      console.log(householdTasks);
+      setHouseholdTasks(householdTasks);
     }
-    if (userData && authUser) {
-      const userTasks = userData.filter((user) => user.id === authUser.id);
-      setUserTasks(userTasks[0].tasks);
+    if (tasks && authUser) {
+      const userTasks = tasks.filter(
+        (task) => task.user_id === authUser.id && task.isPrivate === true
+      );
+      setUserTasks(userTasks);
     }
-  }, [households]);
+  }, [tasks, authUser]);
   return (
     <div>
       <TopBar />
       <div className="flex flex-col px-5 gap-y-6">
+        {/*
         <div className="flex flex-col">
           <div className=" flex items-center gap-x-3">
             <ToggleSwitch />
@@ -55,8 +56,15 @@ const TaskManager = () => {
             members weekly. You can always change the assigned user.
           </p>
         </div>
+  */}
         <div className="flex flex-col gap-y-3">
-          <h1 className="font-semibold text-lg">Household Tasks</h1>
+          <div className="flex flex-col">
+            <h1 className="font-semibold text-lg">Household Tasks</h1>
+            <p className="text-black60 text-base">
+              Every member of the household can see these tasks and they can be
+              attributed to anyone.
+            </p>
+          </div>
           {householdTasks &&
             householdTasks.map((task, index) => (
               <Task task={task} key={index} defaultTask={true} />
@@ -72,10 +80,11 @@ const TaskManager = () => {
           </div>
           {userTasks &&
             userTasks.map((task, index) => (
-              <Task task={task} key={index} defaultTask={true} />
+              <Task task={task} key={index} defaultTask={true} isPrivate={true} />
             ))}
         </div>
       </div>
+      <NewButton path={"/tasks/new"} />
       <BottomBar />
     </div>
   );

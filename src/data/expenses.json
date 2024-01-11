@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "title": "Café na Venepão",
+    "value": 0.65,
+    "details": "Paguei-te um café na Venepão... Desta vez não me esqueço!",
+    "user_id": 1,
+    "users": [2],
+    "household_id": 1,
+    "paid": false,
+    "date": "2024-01-05"
+  },
+  {
+    "id": 2,
+    "title": "Lanchinho Monlou",
+    "value": 17.30,
+    "details": "Lanchinho no Monlou... O Cinammon Roll estava delicioso mas devolver o dinheiro nada né!",
+    "user_id": 1,
+    "users": [1, 2, 3],
+    "household_id": 1,
+    "paid": false,
+    "date": "2024-01-03"
+  },
+  {
+    "id": 3,
+    "title": "Jantar de Ano Novo",
+    "value": 43.72,
+    "details": "Feliz 2024! Agora PAGUEM-ME O DINHEIRO QUE ME DEVES DO JANTAR DE ANO NOVO!",
+    "user_id": 1,
+    "users": [1, 2, 3, 4],
+    "household_id": 1,
+    "paid": true,
+    "date": "2024-01-01"
+  },
+  {
+    "id": 4,
+    "title": "Mensalidade Spotify",
+    "value": 2.50,
+    "details": "Epa paga lá a tua parte do Spotify, eu preciso dos 2 euros para comprar tabaco!",
+    "user_id": 2,
+    "users": [1],
+    "household_id": 1,
+    "paid": true,
+    "date": "2024-01-03"
+  }
+]

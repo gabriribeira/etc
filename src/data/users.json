@@ -6,17 +6,7 @@
     "email": "gabriribeira@ua.pt",
     "img": "gabriribeira.webp",
     "password": "gabriel123",
-    "households": [1],
-    "tasks": [
-      {
-        "id": 1,
-        "title": "Clean my Bedroom",
-        "details": "Can't forget to clean the windows, the bed sheats and under the bed!",
-        "periodicity": "weekly",
-        "category": "Room",
-        "color": "#7A7A7A"
-      }
-    ]
+    "households": [1]
   },
   {
     "id": 2,
@@ -25,8 +15,7 @@
     "email": "carolina@ua.pt",
     "img": "carolina.webp",
     "password": "carolina123",
-    "households": [1],
-    "tasks": []
+    "households": [1]
   },
   {
     "id": 3,
@@ -35,8 +24,7 @@
     "email": "ines@ua.pt",
     "img": "ines.webp",
     "password": "ines123",
-    "households": [1],
-    "tasks": []
+    "households": [1]
   },
   {
     "id": 4,
@@ -45,7 +33,6 @@
     "email": "lara@ua.pt",
     "img": "lara.webp",
     "password": "lara123",
-    "households": [1],
-    "tasks": []
+    "households": [1]
   }
 ]
