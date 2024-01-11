@@ -49,7 +49,7 @@ function App() {
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/" element={<Homepage />} />
-          <Route path="/household/:household" element={<Household />} />
+          <Route path="/households/:1" element={<Household />} /> {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item" element={<ItemDetails />} />
           <Route path="/join" element={<JoinHousehold />} />
