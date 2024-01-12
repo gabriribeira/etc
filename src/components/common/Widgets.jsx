@@ -1,5 +1,6 @@
 import React from "react";
 import '../../index.css'; 
+import ProgressBar from "./ProgressBar";
 
 const Widges = () => {
     return (
@@ -23,6 +24,7 @@ const Widges = () => {
                 <p className="pt-5">Household Goal</p>
                 <h1>6/10</h1>
                 <p>times to achieve <b>Zero Waste Month!</b></p>
+                <ProgressBar/>
             </div></>
     );
 };
