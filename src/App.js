@@ -28,6 +28,7 @@ import Tasks from "./pages/Tasks";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import EditHousehold from "./pages/EditHousehold";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -45,6 +46,7 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/event/:event/edit" element={<EditEvent />} />
           <Route path="/tasks/:task/edit" element={<EditTask />} />
+          <Route path="/households/:household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/goals" element={<Goals />} />
