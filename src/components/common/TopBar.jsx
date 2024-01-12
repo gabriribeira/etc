@@ -95,7 +95,7 @@ const TopBar = ({ text, description }) => {
         setShowBackButton(true);
         setIcon(null);
         break;
-      case "/lists/new":
+      case "/lists/1":
         setTitle("SHOPPING LIST");
         setShowBackButton(true);
         setIcon(null);
