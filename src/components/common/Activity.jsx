@@ -4,12 +4,13 @@ import '../../index.css';
 const Activity = () => {
     return (
        <div>
-    <p className="pl-5 pt-5"><b>Activity</b></p>
+    <p className="pl-5 pt-5 pb-5"><b>Activity</b></p>
     <div className="atividade">
-        <img src="./src/assets/data/users/lara.webp" className="fotouser" alt="" srcSet="" />
+        <img src="src/assets/data/users/lara.webp" className="fotouser" alt="" srcSet="" />
         <div className="descricao-atividade">
             <p><b>Paulo</b> added <b>Cerveja Super Bock</b> to the shopping list.</p>
             <p className="thin">&middot; 30 minutes ago</p>
+            
         </div>
     </div>
     <div className="atividade">
