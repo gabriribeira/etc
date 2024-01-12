@@ -15,7 +15,7 @@ const ShoppingList = ({ list }) => {
   return (
     <Link
       to={`/lists/${list.id}`}
-      className="flex items-center w-full bg-blue justify-between px-3 h-[100px] rounded-2xl"
+      className="flex items-center w-full bg-blue80 justify-between px-3 h-[100px] rounded-2xl"
     >
       <div className="flex flex-col text-white">
         <h1 className="text-xl font-semibold ">{list.title}</h1>
