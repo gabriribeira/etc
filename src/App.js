@@ -51,7 +51,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/households/:household" element={<Household />} />
           <Route path="/invite" element={<InviteMembers />} />
-          <Route path="/lists/:list/item" element={<ItemDetails />} />
+          <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
           <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/event/new" element={<NewEvent />} />
