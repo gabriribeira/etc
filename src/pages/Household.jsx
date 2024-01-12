@@ -1,25 +1,35 @@
-import React from "react";
-import BottomBar from "../components/common/BottomBar";
+
+import React, { useEffect, useState } from "react";
 import TopBar from "../components/common/TopBar";
+import BottomBar from "../components/common/BottomBar";
+import HouseholdsData from "../data/households.json";
+import HouseholdBanner from "../components/household/HouseholdBanner";
 
 const Household = () => {
+  const [households, setHouseholds] = useState('');
+  const householdsData = HouseholdsData;
+  
+  useEffect(() => {
+    if (householdsData) {
+      const households = householdsData.filter((household) => household.id === 1); //Não esquecer de mudar o household_id para o id da casa do user
+      setHouseholds(households);
+    }
+  }, [householdsData]);
+
     return (
       <div>
         <TopBar />
-        <div className="flex flex-col bg-black10 text-center">
-          <button className="text-right mr-2 text-blue font-semibold text-sm">edit</button>
-            <div className="py-8">
-              <img className="rounded" src="" alt="Household profile picture" />
-              <h1 className="font-semibold text-lg">Variável Nome Household</h1>
-              <p className="font-light text-sm">x Members</p>
-            </div>
-          </div>
+        {households &&
+          households.map((household, index) => (
+            <HouseholdBanner household={household} key={index} />
+          ))
+        }        
 
         <div className="flex flex-col px-5 gap-y-5">
           <div className="flex flex-col mt-5">
             <h1 className="font-semibold text-lg">Description</h1>
             <p className="text-black50">
-              variável jason
+              {households.description}
             </p>
           </div>
 
