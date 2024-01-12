@@ -120,7 +120,7 @@ body {
   background-color: #3F709A; 
   color: #ffffff; 
   text-align: left;
-  padding-left: 30px;
+  padding-left: 15px;
   margin-top: 30px;
   border-radius: 20px;
 }
@@ -136,7 +136,7 @@ body {
   background-color: #373737;
   color: #ffffff; 
   text-align: left;
-  padding-left: 30px;
+  padding-left: 15px;
   border-radius: 20px;
   
 }
@@ -146,7 +146,7 @@ body {
   background-color: #FF6F61;
   color: #ffffff; 
   text-align: left;
-  padding-left: 30px;
+  padding-left: 15px;
   border-radius: 20px;
 }
 .space {
@@ -160,6 +160,24 @@ body {
    color: #ffffff; 
    text-align: left;
    margin-top: 20px;
-   padding-left: 30px;
+   padding-left: 15px;
    border-radius: 20px;
  }
+
+ .atividade {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.fotouser {
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.descricao-atividade {
+  flex: 1;
+}
+
+.thin {
+  font-weight: 100; /* Escolha o peso da fonte que se ajuste à espessura desejada */
+}

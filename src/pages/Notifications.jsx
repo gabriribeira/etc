@@ -1,6 +1,7 @@
 import React from "react";
 import BottomBar from "../components/common/BottomBar";
 
+
 const Notifications = () => {
   return (
     <div>
