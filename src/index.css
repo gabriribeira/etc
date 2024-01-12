@@ -115,7 +115,7 @@ body {
 }
 
 .rectangle {
- width: 100%; 
+  width: 100%; 
   height: 150px; 
   background-color: #3F709A; 
   color: #ffffff; 
@@ -155,7 +155,7 @@ body {
 
 .rectangle2 {
   width: 100%;
-   height: 150px; 
+   height: 184px; 
    background-color: #84B486; 
    color: #ffffff; 
    text-align: left;
@@ -172,6 +172,8 @@ body {
 .fotouser {
   border-radius: 50%;
   margin-right: 15px;
+  height: 72px;
+  width: 72px;
 }
 
 .descricao-atividade {
@@ -179,5 +181,5 @@ body {
 }
 
 .thin {
-  font-weight: 100; /* Escolha o peso da fonte que se ajuste à espessura desejada */
+  font-weight: 100; 
 }
