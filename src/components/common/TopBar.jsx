@@ -65,7 +65,7 @@ const TopBar = ({ text, description }) => {
         setShowBackButton(true);
         setIcon(null);
         break;
-      case "/household/:household":
+      case "/households/1": /* TODO: Mudar para o id do household correto */
         setTitle("HOUSEHOLD");
         setShowBackButton(false);
         setIcon(<TbUsers />);
