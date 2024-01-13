@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "household_id": 1,
+        "title": "Secret Santa Dinner",
+        "finished": false
+    },
+    {
+        "id": 2,
+        "household_id": 1,
+        "title": "Miguels Birthday Lunch",
+        "finished": true
+    },
+    {
+        "id": 3,
+        "household_id": 2,
+        "title": "Christmas Dinner",
+        "finished": false
+    }
+]

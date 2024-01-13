@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "list_id": 1,
+        "name": "Iogurte Grego",
+        "price": 3.99,
+        "details": "Iogurte Grego 170g",
+        "brand": "Hacendado",
+        "store": "Mercadona",
+        "amount": 1,
+        "unit": "unit",
+        "members": [1, 2],
+        "suggestion": false,
+        "created_at": "2024-01-03",
+        "created_by": 1
+    },
+    {
+        "id": 2,
+        "list_id": 1,
+        "name": "Grade Super Bock",
+        "price": 8.99,
+        "details": "",
+        "brand": "Super Bock",
+        "store": "",
+        "amount": 1,
+        "unit": "package",
+        "members": [1, 2, 3, 4],
+        "suggestion": false,
+        "created_at": "2024-01-02",
+        "created_by": 1
+    }
+]
