@@ -90,7 +90,12 @@ const TopBar = ({ text, description }) => {
         setShowBackButton(false);
         setIcon(<TbShoppingCart />);
         break;
-      case "/lists/:list/item":
+      case "/lists/1/item/0":
+        setTitle("ITEM DETAILS");
+        setShowBackButton(true);
+        setIcon(null);
+        break;
+      case "/lists/1/item/1":
         setTitle("ITEM DETAILS");
         setShowBackButton(true);
         setIcon(null);
@@ -124,7 +129,9 @@ const TopBar = ({ text, description }) => {
         {icon && <div className="text-3xl">{icon}</div>}
         <h4 className="">{title}</h4>
       </div>
-      {description && <p className="text-black60 text-base mt-2">{description}</p>}
+      {description && (
+        <p className="text-black60 text-base mt-2">{description}</p>
+      )}
     </div>
   );
 };
