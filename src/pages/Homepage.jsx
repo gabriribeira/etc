@@ -1,15 +1,17 @@
 import React from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import Widges from '../components/common/Widgets';
+import Widgets from "../components/homepage/Widgets";
 import Activity from "../components/common/Activity";
 
 const Homepage = () => {
   return (
     <div>
       <TopBar />
-      <Widges/>
-      <Activity/>
+      <div className="flex flex-col px-5">
+        <Widgets />
+        <Activity />
+      </div>
       <BottomBar />
     </div>
   );
