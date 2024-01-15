@@ -29,6 +29,7 @@ import User from "./pages/User";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import EditHousehold from "./pages/EditHousehold";
+import BalanceDetails from "./pages/BalanceDetails";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -49,6 +50,7 @@ function App() {
           <Route path="/households/:household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route path="/expenses" element={<Expenses />} />
+          <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/households/:1" element={<Household />} /> {/* TODO: Mudar para o id do household correto */}
