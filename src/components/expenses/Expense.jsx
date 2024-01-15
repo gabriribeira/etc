@@ -11,7 +11,7 @@ const Expense = ({ expense }) => {
         <h2 className="text-lg text-white font-normal">{expense.title}</h2>
         <div className="flex flex-col">
           <div className="text-4xl font-semibold text-white">
-            {expense.value}<span className="font-light text-2xl">€</span>
+            {expense.value.toFixed(2)}<span className="font-light text-2xl">€</span>
           </div>
           <p className="font-normal text-white text-base">
             spent by <span className="font-semibold">{user.name}</span>
