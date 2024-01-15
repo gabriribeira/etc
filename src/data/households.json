@@ -4,13 +4,15 @@
     "name": "Casa da Amizade",
     "img": "household_amizade.webp",
     "description": "A Casa da Amizade é uma instituição sem fins lucrativos que tem como objetivo promover ações sociais e culturais para a comunidade do bairro da Amizade, em Joinville.",
-    "tags": [3, 7, 15]
+    "tags": [3, 7, 15],
+    "admins": [1, 2]
   },
   {
     "id": 2,
     "name": "Casa dos Inimigos",
     "img": "household_inimigos.webp",
     "description": "A Casa dos Inimigos não é uma instituição sem fins lucrativos que tem como objetivo promover ações sociais e culturais para a comunidade do bairro dos Inimigos, em Joinville ao contrário.",
-    "tags": [3, 7, 15]
+    "tags": [3, 7, 15],
+    "admins": [1]
   }
 ]
