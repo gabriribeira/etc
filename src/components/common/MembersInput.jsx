@@ -5,7 +5,7 @@ import { GoPencil } from "react-icons/go";
 import TopBar from "./TopBar";
 
 //eslint-disable-next-line
-const MembersInput = ({ value, onChange }) => {
+const MembersInput = ({ value, onChange, label }) => {
   const usersData = UsersData;
   const [openOverlay, setOpenOverlay] = useState(false);
   const [users, setUsers] = useState([]);
@@ -65,7 +65,7 @@ const MembersInput = ({ value, onChange }) => {
         </div>
       )}
       <div className="flex flex-col">
-        <h1 className="font-semibold text-lg">Active</h1>
+        <h1 className="font-semibold text-lg">{label ? label : "Active"}</h1>
         <div className="flex items-center gap-x-3">
           {users &&
             users.map(
@@ -99,6 +99,7 @@ const MembersInput = ({ value, onChange }) => {
 MembersInput.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
 };
 
 export default MembersInput;
