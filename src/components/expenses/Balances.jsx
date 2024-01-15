@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ExpensesData from "../../data/expenses.json";
 import UsersData from "../../data/users.json";
+import { Link } from "react-router-dom";
 
 const Balances = () => {
   const expensesData = ExpensesData;
@@ -37,55 +38,63 @@ const Balances = () => {
 
   const calculateBalances = (expenses, users, authenticatedUserId) => {
     const userBalances = {};
-
-    // Initialize balances
+    const userExpenses = {};
+  
+    // Initialize balances and expenses
     users.forEach((user) => {
       userBalances[user.id] = 0;
+      userExpenses[user.id] = [];
     });
-
-    // Calculate balances based on expenses
+  
+    // Calculate balances and track expenses based on expenses
     expenses.forEach((expense) => {
       if (!expense.paid) {
         const numberOfUsers = expense.users.length || 1; // Avoid division by zero
-
-        // Calculate the amount each user owes or is owed
         const amountPerUser = expense.value / numberOfUsers;
-
-        // Deduct the amount from the user who paid
+  
         userBalances[expense.user_id] += expense.value;
-
-        // Distribute the amount among the other users
+  
         expense.users.forEach((userId) => {
           if (userId !== authenticatedUserId) {
             userBalances[userId] -= amountPerUser;
+            userExpenses[userId].push(expense);
           }
         });
       }
     });
-
-    return userBalances;
+  
+    return { userBalances, userExpenses };
   };
+  
 
+  const handleDetailsClick = (user) => {
+    return balances.userExpenses[user.id];
+  };
+  
   return (
     <>
       {balances &&
         usersData.map(
           (user) =>
             user.id !== authUser.id &&
-            balances[user.id] !== 0 && (
-              <div
+            (balances.userBalances[user.id] < 0 || balances.userBalances[user.id] > 0) && (
+              <Link
+                to={"/expenses/balance"}
+                state={{ balance: balances.userBalances[user.id], user: user, expenses: handleDetailsClick(user) }}
                 key={user.id}
-                className={`${balances[user.id] > 0 ? "bg-black90" : "bg-black70"} rounded-2xl flex justify-between items-center w-full p-3 h-full`}
+                className={`${
+                  balances[user.id] > 0 ? "bg-black90" : "bg-black70"
+                } rounded-2xl flex justify-between items-center w-full p-3 h-full`}
               >
                 <div className="flex flex-col justify-between h-full">
                   <h2 className="text-lg text-white font-normal">
                     {balances[user.id] > 0
-                      ? "You owe" + balances[user.id]
+                      ? "You owe" + balances.userBalances[user.id]
                       : user.name + " owes you"}
                   </h2>
                   <div className="flex flex-col">
                     <div className="text-4xl font-semibold text-white">
-                      {balances[user.id].toFixed(2)}
+                      {balances.userBalances[user.id].toFixed(2)}
                       <span className="font-light text-2xl">€</span>
                     </div>
                     <p className="font-normal text-white text-base">
@@ -111,7 +120,7 @@ const Balances = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </Link>
             )
         )}
     </>
