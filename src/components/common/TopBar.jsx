@@ -60,12 +60,17 @@ const TopBar = ({ text, description }) => {
         setShowBackButton(true);
         setIcon(null);
         break;
+      case "/expenses/balance":
+        setTitle("BALANCE DETAILS");
+        setShowBackButton(true);
+        setIcon(null);
+        break;
       case "/expenses/new":
         setTitle("NEW EXPENSE");
         setShowBackButton(true);
         setIcon(null);
         break;
-      case "/households/1": /* TODO: Mudar para o id do household correto */
+      case "/households/1" /* TODO: Mudar para o id do household correto */:
         setTitle("HOUSEHOLD");
         setShowBackButton(false);
         setIcon(<TbUsers />);
