@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "household_id": 1,
+        "img" : 1,
+        "type": 1,
+        "text": "Paulo added “Cerveja Super Bock” to the shopping list",
+        "created_at": "2024-01-12 12:12:12"
+    },
+    {
+        "id": 2,
+        "household_id": 1,
+        "img" : 1,
+        "type": 2,
+        "text": "Paulo added “Cerveja Super Bock” to the shopping list",
+        "created_at": "2024-01-16 12:12:12"
+    },
+    {
+        "id": 3,
+        "household_id": 1,
+        "img" : 1,
+        "type": 3,
+        "text": "Paulo added “Cerveja Super Bock” to the shopping list",
+        "created_at": "2024-01-10 12:12:12"
+    }
+]
