@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import UsersData from "../../data/users.json";
 import { GoPencil } from "react-icons/go";
 import TopBar from "./TopBar";
+import Button from "./Button";
 
 //eslint-disable-next-line
 const MembersInput = ({ value, onChange, label }) => {
   const usersData = UsersData;
   const [openOverlay, setOpenOverlay] = useState(false);
   const [users, setUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   useEffect(() => {
     if (usersData) {
       usersData.map((user) => {
@@ -19,10 +21,15 @@ const MembersInput = ({ value, onChange, label }) => {
       setUsers(usersData);
     }
   }, [usersData]);
+  useEffect(() => {
+    if (value) {
+      setSelectedUsers(value);
+    }
+  }, [value]);
   return (
     <>
       {openOverlay && (
-        <div className="fixed w-screen h- bg-white top-0 left-0 z-10">
+        <div className="fixed w-screen h-[100vh] bg-white top-0 left-0 z-10">
           <TopBar />
           <div className="flex flex-col px-5 py-3 gap-y-6">
             <div className="flex flex-col">
@@ -38,29 +45,39 @@ const MembersInput = ({ value, onChange, label }) => {
                     key={index}
                     className={`transition-all duration-300 h-[10rem] rounded-2xl flex items-center justify-center col-span-1 relative`}
                     onClick={() => {
-                      if (value.includes(user.id)) {
-                        onChange(value.filter((id) => id !== user.id));
+                      if (selectedUsers.includes(user.id)) {
+                        setSelectedUsers(selectedUsers.filter((id) => id !== user.id));
                       } else {
-                        onChange([...value, user.id]);
+                        setSelectedUsers([...selectedUsers, user.id]);
                       }
                     }}
+                    type="button"
                   >
                     <img
                       //eslint-disable-next-line
                       src={require(`../../assets/data/users/${user.img}`)}
                       alt="User Profile Picture"
                       className={`transition-all duration-300 w-full h-full object-cover object-center rounded-2xl bg-black ${
-                        value.includes(user.id) && "opacity-50"
+                        !selectedUsers.includes(user.id) && "opacity-50"
                       }`}
                     />
-                    <h1 className={`transition-all duration-300 text-base font-normal absolute bottom-1 left-1 rounded-full py-1 px-2 ${!value.includes(user.id) ? "bg-white/80 text-black" : "text-white bg-black/60" }`}>{user.name}</h1>
+                    <h1
+                      className={`transition-all duration-300 text-base font-normal absolute bottom-1 left-1 rounded-full py-1 px-2 ${
+                        !selectedUsers.includes(user.id)
+                          ? "bg-white/80 text-black"
+                          : "text-white bg-black/60"
+                      }`}
+                    >
+                      {user.name}
+                    </h1>
                   </button>
                 ))}
             </div>
             <div className="flex flex-col">
-                <p>Dividing by</p>
-                <p className="text-xl font-semibold">{value.length} Members</p>
+              <p>Dividing by</p>
+              <p className="text-xl font-semibold">{selectedUsers.length} Members</p>
             </div>
+            <Button label="Add Members" action={() => {onChange(selectedUsers); setOpenOverlay(false)}} />
           </div>
         </div>
       )}
@@ -87,6 +104,7 @@ const MembersInput = ({ value, onChange, label }) => {
           <button
             onClick={() => setOpenOverlay(true)}
             className="w-[35px] h-[35px] rounded-full border-2 border-black text-xl flex items-center justify-center"
+            type="button"
           >
             <GoPencil />
           </button>
