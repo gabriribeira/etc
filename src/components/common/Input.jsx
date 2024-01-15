@@ -29,7 +29,7 @@ const Input = ({ label, value, onChange, error }) => {
             value={value}
             type={
               (label === "Password" || label === "Confirm Password") && !showPassword
-                ? "password" : label === "Email" ? "email" : label == "Date" ? "date" : "text"
+                ? "password" : label === "Email" ? "email" : label == "Value" ? "number" : label == "Date" ? "date" : "text"
             }
             onChange={(e) => onChange(e.target.value)}
             className={`border-2 rounded-xl p-2 border-black40 focus:border-black focus:outline-none ${
