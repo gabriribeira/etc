@@ -39,21 +39,21 @@ const Balances = () => {
   const calculateBalances = (expenses, users, authenticatedUserId) => {
     const userBalances = {};
     const userExpenses = {};
-  
+
     // Initialize balances and expenses
     users.forEach((user) => {
       userBalances[user.id] = 0;
       userExpenses[user.id] = [];
     });
-  
+
     // Calculate balances and track expenses based on expenses
     expenses.forEach((expense) => {
       if (!expense.paid) {
         const numberOfUsers = expense.users.length || 1; // Avoid division by zero
         const amountPerUser = expense.value / numberOfUsers;
-  
+
         userBalances[expense.user_id] += expense.value;
-  
+
         expense.users.forEach((userId) => {
           if (userId !== authenticatedUserId) {
             userBalances[userId] -= amountPerUser;
@@ -62,29 +62,31 @@ const Balances = () => {
         });
       }
     });
-  
+
     return { userBalances, userExpenses };
   };
-  
 
   const handleDetailsClick = (user) => {
     return balances.userExpenses[user.id];
   };
-  
+
   return (
     <>
       {balances &&
         usersData.map(
           (user) =>
             user.id !== authUser.id &&
-            (balances.userBalances[user.id] < 0 || balances.userBalances[user.id] > 0) && (
+            (balances.userBalances[user.id] < 0 ||
+              balances.userBalances[user.id] > 0) && (
               <Link
                 to={"/expenses/balance"}
-                state={{ balance: balances.userBalances[user.id], user: user, expenses: handleDetailsClick(user) }}
+                state={{
+                  balance: balances.userBalances[user.id],
+                  user: user,
+                  expenses: handleDetailsClick(user),
+                }}
                 key={user.id}
-                className={`${
-                  balances[user.id] > 0 ? "bg-black90" : "bg-black70"
-                } rounded-2xl flex justify-between items-center w-full p-3 h-full`}
+                className={`bg-black90 rounded-2xl flex justify-between items-center w-full p-3 h-full`}
               >
                 <div className="flex flex-col justify-between h-full">
                   <h2 className="text-lg text-white font-normal">
@@ -94,7 +96,7 @@ const Balances = () => {
                   </h2>
                   <div className="flex flex-col">
                     <div className="text-4xl font-semibold text-white">
-                      {balances.userBalances[user.id].toFixed(2)}
+                      {Math.abs(balances.userBalances[user.id].toFixed(2))}
                       <span className="font-light text-2xl">€</span>
                     </div>
                     <p className="font-normal text-white text-base">
