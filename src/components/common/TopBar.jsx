@@ -128,7 +128,7 @@ const TopBar = ({ text, description }) => {
     }
   }, [location.pathname, text]);
   return (
-    <div className="flex flex-col sticky w-screen py-7 px-5">
+    <div className="flex flex-col sticky top-0 w-screen py-7 px-5 z-[100] bg-white">
       <div className="flex items-center gap-x-2">
         {showBackButton && <BackButton />}
         {icon && <div className="text-3xl">{icon}</div>}
