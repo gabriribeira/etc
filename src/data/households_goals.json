@@ -5,7 +5,7 @@
       "household_id": 1,
       "amount": 10,
       "created_at": "2024/01/01",
-      "finished": false
+      "finished": true
     },
     {
       "id": 2,
@@ -21,6 +21,6 @@
       "household_id": 2,
       "amount": 10,
       "created_at": "2023/12/10",
-      "finished": false
+      "finished": true
     }
   ]
