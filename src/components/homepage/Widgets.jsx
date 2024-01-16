@@ -9,6 +9,7 @@ import HouseholdGoals from "../../data/households_goals.json";
 import GoalsLogs from "../../data/goals_logs.json";
 import Goals from "../../data/goals.json";
 import { Link } from "react-router-dom";
+import WidgetIcon from "../common/WidgetIcon";
 
 const Widgets = () => {
   const usersData = UsersData;
@@ -212,7 +213,7 @@ const Widgets = () => {
       setHouseholdGoal(householdGoal);
       setGoal(goals.find((goal) => goal.id === householdGoal.goal_id));
       const householdGoalLogs = goalsLogs.filter(
-        (goalLog) => goalLog.goal_id === householdGoal.id
+        (goalLog) => goalLog.goal_id === householdGoal.goal_id
       );
       setHouseholdGoalTimes(householdGoalLogs.length);
     }
@@ -222,8 +223,9 @@ const Widgets = () => {
     <div className="flex flex-col w-full gap-y-3">
       <Link
         to={"/lists"}
-        className="w-full rounded-2xl p-3 bg-blue80 text-white"
+        className="w-full rounded-2xl p-3 bg-blue80 text-white relative"
       >
+        <WidgetIcon icon={"lists"} />
         <h2 className="text-base font-light">Shopping Lists</h2>
         <h1 className="font-semibold text-4xl">
           {list && list != "" ? numberItems : "+"}
@@ -238,8 +240,9 @@ const Widgets = () => {
       <div className="flex w-full gap-x-3 text-white">
         <Link
           to={"/tasks"}
-          className="w-[50%] bg-black rounded-2xl p-3 h-[170px] flex flex-col justify-between"
+          className="w-[50%] bg-black rounded-2xl p-3 h-[170px] flex flex-col justify-between relative"
         >
+          <WidgetIcon icon={"tasks"} />
           <h2 className="text-base font-light">Tasks</h2>
           <div className="flex flex-col">
             <h1 className="font-semibold text-4xl">
@@ -252,13 +255,16 @@ const Widgets = () => {
         </Link>
         <Link
           to={"/expenses"}
-          className="w-[50%] bg-salmon rounded-2xl p-3 h-[170px] flex flex-col justify-between"
+          className="w-[50%] bg-salmon rounded-2xl p-3 h-[170px] flex flex-col justify-between relative"
         >
+          <WidgetIcon icon={"expenses"} />
           <h2 className="text-base font-light">Expenses</h2>
           <div className="flex flex-col">
             {youOwe || youAreOwed ? (
               <h1 className="font-semibold text-4xl">
-                {youOwe ? youOwe.toFixed(2) : youAreOwed.toFixed(2)}
+                {youOwe
+                  ? Math.abs(youOwe.toFixed(2))
+                  : Math.abs(youAreOwed.toFixed(2))}
                 <span className="font-light text-3xl">€</span>
               </h1>
             ) : (
@@ -275,27 +281,25 @@ const Widgets = () => {
       {householdGoal && householdGoalTimes && (
         <Link
           to={"/households/1"}
-          className="flex flex-col bg-green rounded-2xl p-3 text-white"
+          className="flex flex-col bg-green rounded-2xl p-3 text-white relative"
         >
-          {" "}
+          <WidgetIcon icon={"goal"} />
           {/* NÃO ESQUECER DE ALTERAR PARA O HOUSEHOLD CORRETO */}
           <h2 className="text-base font-light">Household Goal</h2>
           <div className="flex flex-col mt-2">
-            <h1 className="font-semibold text-4xl">
+            <h1 className="font-semibold text-5xl">
               {householdGoalTimes}/{householdGoal.amount}
             </h1>
             <p className="font-light text-base">
               times to achieve{" "}
-              <span className="font-semibold">{goal.slug}</span>
+              <span className="font-semibold">{goal.goal.slug}</span>
             </p>
           </div>
           <div className="flex flex-col mt-2">
             <p className="text-white font-light text-sm mb-1">
               {(householdGoalTimes * 100) / householdGoal.amount}%
             </p>
-            <ProgressBar
-              progress={householdGoalTimes}
-            />
+            <ProgressBar progress={householdGoalTimes} />
           </div>
         </Link>
       )}
