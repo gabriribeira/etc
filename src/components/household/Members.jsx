@@ -4,7 +4,7 @@ import { RxDotsVertical } from "react-icons/rx";
 
 const Members = ({ users, admins }) => {
   return (
-    <div className="flex flex-col px-5 mt-6 gap-y-3">
+    <div className="flex flex-col px-5 gap-y-3">
       <h1 className="font-semibold text-lg">Members</h1>
       {users.map((user, index) => (
         <div
