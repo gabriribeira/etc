@@ -7,6 +7,7 @@ import Members from "../components/household/Members";
 import UsersData from "../data/users.json";
 import { Link } from "react-router-dom";
 import { IoSettingsOutline } from "react-icons/io5";
+import SustainableGoal from "../components/household/SustainableGoal";
 
 const Household = () => {
   const [household, setHousehold] = useState("");
@@ -35,8 +36,11 @@ const Household = () => {
         <Link to={"/households/1/settings"} className="fixed top-6 right-4 text-4xl text-black z-[101]"> {/* TODO: Não Esquecer Mudar para o id do household correto */}
           <IoSettingsOutline />
         </Link>
+        <div className="flex flex-col gap-y-6">
         <HouseholdInfo household={household} users={householdUsers} />
+        <SustainableGoal />
         <Members users={householdUsers} admins={household.admins} />
+        </div>
         <BottomBar />
       </div>
     )
