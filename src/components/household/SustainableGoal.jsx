@@ -36,23 +36,26 @@ const SustainableGoal = () => {
     if (householdGoals && goalsLogs && authHousehold) {
       const householdGoalAux = householdGoals.find(
         (householdGoal) =>
-          householdGoal.household_id === authHousehold.id && householdGoal.finished === false
+          householdGoal.household_id === authHousehold.id &&
+          householdGoal.finished === false
       );
       setHouseholdGoal(householdGoalAux);
-      setGoal(goals.find((goal) => goal.id === householdGoalAux.goal_id));
-      console.log(householdGoalAux);
-      const householdGoalLogs = goalsLogs.filter(
-        (goalLog) => goalLog.goal_id === householdGoalAux.goal_id
-      );
-      console.log(householdGoalLogs);
-      setHouseholdGoalTimes(householdGoalLogs.length);
+      if (householdGoalAux) {
+        setGoal(goals.find((goal) => goal.id === householdGoalAux.goal_id));
+        console.log(householdGoalAux);
+        const householdGoalLogs = goalsLogs.filter(
+          (goalLog) => goalLog.goal_id === householdGoalAux.goal_id
+        );
+        console.log(householdGoalLogs);
+        setHouseholdGoalTimes(householdGoalLogs.length);
+      }
     }
   }, [householdGoals, goalsLogs, authHousehold]);
   useEffect(() => {
-    if (households) {
+    if (households && authHousehold) {
       let householdTagsArray = [];
       const householdTags = households.find(
-        (household) => household.id === 1
+        (household) => household.id === authHousehold.id
       ).tags;
       householdTags.forEach((tag) => {
         goals.forEach((goal) => {
@@ -63,57 +66,58 @@ const SustainableGoal = () => {
       });
       setTags(householdTagsArray);
     }
-  }, [households]);
+  }, [households, authHousehold]);
   const handleIncrement = () => {
     console.log("Increment");
   };
-  return (
-    householdGoal &&
-    goal &&
-    householdGoalTimes && (
-      <div className="flex flex-col w-full px-5 gap-y-3">
-        <h2 className="text-lg text-black font-semibold">
-          Sustainability
-        </h2>
-        <div className="flex flex-wrap items-center gap-x-3">
+  return householdGoal && goal && householdGoalTimes ? (
+    <div className="flex flex-col w-full px-5 gap-y-3">
+      <h2 className="text-lg text-black font-semibold">Sustainability</h2>
+      <div className="flex flex-wrap items-center gap-x-3">
         {tags &&
           tags.map((tag, index) => (
-            <div className="rounded-2xl border-2 border-green text-green text-base py-1 px-2" key={index} >{tag.title}</div>
-          ))
-        }
-        </div>
-        {householdGoal && householdGoalTimes && (
-          <div className="flex flex-col bg-green/80 rounded-2xl p-3 text-white gap-y-3">
-            <h2 className="text-lg font-light text-black">{goal.goal.slug}</h2>
-            <img
-              //eslint-disable-next-line
-              src={require(`../../assets/data/goals/${goal.goal.img}`)}
-              alt="Goal Preview Picture"
-              className="w-full object-cover"
-            />
-            <div className="flex flex-col">
-              <h1 className="font-semibold text-2xl text-black">
-                {goal.goal.title}
-              </h1>
-              <p className="font-light text-sm text-black">
-                {goal.goal.details}
-              </p>
+            <div
+              className="rounded-2xl border-2 border-green text-green text-base py-1 px-2"
+              key={index}
+            >
+              {tag.title}
             </div>
-            <div className="flex flex-col mb-3">
-              <p className="text-white font-light text-sm mb-1">
-                {(householdGoalTimes * 100) / householdGoal.amount}%
-              </p>
-              <ProgressBar progress={householdGoalTimes} />
-            </div>
-            <Button
-              label={"Increment"}
-              action={handleIncrement}
-              stroke={true}
-            />
-          </div>
-        )}
+          ))}
       </div>
-    )
+      {householdGoal && householdGoalTimes && (
+        <div className="flex flex-col bg-green/80 rounded-2xl p-3 text-white gap-y-3">
+          <h2 className="text-lg font-light text-black">{goal.goal.slug}</h2>
+          <img
+            //eslint-disable-next-line
+            src={require(`../../assets/data/goals/${goal.goal.img}`)}
+            alt="Goal Preview Picture"
+            className="w-full object-cover"
+          />
+          <div className="flex flex-col">
+            <h1 className="font-semibold text-2xl text-black">
+              {goal.goal.title}
+            </h1>
+            <p className="font-light text-sm text-black">{goal.goal.details}</p>
+          </div>
+          <div className="flex flex-col mb-3">
+            <p className="text-white font-light text-sm mb-1">
+              {(householdGoalTimes * 100) / householdGoal.amount}%
+            </p>
+            <ProgressBar progress={householdGoalTimes} />
+          </div>
+          <Button label={"Increment"} action={handleIncrement} stroke={true} />
+        </div>
+      )}
+    </div>
+  ) : (
+    <div className="flex flex-col bg-green/80 rounded-2xl p-3 text-white gap-y-3 mx-5">
+      <h2 className="text-lg font-light text-white">Household Goal</h2>
+      <div className="flex flex-col">
+        <h1 className="font-semibold text-2xl text-white">
+          Start a new goal today!
+        </h1>
+      </div>
+    </div>
   );
 };
 

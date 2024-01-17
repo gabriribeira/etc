@@ -74,16 +74,16 @@ const Widgets = () => {
 
   //Shopping Lists Widget
   useEffect(() => {
-    if (listsData) {
-      if (listsData.filter((list) => list.household_id === 1)) {
+    if (listsData && authHousehold) {
+      if (listsData.filter((list) => list.household_id === authHousehold.id)) {
         if (
           listsData
-            .filter((list) => list.household_id === 1)
+            .filter((list) => list.household_id === authHousehold.id)
             .find((list) => list.finished === false)
         ) {
           setList(
             listsData
-              .filter((list) => list.household_id === 1)
+              .filter((list) => list.household_id === authHousehold.id)
               .find((list) => list.finished === false).title
           );
           setNumberItems(
@@ -91,7 +91,7 @@ const Widgets = () => {
               (listItem) =>
                 listItem.list_id ===
                 listsData
-                  .filter((list) => list.household_id === 1)
+                  .filter((list) => list.household_id === authHousehold.id)
                   .find((list) => list.finished === false).id
             ).length
           );
@@ -103,7 +103,7 @@ const Widgets = () => {
         setList("");
       }
     }
-  }, [listsData]);
+  }, [listsData, authHousehold]);
 
   //Tasks Widget
   useEffect(() => {
@@ -123,14 +123,14 @@ const Widgets = () => {
         endDate: endDate.toISOString().split("T")[0],
       };
     };
-    if (tasksLogs) {
+    if (tasksLogs && authUser && authUser) {
       const weekStart = getWeekInterval().startDate;
       const weekEnd = getWeekInterval().endDate;
       if (
         tasksLogs.filter(
           (task) =>
-            task.household_id === 1 &&
-            task.user_id === 1 &&
+            task.household_id === authHousehold.id &&
+            task.user_id === authUser.id &&
             task.start === weekStart &&
             task.end === weekEnd
         )
@@ -138,8 +138,8 @@ const Widgets = () => {
         setTasks(
           tasksLogs.filter(
             (task) =>
-              task.household_id === 1 &&
-              task.user_id === 1 &&
+              task.household_id === authHousehold.id &&
+              task.user_id === authUser.id &&
               task.start === weekStart &&
               task.end === weekEnd
           ).length
@@ -147,8 +147,8 @@ const Widgets = () => {
         tasksLogs
           .filter(
             (task) =>
-              task.household_id === 1 &&
-              task.user_id === 1 &&
+              task.household_id === authHousehold.id &&
+              task.user_id === authUser.id &&
               task.start === weekStart &&
               task.end === weekEnd
           )
@@ -159,7 +159,7 @@ const Widgets = () => {
           });
       }
     }
-  }, [tasksLogs]);
+  }, [tasksLogs, authHousehold, authUser]);
 
   // Expenses Widget
   useEffect(() => {
@@ -167,31 +167,42 @@ const Widgets = () => {
       const calculatedBalances = calculateBalances(
         expensesData,
         usersData,
-        authUser.id
+        authUser.id,
+        authHousehold.id
       );
       setBalances(calculatedBalances);
     }
   }, [expensesData, usersData, authUser]);
-  const calculateBalances = (expenses, users, authenticatedUserId) => {
+  const calculateBalances = (
+    expenses,
+    users,
+    authenticatedUserId,
+    authenticatedHouseholdId
+  ) => {
     const userBalances = {};
     users.forEach((user) => {
       userBalances[user.id] = 0;
     });
     expenses.forEach((expense) => {
-      if (!expense.paid) {
-        const numberOfUsers = expense.users.length || 1;
-        const amountPerUser = expense.value / numberOfUsers;
-        userBalances[expense.user_id] += expense.value;
-        expense.users.forEach((userId) => {
-          if (userId !== authenticatedUserId) {
-            userBalances[userId] -= amountPerUser;
-          }
-        });
+      // Check if the expense is within the same household
+      if (expense.household_id === authenticatedHouseholdId) {
+        if (!expense.paid) {
+          const numberOfUsers = expense.users.length || 1;
+          const amountPerUser = expense.value / numberOfUsers;
+          userBalances[expense.user_id] += expense.value;
+
+          expense.users.forEach((userId) => {
+            if (userId !== authenticatedUserId) {
+              userBalances[userId] -= amountPerUser;
+            }
+          });
+        }
       }
     });
 
     return userBalances;
   };
+
   useEffect(() => {
     let youOwe = null;
     let youAreOwed = null;
@@ -227,14 +238,17 @@ const Widgets = () => {
     if (householdGoals && goalsLogs && authHousehold) {
       const householdGoal = householdGoals.find(
         (householdGoal) =>
-          householdGoal.household_id === authHousehold.id && householdGoal.finished === false
+          householdGoal.household_id === authHousehold.id &&
+          householdGoal.finished === false
       );
       setHouseholdGoal(householdGoal);
-      setGoal(goals.find((goal) => goal.id === householdGoal.goal_id));
-      const householdGoalLogs = goalsLogs.filter(
-        (goalLog) => goalLog.goal_id === householdGoal.goal_id
-      );
-      setHouseholdGoalTimes(householdGoalLogs.length);
+      if (householdGoal) {
+        setGoal(goals.find((goal) => goal.id === householdGoal.goal_id));
+        const householdGoalLogs = goalsLogs.filter(
+          (goalLog) => goalLog.goal_id === householdGoal.goal_id
+        );
+        setHouseholdGoalTimes(householdGoalLogs.length);
+      }
     }
   }, [householdGoals, goalsLogs, authHousehold]);
 
@@ -246,11 +260,13 @@ const Widgets = () => {
       >
         <WidgetIcon icon={"lists"} />
         <h2 className="text-base font-light">Shopping Lists</h2>
-        <h1 className="font-semibold text-4xl">
-          {list && list != "" ? numberItems : "+"}
+        <h1
+          className={list ? `font-semibold text-4xl` : `font-medium text-2xl mt-5`}
+        >
+          {list && list != "" ? numberItems : "Start a new list"}
         </h1>
         <p className="font-light text-base">
-          {list && list != "" ? "items in " : "start a new list"}
+          {list && list != "" ? "items in " : ""}
           <span className="font-semibold">
             {list && list != "" ? list : ""}
           </span>
@@ -268,7 +284,7 @@ const Widgets = () => {
               {completedTasks}/{tasks}
             </h1>
             <p className="font-light text-base">
-              {completedTasks == tasks ? "notihing to do" : "left to complete"}
+              {completedTasks == tasks ? "nothing to do" : "left to complete"}
             </p>
           </div>
         </Link>
@@ -297,7 +313,7 @@ const Widgets = () => {
           </div>
         </Link>
       </div>
-      {householdGoal && householdGoalTimes && authHousehold && (
+      {householdGoal && authHousehold ? (
         <Link
           to={`/households/${authHousehold.id}`}
           className="flex flex-col bg-green rounded-2xl p-3 text-white relative"
@@ -320,6 +336,18 @@ const Widgets = () => {
             <ProgressBar progress={householdGoalTimes} />
           </div>
         </Link>
+      ) : (
+        <div
+          className="flex flex-col bg-green rounded-2xl p-3 text-white relative"
+        >
+          <WidgetIcon icon={"goal"} />
+          <h2 className="text-base font-light">Household Goal</h2>
+          <div className="flex flex-col mt-2">
+            <h1 className="font-medium text-2xl mt-5">
+              Start a new goal
+            </h1>
+          </div>
+        </div>
       )}
     </div>
   );
