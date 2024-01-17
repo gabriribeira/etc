@@ -1,9 +1,14 @@
-name: Push Pipeline
+name: Push to Main Branch
 
 on:
   push:
     branches:
-      - "*"
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   Deploy:
@@ -15,6 +20,11 @@ jobs:
       - name: "Create Env"
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
+        if: success()
+
+      - name: Set Environment Variables
+        run: |
+          export $(grep -v '^#' .env | xargs)
         if: success()
 
       - name: Setup Node.js
@@ -43,3 +53,17 @@ jobs:
       - name: Run ESLint
         run: npm run lint
         if: success()
+
+      - name: Build
+        run: npm run build
+        if: success()
+
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: "/public_html/"
+          local-dir: "./build/"
+          exclude: ".git*, node_modules"
