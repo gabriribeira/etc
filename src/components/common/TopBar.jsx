@@ -15,6 +15,11 @@ const TopBar = ({ text, description }) => {
   const [icon, setIcon] = useState(null);
   useEffect(() => {
     switch (location.pathname) {
+      case "/about":
+        setTitle("ABOUT");
+        setShowBackButton(true);
+        setIcon(null);
+        break;
       case "/calendar":
         setTitle("CALENDAR");
         setShowBackButton(false);
