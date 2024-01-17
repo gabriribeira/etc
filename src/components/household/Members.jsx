@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { RxDotsVertical } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 const Members = ({ users, admins }) => {
   return (
@@ -11,7 +12,7 @@ const Members = ({ users, admins }) => {
           key={index}
           className="flex items-center justify-between bg-black10 rounded-2xl p-3"
         >
-          <div className="flex items-center gap-x-3">
+          <Link to={`/users/${user.id}`} className="flex items-center gap-x-3">
             <img
               //eslint-disable-next-line
               src={require(`../../assets/data/users/${user.img}`)}
@@ -19,7 +20,7 @@ const Members = ({ users, admins }) => {
               className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
             />
             <p className="text-black text-lg font-semibold">{user.name}</p>
-          </div>
+          </Link>
           <div className="flex items-center gap-x-3">
             {
               admins.includes(user.id) &&
