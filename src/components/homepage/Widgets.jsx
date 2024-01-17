@@ -240,7 +240,7 @@ const Widgets = () => {
       <div className="flex w-full gap-x-3 text-white">
         <Link
           to={"/tasks"}
-          className="w-[50%] bg-black rounded-2xl p-3 h-[170px] flex flex-col justify-between relative"
+          className="w-[50%] bg-black90 rounded-2xl p-3 h-[200px] flex flex-col justify-between relative"
         >
           <WidgetIcon icon={"tasks"} />
           <h2 className="text-base font-light">Tasks</h2>
@@ -255,7 +255,7 @@ const Widgets = () => {
         </Link>
         <Link
           to={"/expenses"}
-          className="w-[50%] bg-salmon rounded-2xl p-3 h-[170px] flex flex-col justify-between relative"
+          className="w-[50%] bg-salmon rounded-2xl p-3 h-[200px] flex flex-col justify-between relative"
         >
           <WidgetIcon icon={"expenses"} />
           <h2 className="text-base font-light">Expenses</h2>
