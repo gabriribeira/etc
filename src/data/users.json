@@ -4,6 +4,7 @@
     "username": "gabriribeira",
     "name": "Gabriel Ribeira",
     "email": "gabriribeira@ua.pt",
+    "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "gabriribeira.webp",
     "password": "gabriel123",
     "households": [1, 2]
@@ -13,6 +14,7 @@
     "username": "carolinabaptista",
     "name": "Carolina Baptista",
     "email": "carolina@ua.pt",
+    "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "carolina.webp",
     "password": "carolina123",
     "households": [1]
@@ -22,6 +24,7 @@
     "username": "inesmsucena",
     "name": "Inês Sucena",
     "email": "ines@ua.pt",
+    "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "ines.webp",
     "password": "ines123",
     "households": [1]
@@ -31,6 +34,7 @@
     "username": "larammendes",
     "name": "Lara Mendes",
     "email": "lara@ua.pt",
+    "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "lara.webp",
     "password": "lara123",
     "households": [1]
