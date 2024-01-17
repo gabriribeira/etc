@@ -15,6 +15,24 @@ const Household = () => {
   const users = UsersData;
   const [householdUsers, setHouseholdUsers] = useState([]);
   const [openOverlay, setOpenOverlay] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+
+    const storedUser = getCookieValue("user");
+    if (storedUser) {
+      setAuthUser(storedUser);
+    }
+  }, []);
   useEffect(() => {
     if (householdsData) {
       const households = householdsData.find((household) => household.id === 1); //Não esquecer de mudar o household_id para o id da casa do user
@@ -37,7 +55,7 @@ const Household = () => {
           <Overlay
             label="SETTINGS"
             options={["Profile", "About"]}
-            links={["/user", "/about"]}
+            links={[`/users/${authUser.id}`, "/about"]}
             hideOverlay={() => setOpenOverlay(false)}
           />
         )}
