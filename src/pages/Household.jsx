@@ -17,6 +17,7 @@ const Household = () => {
   const [openOverlay, setOpenOverlay] = useState(false);
   const [authUser, setAuthUser] = useState(null);
   const [authHousehold, setAuthHousehold] = useState(null);
+  const [openOverlayFromParent, setOpenOverlayFromParent] = useState(false);
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -57,13 +58,13 @@ const Household = () => {
     }
   }, [householdsData, authHousehold]);
   useEffect(() => {
-    if (users) {
+    if (users && authHousehold) {
       const householdUsers = users.filter((user) =>
-        user.households.includes(1)
+        user.households.includes(authHousehold.id)
       ); //alterar para o household correto
       setHouseholdUsers(householdUsers);
     }
-  }, [users]);
+  }, [users, authHousehold]);
   return (
     household &&
     householdUsers && (
@@ -85,11 +86,11 @@ const Household = () => {
             <IoSettingsOutline />
           </button>
           <div className="flex flex-col gap-y-6">
-            <HouseholdInfo household={household} users={householdUsers} />
+            <HouseholdInfo household={household} users={householdUsers} openOverlayFromParent={() => setOpenOverlayFromParent(true)} />
             <SustainableGoal />
             <Members users={householdUsers} admins={household.admins} />
           </div>
-          <BottomBar />
+          <BottomBar changeHousehold={true} openOverlayFromParent={openOverlayFromParent} />
         </div>
       </>
     )
