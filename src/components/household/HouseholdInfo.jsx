@@ -12,12 +12,12 @@ const HouseholdInfo = ({ household, users }) => {
         >
           edit
         </Link>
-        <div className="py-16">
+        <div className="py-16 flex flex-col items-center justify-center">
           <img
             //eslint-disable-next-line
             src={require(`../../assets/data/households/${household.img}`)}
             alt="Household Profile Picture"
-            className="object-center rounded mx-auto max-w-36"
+            className="object-center object-cover rounded-full w-[150px] h-[150px]"
           />
           <h1 className="font-bold text-xl mt-2">{household.name}</h1>
           <p className="font-light text-base">{users.length} Members</p>
