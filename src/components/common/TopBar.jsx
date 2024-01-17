@@ -80,8 +80,8 @@ const TopBar = ({ text, description }) => {
         setShowBackButton(false);
         setIcon(<TbUsers />);
         break;
-      case "/users/:user":
-        setTitle("PROFILE");
+      case "/users/1":
+        setTitle("PROFILE"); /* TODO: Mudar para o id do user autentucado */
         setShowBackButton(false);
         setIcon(<TbUser />);
         break;
