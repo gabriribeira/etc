@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { SlArrowDown } from "react-icons/sl";
 
-const HouseholdInfo = ({ household, users }) => {
+const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
   return (
     <>
       <div className="flex flex-col bg-black10 text-center relative">
@@ -19,7 +20,15 @@ const HouseholdInfo = ({ household, users }) => {
             alt="Household Profile Picture"
             className="object-center object-cover rounded-full w-[150px] h-[150px]"
           />
-          <h1 className="font-bold text-xl mt-2">{household.name}</h1>
+          <div className="flex items-center gap-x-2">
+            <h1 className="font-bold text-xl mt-2">{household.name}</h1>
+            <button
+              onClick={openOverlayFromParent}
+              className="text-2xl text-black mt-2"
+            >
+              <SlArrowDown />
+            </button>
+          </div>
           <p className="font-light text-base">{users.length} Members</p>
         </div>
       </div>
@@ -34,6 +43,7 @@ const HouseholdInfo = ({ household, users }) => {
 HouseholdInfo.propTypes = {
   household: PropTypes.object,
   users: PropTypes.array,
+  openOverlayFromParent: PropTypes.func,
 };
 
 export default HouseholdInfo;
