@@ -55,7 +55,7 @@ const ChangeHouseholdOverlay = ({ closeOverlay }) => {
   const changeHousehold = (household) => {
     Cookies.set("household", JSON.stringify(household), { path: "/" });
     setTimeout(() => {
-      navigate(`/households/${household.id}`);
+      navigate(`/`);
     }, 1000);
   };
   return (
