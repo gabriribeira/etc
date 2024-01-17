@@ -48,5 +48,10 @@ jobs:
         run: npm run build
         if: success()
 
-      - name: Deploy to Github Pages
-        run: gh-pages -d build
+      - name: Deploy to GitHub Pages
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "GitHub Actions"
+          npm install -g gh-pages
+          gh-pages -d build
+        if: success()
