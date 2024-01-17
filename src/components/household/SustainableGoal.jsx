@@ -15,12 +15,29 @@ const SustainableGoal = () => {
   const [goal, setGoal] = useState(null);
   const [householdGoalTimes, setHouseholdGoalTimes] = useState(null);
   const [tags, setTags] = useState(null);
+  const [authHousehold, setAuthHousehold] = useState(null);
   useEffect(() => {
-    if (householdGoals && goalsLogs) {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
+  useEffect(() => {
+    if (householdGoals && goalsLogs && authHousehold) {
       const householdGoalAux = householdGoals.find(
         (householdGoal) =>
-          householdGoal.household_id === 1 && householdGoal.finished === false
-      ); // NÃO ESQUECER DE ALTERAR PARA O HOUSEHOLD CORRETO
+          householdGoal.household_id === authHousehold.id && householdGoal.finished === false
+      );
       setHouseholdGoal(householdGoalAux);
       setGoal(goals.find((goal) => goal.id === householdGoalAux.goal_id));
       console.log(householdGoalAux);
@@ -30,7 +47,7 @@ const SustainableGoal = () => {
       console.log(householdGoalLogs);
       setHouseholdGoalTimes(householdGoalLogs.length);
     }
-  }, [householdGoals, goalsLogs]);
+  }, [householdGoals, goalsLogs, authHousehold]);
   useEffect(() => {
     if (households) {
       let householdTagsArray = [];

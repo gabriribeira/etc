@@ -34,6 +34,25 @@ const Widgets = () => {
   //eslint-disable-next-line
   const [householdGoalTimes, setHouseholdGoalTimes] = useState(null);
 
+  // Get authenticated household
+  const [authHousehold, setAuthHousehold] = useState(null);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
+
   // Get authenticated user
   useEffect(() => {
     const getCookieValue = (cookieName) => {
@@ -205,11 +224,11 @@ const Widgets = () => {
 
   // Household Goal Widget
   useEffect(() => {
-    if (householdGoals && goalsLogs) {
+    if (householdGoals && goalsLogs && authHousehold) {
       const householdGoal = householdGoals.find(
         (householdGoal) =>
-          householdGoal.household_id === 1 && householdGoal.finished === false
-      ); // NÃO ESQUECER DE ALTERAR PARA O HOUSEHOLD CORRETO
+          householdGoal.household_id === authHousehold.id && householdGoal.finished === false
+      );
       setHouseholdGoal(householdGoal);
       setGoal(goals.find((goal) => goal.id === householdGoal.goal_id));
       const householdGoalLogs = goalsLogs.filter(
@@ -217,7 +236,7 @@ const Widgets = () => {
       );
       setHouseholdGoalTimes(householdGoalLogs.length);
     }
-  }, [householdGoals, goalsLogs]);
+  }, [householdGoals, goalsLogs, authHousehold]);
 
   return (
     <div className="flex flex-col w-full gap-y-3">
@@ -278,13 +297,12 @@ const Widgets = () => {
           </div>
         </Link>
       </div>
-      {householdGoal && householdGoalTimes && (
+      {householdGoal && householdGoalTimes && authHousehold && (
         <Link
-          to={"/households/1"}
+          to={`/households/${authHousehold.id}`}
           className="flex flex-col bg-green rounded-2xl p-3 text-white relative"
         >
           <WidgetIcon icon={"goal"} />
-          {/* NÃO ESQUECER DE ALTERAR PARA O HOUSEHOLD CORRETO */}
           <h2 className="text-base font-light">Household Goal</h2>
           <div className="flex flex-col mt-2">
             <h1 className="font-semibold text-5xl">

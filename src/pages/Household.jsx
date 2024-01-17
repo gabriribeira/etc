@@ -16,6 +16,23 @@ const Household = () => {
   const [householdUsers, setHouseholdUsers] = useState([]);
   const [openOverlay, setOpenOverlay] = useState(false);
   const [authUser, setAuthUser] = useState(null);
+  const [authHousehold, setAuthHousehold] = useState(null);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -34,11 +51,11 @@ const Household = () => {
     }
   }, []);
   useEffect(() => {
-    if (householdsData) {
-      const households = householdsData.find((household) => household.id === 1); //Não esquecer de mudar o household_id para o id da casa do user
+    if (householdsData && authHousehold) {
+      const households = householdsData.find((household) => household.id === authHousehold.id);
       setHousehold(households);
     }
-  }, [householdsData]);
+  }, [householdsData, authHousehold]);
   useEffect(() => {
     if (users) {
       const householdUsers = users.filter((user) =>

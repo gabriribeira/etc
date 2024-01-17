@@ -11,16 +11,32 @@ const Expenses = () => {
   const expensesData = ExpensesData;
   const [activeTab, setActiveTab] = useState(0);
   const [expenses, setExpenses] = useState(null);
-
+  const [authHousehold, setAuthHousehold] = useState(null);
   useEffect(() => {
-    if (expensesData) {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
+  useEffect(() => {
+    if (expensesData && authHousehold) {
       const expensesAux = expensesData
-        .filter((expense) => expense.household_id === 1) // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+        .filter((expense) => expense.household_id === authHousehold.id)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
       setExpenses(expensesAux);
     }
-  }, [expensesData]);
+  }, [expensesData, authHousehold]);
 
   return (
     <div className="relative">

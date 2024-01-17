@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import Input from "../components/common/Input";
@@ -18,6 +18,41 @@ const NewTask = () => {
   const [isPrivate, setIsPrivate] = useState(false);
   const [repeat, setRepeat] = useState(null);
   const [category, setCategory] = useState(null);
+  const [authHousehold, setAuthHousehold] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+
+    const storedUser = getCookieValue("user");
+    if (storedUser) {
+      setAuthUser(storedUser);
+    }
+  }, []);
   const handleTaskCreation = async () => {
     if (title && details && repeat && category) {
       const newTask = {
@@ -26,8 +61,8 @@ const NewTask = () => {
         details: details,
         periodicity: repeat,
         isPrivate: isPrivate,
-        household_id: isPrivate ? null : 1, // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
-        user_id: isPrivate ? 1 : null, // NÃO ESQUECER ALTERAR PARA USER CORRETO
+        household_id: isPrivate ? null : authHousehold.id,
+        user_id: isPrivate ? null : authUser.id,
         automatic: automatic,
         category: category.title,
         color: category.color,

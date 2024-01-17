@@ -11,6 +11,23 @@ const TaskManager = () => {
   const [householdTasks, setHouseholdTasks] = useState(null);
   const [userTasks, setUserTasks] = useState(null);
   const [authUser, setAuthUser] = useState(null);
+  const [authHousehold, setAuthHousehold] = useState(null);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -29,8 +46,8 @@ const TaskManager = () => {
     }
   }, []);
   useEffect(() => {
-    if (tasks) {
-      const householdTasks = tasks.filter((task) => task.household_id === 1); // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+    if (tasks && authHousehold) {
+      const householdTasks = tasks.filter((task) => task.household_id === authHousehold.id);
       console.log(householdTasks);
       setHouseholdTasks(householdTasks);
     }
@@ -40,7 +57,7 @@ const TaskManager = () => {
       );
       setUserTasks(userTasks);
     }
-  }, [tasks, authUser]);
+  }, [tasks, authUser, authHousehold]);
   return (
     <div>
       <TopBar />

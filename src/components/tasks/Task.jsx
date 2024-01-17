@@ -16,6 +16,7 @@ const Task = ({ task, defaultTask, logProp, isPrivate }) => {
   const [userWhoDidTheTask, setUserWhoDidTheTask] = useState(null);
   const [hasComments, setHasComments] = useState(null);
   const [usersWhoCommented, setUsersWhoCommented] = useState([]);
+  const [authHousehold, setAuthHousehold] = useState(null);
   const getWeekInterval = () => {
     const currentDate = new Date();
     const currentDay = currentDate.getDay();
@@ -34,11 +35,28 @@ const Task = ({ task, defaultTask, logProp, isPrivate }) => {
   };
 
   useEffect(() => {
-    if (task && logs && users) {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (task && logs && users && authHousehold) {
       if (!logProp) {
         const isTaskThisWeek = logs.filter(
           (log) =>
-            log.household_id === 1 && // NÃO ESQUECER ALTERAR PARA HOUSEHOLD CORRETO
+            log.household_id === authHousehold.id &&
             log.task_id === task.id &&
             log.start === getWeekInterval().startDate &&
             log.end === getWeekInterval().endDate
@@ -90,7 +108,7 @@ const Task = ({ task, defaultTask, logProp, isPrivate }) => {
         }
       }
     }
-  }, [task, logs, users, defaultTask, logProp]);
+  }, [task, logs, users, defaultTask, logProp, authHousehold]);
 
   useEffect(() => {
     if (hasComments) {

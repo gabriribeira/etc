@@ -9,17 +9,34 @@ import ListsData from "../data/lists.json";
 const Lists = () => {
   const listsData = ListsData;
   const [lists, setLists] = useState(null);
+  const [authHousehold, setAuthHousehold] = useState(null);
   const handleFilterClick = () => {
     console.log("Filter Clicked");
   };
   useEffect(() => {
-    if (listsData) {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+    const storedHousehold = getCookieValue("household");
+    if (storedHousehold) {
+      setAuthHousehold(storedHousehold);
+    }
+  }, []);
+  useEffect(() => {
+    if (listsData && authHousehold) {
       const householdLists = listsData.filter(
-        (list) => list.household_id === 1
-      ); //Não esquecer de mudar o household_id para o id da casa do user
+        (list) => list.household_id === authHousehold.id
+      );
       setLists(householdLists);
     }
-  }, [listsData]);
+  }, [listsData, authHousehold]);
 
   return (
     <div>
