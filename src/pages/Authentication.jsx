@@ -4,10 +4,12 @@ import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import UserData from "../data/users.json";
-import Cookies from 'js-cookie';
+import HouseholdsData from "../data/households.json";
+import Cookies from "js-cookie";
 
 const Authentication = () => {
   const users = UserData;
+  const householdsData = HouseholdsData;
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,11 +17,19 @@ const Authentication = () => {
   const handleLogin = () => {
     const user = users.find((user) => user.username === username);
     if (user && user.password === password) {
-      console.log("Login successful");
-      Cookies.set('user', JSON.stringify(user), { path: '/' });
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      const household = householdsData.find(
+        (household) => household.id === user.households[0]
+      );
+      console.log(household);
+      if (household) {
+        console.log(household);
+        console.log("Login successful");
+        Cookies.set("user", JSON.stringify(user), { path: "/" });
+        Cookies.set("household", JSON.stringify(household), { path: "/" });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
     } else {
       console.log("Login failed");
     }
@@ -42,7 +52,7 @@ const Authentication = () => {
               ></button>
               <p className="font-light text-sm text-black70">Remember me</p>
             </div>
-            <button className="font-light underline text-sm text-black70">
+            <button type="button" className="font-light underline text-sm text-black70">
               Forgot password?
             </button>
           </div>
