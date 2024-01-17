@@ -51,7 +51,7 @@ jobs:
       - name: Deploy to GitHub Pages
         run: |
           git config --global user.email "gmrribeira@gmail.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.name "gabriribeira"
           npm install -g gh-pages
           gh-pages -d build
         if: success()
