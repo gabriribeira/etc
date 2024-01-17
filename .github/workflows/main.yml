@@ -43,3 +43,10 @@ jobs:
       - name: Run ESLint
         run: npm run lint
         if: success()
+
+      - name: Build
+        run: npm run build
+        if: success()
+
+      - name: Deploy to Github Pages
+        run: gh-pages -d build
