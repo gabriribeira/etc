@@ -24,6 +24,30 @@ const ItemDetails = () => {
   const [store, setStore] = useState("");
   const [authUser, setAuthUser] = useState(null);
   const [list_id, setList_id] = useState(null);
+  const [suggestions, setSuggestions] = useState(null);
+  //eslint-disable-next-line
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/fetchData", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const jsonData = await response.json();
+        setSuggestions(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchData();
+  }, []);
   useEffect(() => {
     if (usersData) {
       setMembers(
@@ -55,7 +79,17 @@ const ItemDetails = () => {
       setAuthUser(storedUser);
     }
   }, []);
-
+  useEffect(() => {
+    if (name.length > 2) {
+      if (suggestions) {
+        const filteredSuggestions = suggestions.filter((suggestion) =>
+          suggestion.name.toLowerCase().includes(name.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
+        console.log(filteredSuggestions);
+      }
+    }
+  }, [name]);
   const handleAddItem = () => {
     const newItem = {
       id: itemsData.length + 1,
@@ -69,7 +103,7 @@ const ItemDetails = () => {
       unit: unit,
       members: members,
       suggestion: false,
-      created_at: new Date().toISOString().split('T')[0],
+      created_at: new Date().toISOString().split("T")[0],
       created_by: authUser.id,
     };
     itemsData.push(newItem);
