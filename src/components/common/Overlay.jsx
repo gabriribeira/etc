@@ -1,14 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoSettingsOutline } from "react-icons/io5";
 import { GoInfo } from "react-icons/go";
 import { LuUser } from "react-icons/lu";
 import { RiNotification4Line } from "react-icons/ri";
 import { SlArrowRight } from "react-icons/sl";
+import { CiLogout } from "react-icons/ci";
+import Cookies from "js-cookie";
 
 const Overlay = ({ label, options, links, hideOverlay }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    Cookies.remove("user");
+    Cookies.remove("household");
+    navigate("/login");
+  };
   return (
     <div className="fixed h-screen w-screen top-0 left-0 z-[100]">
       <div
@@ -26,24 +34,44 @@ const Overlay = ({ label, options, links, hideOverlay }) => {
             </div>
             <h1 className="font-semibold text-xl text-black">{label}</h1>
           </div>
-          {options.map((option, index) => (
-            <Link
-              key={index}
-              to={links[index]}
-              action={hideOverlay}
-              className="w-full text-lg flex items-center relative gap-y-3 gap-x-3"
-            >
-              <div className="text-2xl">
-                {option === "About" && <GoInfo />}
-                {option === "Notifications" && <RiNotification4Line />}
-                {option === "Profile" && <LuUser />}
-              </div>
-              {option}
-              <div className="absolute right-3">
-              <SlArrowRight />
-              </div>
-            </Link>
-          ))}
+          {options.map((option, index) =>
+            option !== "Logout" ? (
+              <Link
+                key={index}
+                to={links[index]}
+                action={hideOverlay}
+                className="w-full text-lg flex items-center relative gap-y-3 gap-x-3"
+              >
+                <div className="text-2xl">
+                  {option === "About" && <GoInfo />}
+                  {option === "Notifications" && <RiNotification4Line />}
+                  {option === "Profile" && <LuUser />}
+                  {option === "Logout" && <CiLogout />}
+                </div>
+                {option}
+                <div className="absolute right-3">
+                  <SlArrowRight />
+                </div>
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                key={index}
+                className="w-full text-lg flex items-center relative gap-y-3 gap-x-3"
+              >
+                <div className="text-2xl">
+                  {option === "About" && <GoInfo />}
+                  {option === "Notifications" && <RiNotification4Line />}
+                  {option === "Profile" && <LuUser />}
+                  {option === "Logout" && <CiLogout />}
+                </div>
+                {option}
+                <div className="absolute right-3">
+                  <SlArrowRight />
+                </div>
+              </button>
+            )
+          )}
         </div>
         <Button label={"Cancel"} action={hideOverlay} stroke={true} />
       </div>
