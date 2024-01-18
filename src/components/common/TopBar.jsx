@@ -126,6 +126,11 @@ const TopBar = ({ text, description }) => {
         setShowBackButton(true);
         setIcon(null);
         break;
+        case "add-members":
+        setTitle("ADD MEMBERS");
+        setShowBackButton(false);
+        setIcon(<TbUsers />);
+        break;
       case "lists":
         //eslint-disable-next-line
         const listIndex = pathSegments.indexOf("lists");
