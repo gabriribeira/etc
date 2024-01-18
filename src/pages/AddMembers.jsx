@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { RxPlus } from "react-icons/rx";
+// import { RxPlus } from "react-icons/rx";
 import TopBar from "../components/common/TopBar";
 
 const AddMembers = () => {
-  const [members, setMembers] = useState([]);
   const [authUser, setAuthUser] = useState(null);
   // eslint-disable-next-line
   const [authHousehold, setAuthHousehold] = useState(null);
@@ -40,19 +39,40 @@ const AddMembers = () => {
       setAuthHousehold(storedHousehold);
     }
   }, []);
-  useEffect(() => {
-    if (authUser) {
-      setMembers(members.push(authUser));
-    }
-  }, [authUser]);
   return (
-    authUser && (
+    authUser &&
+    authHousehold && (
       <div className="flex flex-col">
         <TopBar />
-        <div className="flex flex-col w-full">
-          <label className="mb-2 text-lg font-semibold">Members</label>
+        <div className="flex flex-col w-full px-5">
+          <div className="rounded-2xl flex items-center gap-x-3">
+            <img
+              //eslint-disable-next-line
+              src={require(`../assets/data/households/${authHousehold.img}`)}
+              alt="Authenticated User Profile Picture"
+              className="w-[60px] h-[60px] rounded-full object-cover object-center left-0 top-0"
+            />
+            <h1 className="text-xl font-semibold text-black">
+              {authHousehold.name}
+            </h1>
+          </div>
+          <div className="rounded-2xl bg-black10 p-6 mt-6 flex justify-start">
+            <div className="flex flex-col gap-y-3 items-center">
+              <img
+                //eslint-disable-next-line
+                src={require(`../assets/data/users/${authUser.img}`)}
+                alt="Authenticated User Profile Picture"
+                className="w-[80px] h-[80px] rounded-full object-cover object-center left-0 top-0"
+              />
+              <h2 className="font-light text-base">{authUser.name}</h2>
+            </div>
+          </div>
+          {/*
           <div className="flex items-center gap-x-2">
-            <button className="w-[35px] h-[35px] rounded-full relative flex justify-center items-center">
+            <button
+              type="button"
+              className="w-[35px] h-[35px] rounded-full relative flex justify-center items-center"
+            >
               <img
                 //eslint-disable-next-line
                 src={require(`../assets/data/users/${authUser.img}`)}
@@ -67,6 +87,7 @@ const AddMembers = () => {
               <RxPlus />
             </button>
           </div>
+    */}
         </div>
       </div>
     )
