@@ -86,22 +86,19 @@ const Balances = () => {
                   expenses: handleDetailsClick(user),
                 }}
                 key={user.id}
-                className={`bg-black90 rounded-2xl flex justify-between items-center w-full p-3 h-full`}
+                className={`bg-black90 rounded-2xl flex justify-between items-center w-full p-6 h-full`}
               >
                 <div className="flex flex-col justify-between h-full">
                   <h2 className="text-lg text-white font-normal">
                     {balances[user.id] > 0
-                      ? "You owe" + balances.userBalances[user.id]
-                      : user.name + " owes you"}
+                      ? <span><span className="font-semibold">You</span> <span className="font-light">owe</span> <span className="font-semibold">{balances.userBalances[user.id]}</span></span>
+                      : <span className="font-semibold">{user.name} <span className="font-light">owes</span> <span className="font-semibold">you</span></span>}
                   </h2>
                   <div className="flex flex-col">
                     <div className="text-4xl font-semibold text-white">
                       {Math.abs(balances.userBalances[user.id].toFixed(2))}
-                      <span className="font-light text-2xl">€</span>
+                      <span className="font-light text-xl">€</span>
                     </div>
-                    <p className="font-normal text-white text-base">
-                      see details
-                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col justify-between items-center h-full">
