@@ -7,7 +7,7 @@ import { BsArrowReturnRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { PiLockSimpleThin } from "react-icons/pi";
 
-const Task = ({ task, defaultTask, logProp, isPrivate }) => {
+const Task = ({ task, defaultTask, logProp, isPrivate, done }) => {
   const logs = Logs;
   const users = Users;
   //eslint-disable-next-line
@@ -125,79 +125,79 @@ const Task = ({ task, defaultTask, logProp, isPrivate }) => {
   }, [hasComments]);
 
   return (
-    <>
-      <div
-        className={`w-full rounded-2xl flex items-center justify-between py-3 px-2 ${
-          !isCompleted && !defaultTask && "opacity-60"
-        }`}
-        style={{ backgroundColor: task.color }}
-      >
-        <Link to={`/tasks/${task.id}`} className="flex items-center gap-x-2">
-          {!defaultTask && (
-            <img
-              src={
-                userWhoDidTheTask &&
-                //eslint-disable-next-line
-                require(`../../assets/data/users/${userWhoDidTheTask.img}`)
-              }
-              alt="User Profile Picture"
-              className="w-[40px] h-[40px] rounded-full object-cover object-center"
-            />
-          )}
-          <Link
-            to={`/tasks/${task.id}`}
-            className="text-xl text-white font-medium flex items-center gap-x-2"
-          >
-            {task.title}
-            {isPrivate && (
-              <PiLockSimpleThin className="text-2xl" />
+    ((done && isCompleted) || (!done && !isCompleted)) && (
+      <>
+        <div
+          className={`w-full rounded-2xl flex items-center justify-between py-3 px-2 ${
+            isCompleted && !defaultTask && "opacity-60"
+          }`}
+          style={{ backgroundColor: task.color }}
+        >
+          <Link to={`/tasks/${task.id}`} className="flex items-center gap-x-2">
+            {!defaultTask && (
+              <img
+                src={
+                  userWhoDidTheTask &&
+                  //eslint-disable-next-line
+                  require(`../../assets/data/users/${userWhoDidTheTask.img}`)
+                }
+                alt="User Profile Picture"
+                className="w-[40px] h-[40px] rounded-full object-cover object-center"
+              />
             )}
+            <Link
+              to={`/tasks/${task.id}`}
+              className="text-xl text-white font-medium flex items-center gap-x-2"
+            >
+              {task.title}
+              {isPrivate && <PiLockSimpleThin className="text-2xl" />}
+            </Link>
           </Link>
-        </Link>
-        <button className="text-2xl text-white">
-          <RxDotsVertical />
-        </button>
-      </div>
-      {hasComments &&
-        !defaultTask &&
-        usersWhoCommented &&
-        usersWhoCommented != [] &&
-        hasComments.map((comment, index) => (
-          <div
-            className={`w-full flex items-start pl-5 bg-transparent ${logProp && "mt-2"} ${
-              !isCompleted && "opacity-60"
-            }`}
-            key={index}
-          >
-            <div className="flex items-start gap-x-2">
-              <div className="text-black text-2xl">
-                <BsArrowReturnRight />
-              </div>
-              <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center relative shrink-0">
-                <img
-                  src={
-                    usersWhoCommented[index] &&
-                    //eslint-disable-next-line
-                    require(
-                      `../../assets/data/users/${usersWhoCommented[index].img}`
-                    )
-                  }
-                  alt="User Profile Picture"
-                  className="w-full h-full rounded-full absolute top-0 left-0 object-cover object-center shrink-0"
-                />
-              </div>
-              <div className="flex flex-col">
-                <h1 className="text-base font-semibold">
-                  {usersWhoCommented[index] && usersWhoCommented[index].name}
-                </h1>
-                <p className="text-sm text-black font-normal text-wrap-2">
-                  {comment.comment}
-                </p>
+          <button className="text-2xl text-white">
+            <RxDotsVertical />
+          </button>
+        </div>
+        {hasComments &&
+          !defaultTask &&
+          usersWhoCommented &&
+          usersWhoCommented != [] &&
+          hasComments.map((comment, index) => (
+            <div
+              className={`w-full flex items-start pl-5 bg-transparent ${
+                logProp && "mt-2"
+              } ${!isCompleted && "opacity-60"}`}
+              key={index}
+            >
+              <div className="flex items-start gap-x-2">
+                <div className="text-black text-2xl">
+                  <BsArrowReturnRight />
+                </div>
+                <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center relative shrink-0">
+                  <img
+                    src={
+                      usersWhoCommented[index] &&
+                      //eslint-disable-next-line
+                      require(
+                        `../../assets/data/users/${usersWhoCommented[index].img}`
+                      )
+                    }
+                    alt="User Profile Picture"
+                    className="w-full h-full rounded-full absolute top-0 left-0 object-cover object-center shrink-0"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="text-base font-semibold">
+                    {usersWhoCommented[index] && usersWhoCommented[index].name}
+                  </h1>
+                  <p className="text-sm text-black font-normal text-wrap-2">
+                    {comment.comment}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-    </>
+          ))}
+      </>
+    )
   );
 };
 
@@ -206,6 +206,7 @@ Task.propTypes = {
   defaultTask: PropTypes.bool,
   logProp: PropTypes.object,
   isPrivate: PropTypes.bool,
+  done: PropTypes.bool,
 };
 
 export default Task;
