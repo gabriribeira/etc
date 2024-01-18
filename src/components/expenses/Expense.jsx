@@ -6,14 +6,14 @@ const Expense = ({ expense }) => {
   const users = UsersData;
   const user = users.find((user) => user.id === expense.user_id);
   return (
-    <div className={`${expense.paid ? "bg-black60" : "bg-black90"} rounded-2xl flex justify-between items-center w-full p-3 h-full`}>
-      <div className="flex flex-col justify-between h-full">
-        <h2 className="text-lg text-white font-normal">{expense.title}</h2>
+    <div className={`${expense.paid ? "bg-black90/30" : "bg-black90"} rounded-2xl flex justify-between items-center w-full p-3 h-full`}>
+      <div className={`flex flex-col justify-between h-full ${expense.paid ? "text-black60" : "text-white"}`}>
+        <h2 className="text-lg font-light">{expense.title}</h2>
         <div className="flex flex-col">
-          <div className="text-4xl font-semibold text-white">
-            {expense.value.toFixed(2)}<span className="font-light text-2xl">€</span>
+          <div className="text-4xl font-semibold">
+            {expense.value.toFixed(2)}<span className="font-light text-xl">€</span>
           </div>
-          <p className="font-normal text-white text-base">
+          <p className="font-light text-base">
             spent by <span className="font-semibold">{user.name}</span>
           </p>
         </div>
@@ -24,10 +24,10 @@ const Expense = ({ expense }) => {
             //eslint-disable-next-line
             src={require(`../../assets/data/users/${user.img}`)}
             alt="User Profile Picture"
-            className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+            className={`w-full h-full absolute top-0 left-0 object-center object-cover ${expense.paid && "opacity-50"} rounded-full`}
           />
         </div>
-        <p className="text-normal text-white mt-2">
+        <p className={`text-normal ${expense.paid ? "text-black60" : "text-white"} mt-2`}>
           {expense.users.length} member
           <span className={expense.users.length > 1 ? "" : "hidden"}>s</span>
         </p>
