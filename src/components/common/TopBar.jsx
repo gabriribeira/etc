@@ -8,10 +8,11 @@ import {
   //eslint-disable-next-line
   IoPeopleOutline,
 } from "react-icons/io5";
-import { TbShoppingCart, TbUsers, TbUser } from "react-icons/tb";
+import { TbUsers, TbUser } from "react-icons/tb";
 import { MdCalendarToday } from "react-icons/md";
 import { GoHome } from "react-icons/go";
 import { VscBell } from "react-icons/vsc";
+import { PiShoppingCartSimple } from "react-icons/pi";
 
 const TopBar = ({ text, description }) => {
   const location = useLocation();
@@ -20,7 +21,9 @@ const TopBar = ({ text, description }) => {
   const [icon, setIcon] = useState(null);
 
   useEffect(() => {
-    const pathSegments = location.pathname.split("/").filter((segment) => segment !== "");
+    const pathSegments = location.pathname
+      .split("/")
+      .filter((segment) => segment !== "");
     const primaryPath = pathSegments[0];
 
     switch (primaryPath) {
@@ -131,15 +134,19 @@ const TopBar = ({ text, description }) => {
           const itemIndex = pathSegments.indexOf("item");
           if (itemIndex !== -1 && itemIndex + 1 < pathSegments.length) {
             setTitle(`ITEM DETAILS`);
+            setShowBackButton(true);
           } else if (listId) {
             setTitle(`SHOPPING LIST`);
+            setShowBackButton(true);
+          } else {
+            setTitle(`SHOPPING LISTS`);
+            setShowBackButton(false);
+            setIcon(<PiShoppingCartSimple />);
           }
-          setShowBackButton(true);
-          setIcon(null);
         } else {
           setTitle("SHOPPING LISTS");
           setShowBackButton(false);
-          setIcon(<TbShoppingCart />);
+          setIcon(<PiShoppingCartSimple />);
         }
         break;
       case "notifications":
