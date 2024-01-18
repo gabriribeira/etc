@@ -11,6 +11,7 @@ const Task = () => {
   const [task, setTask] = useState(null);
   const [log, setLog] = useState(null);
   const [logs, setLogs] = useState(null);
+  const [checked, setChecked] = useState(false);
   const tasks = TasksData;
   const taskLogs = TaskLogsData;
   useEffect(() => {
@@ -20,6 +21,7 @@ const Task = () => {
         (task) => task.id == location.pathname.split("/")[2]
       );
       setTask(task[0]);
+      setChecked(task[0].automatic);
       if (task[0]) {
         const log = taskLogs.filter(
           (log) => log.task_id == location.pathname.split("/")[2]
@@ -43,16 +45,18 @@ const Task = () => {
       <div>
         <TopBar text={task.title} description={task.details} />
         <div className="flex flex-col px-5 gap-y-6">
-          <div className="flex flex-col">
-            <div className=" flex items-center gap-x-3">
-              <ToggleSwitch checked={task.automatic} />
-              <h2 className="text-lg font-semibold">Automatic Attribution</h2>
+          {!task.isPrivate && (
+            <div className="flex flex-col">
+              <div className=" flex items-center gap-x-3">
+                <ToggleSwitch checked={checked} onChange={() => setChecked(!checked)} />
+                <h2 className="text-lg font-semibold">Automatic Attribution</h2>
+              </div>
+              <p className="text-black60 text-base mt-2">
+                This task is being automatically attributed to different members
+                weekly.
+              </p>
             </div>
-            <p className="text-black60 text-base mt-2">
-              This task is being automatically attributed to different members
-              weekly.
-            </p>
-          </div>
+          )}
           <div className="flex flex-col gap-y-3">
             <h1 className="font-semibold text-lg">This Week</h1>
             <TaskComp task={task} logProp={log} />
@@ -72,7 +76,7 @@ const Task = () => {
               ))}
           </div>
           <div className="flex items-center justify-center text-base text-black50">
-              Tasked created at {task.created_at && task.created_at}
+            Tasked created at {task.created_at && task.created_at}
           </div>
         </div>
         <BottomBar />
