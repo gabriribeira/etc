@@ -4,9 +4,9 @@
     "user_id": 1,
     "household_id": 1,
     "task_id": 1,
-    "start": "2024-01-08",
-    "end": "2024-01-14",
-    "completed": "2024-01-09",
+    "start": "2024-01-15",
+    "end": "2024-01-21",
+    "completed": null,
     "comments": []
   },
   {
@@ -14,8 +14,8 @@
     "user_id": 1,
     "household_id": 1,
     "task_id": 2,
-    "start": "2024-01-08",
-    "end": "2024-01-14",
+    "start": "2024-01-15",
+    "end": "2024-01-21",
     "completed": "2024-01-10",
     "comments": [
       {
