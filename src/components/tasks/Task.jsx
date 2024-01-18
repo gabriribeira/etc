@@ -7,7 +7,7 @@ import { BsArrowReturnRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { PiLockSimpleThin } from "react-icons/pi";
 
-const Task = ({ task, defaultTask, logProp, isPrivate, done }) => {
+const Task = ({ task, defaultTask, logProp, isPrivate, done, history }) => {
   const logs = Logs;
   const users = Users;
   //eslint-disable-next-line
@@ -125,7 +125,7 @@ const Task = ({ task, defaultTask, logProp, isPrivate, done }) => {
   }, [hasComments]);
 
   return (
-    ((done && isCompleted) || (!done && !isCompleted)) && (
+    ((done && isCompleted) || (!done && !isCompleted) || history) && (
       <>
         <div
           className={`w-full rounded-2xl flex items-center justify-between py-3 px-2 ${
@@ -207,6 +207,7 @@ Task.propTypes = {
   logProp: PropTypes.object,
   isPrivate: PropTypes.bool,
   done: PropTypes.bool,
+  history: PropTypes.bool,
 };
 
 export default Task;

@@ -59,7 +59,7 @@ const Task = () => {
           )}
           <div className="flex flex-col gap-y-3">
             <h1 className="font-semibold text-lg">This Week</h1>
-            <TaskComp task={task} logProp={log} />
+            <TaskComp task={task} logProp={log} history={true} />
           </div>
           <h1 className="font-semibold text-lg">Task History</h1>
           <div className="flex flex-col gap-y-3">
@@ -71,7 +71,7 @@ const Task = () => {
                       ? log.completed
                       : "Uncompleted " + log.start + " - " + log.end}
                   </p>
-                  <TaskComp task={task} logProp={log} />
+                  <TaskComp task={task} logProp={log} history={true} />
                 </div>
               ))}
           </div>
