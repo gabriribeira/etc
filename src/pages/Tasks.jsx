@@ -34,7 +34,7 @@ const Tasks = () => {
       const householdTasks = tasks.filter((task) => task.household_id === authHousehold.id);
       setHouseholdTasks(householdTasks);
     }
-  }, [tasks]);
+  }, [tasks, authHousehold]);
   useEffect(() => {
     console.log(appliedFilters);
   }, [appliedFilters, authHousehold]);
@@ -66,7 +66,16 @@ const Tasks = () => {
             </div>
             {householdTasks &&
               householdTasks.map((element, index) => (
-                <Task task={element} key={index} />
+                <Task task={element} key={index} done={false} />
+              ))}
+          </div>
+          <div className="flex flex-col gap-y-3">
+            <div className="flex items-center justify-between w-full mb-2">
+              <h1 className="font-semibold text-lg">Done</h1>
+            </div>
+            {householdTasks &&
+              householdTasks.map((element, index) => (
+                <Task task={element} key={index} done={true} />
               ))}
           </div>
         </div>
