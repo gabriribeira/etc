@@ -58,10 +58,26 @@ const ItemDetails = () => {
     }
   }, [usersData]);
   useEffect(() => {
-    if (location) {
+    if (location && itemsData) {
       setList_id(location.pathname.split("/")[2]);
+      if (itemsData && location.pathname.split("/")[4] !== 0 && location.pathname.split("/")[4] !== '0') {
+        const item = itemsData.filter(
+          (item) => item.id == location.pathname.split("/")[4]
+        );
+        if (item) {
+          console.log(item);
+          setName(item[0].name);
+          setValue(item[0].price);
+          setAmount(item[0].amount);
+          setUnit(item[0].unit);
+          setMembers(item[0].members);
+          setDetails(item[0].details);
+          setBrand(item[0].brand);
+          setStore(item[0].store);
+        }
+      }
     }
-  }, [location]);
+  }, [location, itemsData]);
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -123,7 +139,7 @@ const ItemDetails = () => {
           valueUnit={unit}
           onChangeUnit={setUnit}
         />
-        <MembersInput value={members} onChange={setMembers} />
+        <MembersInput label={"Members"} value={members} onChange={setMembers} />
         <Input label="Details" value={details} onChange={setDetails} />
         <Input label="Brand" value={brand} onChange={setBrand} />
         <Input label="Store" value={store} onChange={setStore} />
