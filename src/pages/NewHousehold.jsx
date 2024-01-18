@@ -1,13 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "../components/common/TopBar";
 import ImageUpload from "../components/common/ImageUpload";
 import Input from "../components/common/Input";
-import AddMembers from "../components/common/AddMembers";
 import Button from "../components/common/Button";
+import HouseholdsData from "../data/households.json";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const NewHousehold = () => {
+  const households = HouseholdsData;
+  const navigate = useNavigate();
   const [householdName, setHouseholdName] = useState("");
   const [description, setDescription] = useState("");
+  const [authUser, setAuthUser] = useState(null);
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+
+    const storedUser = getCookieValue("user");
+    if (storedUser) {
+      setAuthUser(storedUser);
+    }
+  }, []);
+  const handleNewHousehold = () => {
+    const newHousehold = {
+      id: households.length + 1,
+      name: householdName,
+      img: "",
+      description: description,
+      tags: [],
+      admins: [authUser.id],
+    };
+    households.push(newHousehold);
+    Cookies.set("household", JSON.stringify(newHousehold), { path: "/" });
+    navigate("/add-members");
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -27,10 +62,9 @@ const NewHousehold = () => {
             value={description}
             onChange={setDescription}
           />
-          <AddMembers />
         </div>
         <div className="h-full my-6">
-          <Button label="Submit" />
+          <Button label="Submit" action={handleNewHousehold} />
         </div>
       </form>
     </div>
