@@ -30,6 +30,7 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import EditHousehold from "./pages/EditHousehold";
 import BalanceDetails from "./pages/BalanceDetails";
+import AddMembers from "./pages/AddMembers";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -44,16 +45,21 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
+          <Route path="/add-members" element={<AddMembers />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/event/:event/edit" element={<EditEvent />} />
           <Route path="/tasks/:task/edit" element={<EditTask />} />
-          <Route path="/households/:household/edit" element={<EditHousehold />} />
+          <Route
+            path="/households/:household/edit"
+            element={<EditHousehold />}
+          />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/" element={<Homepage />} />
-          <Route path="/households/:1" element={<Household />} /> {/* TODO: Mudar para o id do household correto */}
+          <Route path="/households/:1" element={<Household />} />{" "}
+          {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
           <Route path="/join" element={<JoinHousehold />} />
