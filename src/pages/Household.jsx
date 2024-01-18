@@ -72,8 +72,8 @@ const Household = () => {
         {openOverlay && (
           <Overlay
             label="SETTINGS"
-            options={["Profile", "About"]}
-            links={[`/users/${authUser.id}`, "/about"]}
+            options={["Profile", "About", "Logout"]}
+            links={[`/users/${authUser.id}`, "/about", "/login"]}
             hideOverlay={() => setOpenOverlay(false)}
           />
         )}
