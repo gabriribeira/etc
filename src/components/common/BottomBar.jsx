@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import { IoWalletOutline, IoCheckboxOutline } from "react-icons/io5";
-import { TbShoppingCart, TbUsers } from "react-icons/tb";
+import { TbUsers } from "react-icons/tb";
 import { GoHome } from "react-icons/go";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
+import { PiShoppingCartSimple } from "react-icons/pi";
 
 const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
   const location = useLocation();
@@ -54,7 +55,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             location.pathname === "/lists" && "text-blue"
           }`}
         >
-          <TbShoppingCart />
+          <PiShoppingCartSimple />
           <p className="text-[12px]">Lists</p>
         </Link>
         <Link
