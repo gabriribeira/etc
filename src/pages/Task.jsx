@@ -52,7 +52,7 @@ const Task = () => {
                 <h2 className="text-lg font-semibold">Automatic Attribution</h2>
               </div>
               <p className="text-black60 text-base mt-2">
-                This task is being automatically attributed to different members
+                If on, this task is being automatically attributed to different members
                 weekly.
               </p>
             </div>
