@@ -68,14 +68,16 @@ const SustainableGoal = () => {
     }
   }, [households, authHousehold]);
   const handleIncrement = () => {
-    const newGoalLog = {
-      id: goalsLogs.length + 1,
-      goal_id: householdGoal.goal_id,
-      household_id: householdGoal.household_id,
-      created_at: new Date().toISOString().split("T")[0],
-    };
-    goalsLogs.push(newGoalLog);
-    setHouseholdGoalTimes(householdGoalTimes + 1);
+    if (householdGoalTimes < householdGoal.amount) {
+      const newGoalLog = {
+        id: goalsLogs.length + 1,
+        goal_id: householdGoal.goal_id,
+        household_id: householdGoal.household_id,
+        created_at: new Date().toISOString().split("T")[0],
+      };
+      goalsLogs.push(newGoalLog);
+      setHouseholdGoalTimes(householdGoalTimes + 1);
+    }
   };
   return householdGoal && goal && householdGoalTimes ? (
     <div className="flex flex-col w-full px-5 gap-y-3">
