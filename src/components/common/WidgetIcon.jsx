@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { IoWalletOutline, IoCheckboxOutline } from "react-icons/io5";
-import { TbShoppingCart, TbUsers } from "react-icons/tb";
+import { TbUsers } from "react-icons/tb";
 import { GoHome } from "react-icons/go";
+import { PiShoppingCartSimple } from "react-icons/pi";
 
 const WidgetIcon = ({ icon }) => {
   const getIcon = () => {
     switch (icon) {
       case "lists":
-        return <TbShoppingCart />;
+        return <PiShoppingCartSimple />;
       case "tasks":
         return <IoCheckboxOutline />;
       case "goal":
@@ -23,7 +24,7 @@ const WidgetIcon = ({ icon }) => {
     <div className="flex items-center justify-center rounded-full p-3 bg-white/50 absolute top-2 right-2">
       <div className="text-white text-2xl">{getIcon()}</div>
     </div>
-  );
+  ); 
 };
 
 WidgetIcon.propTypes = {
