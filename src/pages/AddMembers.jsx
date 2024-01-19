@@ -62,9 +62,9 @@ const AddMembers = () => {
                 //eslint-disable-next-line
                 src={require(`../assets/data/users/${authUser.img}`)}
                 alt="Authenticated User Profile Picture"
-                className="w-[80px] h-[80px] rounded-full object-cover object-center left-0 top-0"
+                className="w-[60px] h-[60px] rounded-full object-cover object-center left-0 top-0"
               />
-              <h2 className="font-light text-base">{authUser.name}</h2>
+              <h2 className="font-light text-base">{authUser.username}</h2>
             </div>
           </div>
           {/*
