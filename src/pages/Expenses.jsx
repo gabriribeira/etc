@@ -48,12 +48,12 @@ const Expenses = () => {
           setActiveTab={setActiveTab}
         />
         {activeTab === 0 ? (
-          <div className="flex flex-col py-3 gap-y-3">
+          <div className="flex flex-col py-5 gap-y-3">
             {expenses &&
               expenses.map((expense, index) => (
                 <React.Fragment key={index}>
                   {index === 0 || expenses[index - 1]?.date !== expense.date ? (
-                    <h1 className="font-semibold text-lg">
+                    <h1 className="font-light text-base">
                       {formatDate(expense.date)}
                     </h1>
                   ) : null}
