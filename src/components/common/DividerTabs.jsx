@@ -9,7 +9,7 @@ const DividerTabs = ({ tabs, activeTab, setActiveTab }) => {
           <button
             key={index}
             className={`flex justify-center items-center py-2 cursor-pointer transition-all duration-300 rounded-lg ${
-              activeTab === index ? "bg-salmon text-black w-[65%]" : "w-[35%]"
+              activeTab === index ? "bg-salmon text-white w-[65%]" : "w-[35%]"
             }`}
             onClick={() => setActiveTab(index)}
           >
