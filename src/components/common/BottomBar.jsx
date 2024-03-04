@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
-import { IoWalletOutline, IoCheckboxOutline } from "react-icons/io5";
+import { IoWalletOutline } from "react-icons/io5";
+// import { IoCheckboxOutline } from "react-icons/io5";
 import { TbUsers } from "react-icons/tb";
-import { GoHome } from "react-icons/go";
+// import { GoHome } from "react-icons/go";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
 import { PiShoppingCartSimple } from "react-icons/pi";
 
@@ -39,7 +40,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
         <ChangeHouseholdOverlay closeOverlay={() => setOverlay(false)} />
       )}
       <div className="h-[80px]"></div>
-      <div className="fixed bottom-0 w-screen bg-white flex items-center justify-between text-black px-5 h-[80px] text-4xl z-[90]">
+      <div className="fixed bottom-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-4xl z-[90]">
         <Link
           to="/expenses"
           className={`flex flex-col items-center leading-5 ${
@@ -48,33 +49,6 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
         >
           <IoWalletOutline />
           <p className="text-[12px]">Expenses</p>
-        </Link>
-        <Link
-          to="/lists"
-          className={`flex flex-col items-center leading-5 ${
-            location.pathname === "/lists" && "text-blue"
-          }`}
-        >
-          <PiShoppingCartSimple />
-          <p className="text-[12px]">Lists</p>
-        </Link>
-        <Link
-          to="/"
-          className={`flex flex-col items-center leading-5 ${
-            location.pathname === "/" && "text-blue"
-          }`}
-        >
-          <GoHome />
-          <p className="text-[12px]">Home</p>
-        </Link>
-        <Link
-          to="/tasks"
-          className={`flex flex-col items-center leading-5 ${
-            location.pathname === "/tasks" && "text-blue"
-          }`}
-        >
-          <IoCheckboxOutline />
-          <p className="text-[12px]">Tasks</p>
         </Link>
         {changeHousehold ? (
           <button
@@ -121,6 +95,33 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             <p className="text-[12px]">Household</p>
           </Link>
         )}
+        <Link
+          to="/lists"
+          className={`flex flex-col items-center leading-5 ${
+            location.pathname === "/lists" && "text-blue"
+          }`}
+        >
+          <PiShoppingCartSimple />
+          <p className="text-[12px]">Lists</p>
+        </Link>
+        {/* <Link
+          to="/"
+          className={`flex flex-col items-center leading-5 ${
+            location.pathname === "/" && "text-blue"
+          }`}
+        >
+          <GoHome />
+          <p className="text-[12px]">Home</p>
+        </Link> */}
+        {/* <Link
+          to="/tasks"
+          className={`flex flex-col items-center leading-5 ${
+            location.pathname === "/tasks" && "text-blue"
+          }`}
+        >
+          <IoCheckboxOutline />
+          <p className="text-[12px]">Tasks</p>
+        </Link> */}
       </div>
     </>
   );
