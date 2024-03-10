@@ -64,7 +64,7 @@ const NewExpense = () => {
   };
   return (
     authUser && (
-      <div>
+      <div className="bg-white">
         <TopBar />
         <form className="flex flex-col px-5 gap-y-6">
           <Input label="Title" value={title} onChange={setTitle} />
