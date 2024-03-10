@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { RxDotsHorizontal } from "react-icons/rx";
+import BackButton from "./BackButton"
 
 const TopBar = ({ description }) => {
   const [user, setUser] = useState(null);
+  const location = useLocation();
+  const [showBackButton, setShowBackButton] = useState(false);
 
   useEffect(() => {
     const getCookieValue = (cookieName) => {
@@ -12,13 +15,26 @@ const TopBar = ({ description }) => {
       for (const cookie of cookies) {
         const [name, value] = cookie.split("=");
         if (name === cookieName) {
-          console.log(name);
           setUser(JSON.parse(decodeURIComponent(value)));
         }
       }
     };
     getCookieValue("user");
   }, []);
+
+  const isEditPage = () => {
+      const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit|item)/;
+      const balancePageRegex = /\/expenses\/balance/;
+      return editPageRegex.test(location.pathname) || balancePageRegex.test(location.pathname);
+  };
+
+  useEffect(() => {
+    if(isEditPage()){
+      setShowBackButton(true);
+    }else{
+      setShowBackButton(false);
+    }
+  }, [location])
 
   return (
     <div className="flex flex-col sticky top-0 w-screen p-5 z-[100] bg-white">
@@ -45,6 +61,9 @@ const TopBar = ({ description }) => {
           <RxDotsHorizontal />
         </div>
       </div>
+      {showBackButton && (
+        <div className="mt-10"><BackButton /></div>
+      )}
       {description && (
         <p className="text-black60 text-base mt-2">{description}</p>
       )}
