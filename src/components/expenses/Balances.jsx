@@ -86,13 +86,13 @@ const Balances = () => {
                   expenses: handleDetailsClick(user),
                 }}
                 key={user.id}
-                className={`bg-black90 rounded-2xl flex justify-between items-center w-full p-6 h-full`}
+                className={`bg-black90 bg-gradient-to-r from-black90 to-white/30 shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[180px]`}
               >
-                <div className="flex flex-col justify-between h-full">
+                <div className="flex flex-col justify-end h-full">
                   <h2 className="text-lg text-white font-normal">
                     {balances[user.id] > 0
-                      ? <span><span className="font-semibold">You</span> <span className="font-light">owe</span> <span className="font-semibold">{balances.userBalances[user.id]}</span></span>
-                      : <span className="font-semibold">{user.name} <span className="font-light">owes</span> <span className="font-semibold">you</span></span>}
+                      ? <span><span className="font-medium">You</span> <span className="font-light">owe</span> <span className="font-medium">{balances.userBalances[user.id]}</span></span>
+                      : <span className="font-medium">{user.name} <span className="font-light">owes</span> <span className="font-medium">you</span></span>}
                   </h2>
                   <div className="flex flex-col">
                     <div className="text-4xl font-semibold text-white">
@@ -101,7 +101,7 @@ const Balances = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col justify-between items-center h-full">
+                <div className="flex justify-start items-start h-full">
                   <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
                     <img
                       //eslint-disable-next-line
@@ -110,7 +110,7 @@ const Balances = () => {
                       className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                     />
                   </div>
-                  <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0 -mt-5">
+                  <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
                     <img
                       //eslint-disable-next-line
                       src={require(`../../assets/data/users/${authUser.img}`)}

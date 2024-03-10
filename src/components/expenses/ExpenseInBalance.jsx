@@ -14,28 +14,33 @@ const ExpenseInBalance = ({ expense }) => {
   return (
     user &&
     expense && (
-      <div className="flex items-center justify-between bg-black10 p-3 rounded-2xl h-[100px]">
-        <div className="flex flex-col justify-between h-full">
-          <h2 className="font-light text-black text-base">{expense.title}</h2>
-          <h1 className="text-base font-light">
-            <span className="font-semibold text-lg">{expense.value.toFixed(2)}€</span> paid
-            by <span className="font-semibold text-lg">{user.name}</span>
-          </h1>
+      <div className={`bg-salmon/90 bg-gradient-to-l shadow-lg from-salmon to-black90/40 rounded-2xl flex justify-between items-center h-[180px] w-full p-3`}>
+      <div className={`flex flex-col justify-between h-full text-white`}>
+        <h2 className="text-xl font-normal">{expense.title}</h2>
+        <div className="flex flex-col">
+          <div className="text-4xl font-semibold">
+            {expense.value.toFixed(2)}<span className="font-light text-xl">€</span>
+          </div>
+          <p className="font-light text-base">
+            spent by <span className="font-semibold">{user.name}</span>
+          </p>
         </div>
-        <div className="flex flex-col items-end h-full justify-between">
+      </div>
+      <div className="flex flex-col justify-between items-end h-full">
+        <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
           <img
             //eslint-disable-next-line
             src={require(`../../assets/data/users/${user.img}`)}
             alt="User Profile Picture"
-            className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+            className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
           />
-          <h1 className="text-sm font-light tex-end">
-            <span className="font-light text-sm text-end flex">
-              {expense.users.length} members
-            </span>
-          </h1>
         </div>
+        <p className={`text-normal text-white`}>
+          {expense.users.length} member
+          <span className={expense.users.length > 1 ? "" : "hidden"}>s</span>
+        </p>
       </div>
+    </div>
     )
   );
 };

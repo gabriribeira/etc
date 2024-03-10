@@ -33,10 +33,10 @@ const BalanceDetails = () => {
     balance &&
     user &&
     expenses && (
-      <div>
+      <div className="relative">
         <TopBar />
-        <div className="flex flex-col px-5 mt-6">
-          <div className="bg-black90 rounded-2xl flex items-end relative text-white p-6 relative h-full">
+        <div className="flex flex-col px-5 mt-6 fade-in">
+          <div className="bg-black90 bg-gradient-to-r shadow-lg from-black90 to-white/30 rounded-2xl flex items-end relative text-white p-3 relative h-[180px]">
             <div className="flex top-3 right-3 absolute">
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
                 <img
@@ -67,20 +67,12 @@ const BalanceDetails = () => {
                   <span className="font-semibold">you</span>
                 </h2>
               )}
-              <h1 className="text-4xl font-semibold">{Math.abs(balance.toFixed(2))}<span className="font-light text-2xl">€</span></h1>
+              <h1 className="text-4xl font-semibold">
+                {Math.abs(balance.toFixed(2))}
+                <span className="font-light text-2xl">€</span>
+              </h1>
             </div>
           </div>
-          {balance < 0 ? (
-            <div className="mt-6">
-              <Button label="Define as paid" action={handlePaidBalance} />
-            </div>
-          ) : (
-            <p className="font-light text-black text-sm w-full text-center mt-6">
-              Only {user.name} can define
-              <br />
-              this balance as paid!
-            </p>
-          )}
           <div className="flex flex-col mt-6 gap-y-3">
             <h2 className="text-lg font-semibold">Expenses</h2>
             {expenses &&
@@ -89,6 +81,17 @@ const BalanceDetails = () => {
               ))}
           </div>
         </div>
+        {balance < 0 ? (
+          <div className="mt-6 fixed bottom-[80px] bg-white w-screen p-5">
+            <Button label="Define as paid" action={handlePaidBalance} />
+          </div>
+        ) : (
+          <p className="font-light text-black text-sm w-full text-center mt-6">
+            Only {user.name} can define
+            <br />
+            this balance as paid!
+          </p>
+        )}
         <BottomBar />
       </div>
     )
