@@ -3,18 +3,21 @@
         "id": 1,
         "household_id": 1,
         "title": "Secret Santa Dinner",
+        "closed": false,
         "finished": false
     },
     {
         "id": 2,
         "household_id": 1,
         "title": "Miguels Birthday Lunch",
+        "closed": false,
         "finished": true
     },
     {
         "id": 3,
         "household_id": 1,
         "title": "Christmas Dinner",
+        "closed": true,
         "finished": false
     }
 ]
