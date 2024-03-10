@@ -5,7 +5,7 @@ import { SlArrowLeft } from "react-icons/sl";
 const BackButton = () => {
     const navigate = useNavigate();
   return (
-    <button onClick={() => navigate(-1)} className="text-3xl">
+    <button onClick={() => navigate(-1)} className="text-2xl">
       <SlArrowLeft />
     </button>
   );
