@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
-import { IoWalletOutline } from "react-icons/io5";
+import { IoWalletOutline, IoWallet } from "react-icons/io5";
 // import { IoCheckboxOutline } from "react-icons/io5";
 import { TbUsers } from "react-icons/tb";
 // import { GoHome } from "react-icons/go";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
-import { PiShoppingCartSimple } from "react-icons/pi";
+import { PiShoppingCartSimple, PiShoppingCartSimpleFill } from "react-icons/pi";
 
 const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
   const location = useLocation();
@@ -39,22 +39,22 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
       {openOverlay && (
         <ChangeHouseholdOverlay closeOverlay={() => setOverlay(false)} />
       )}
-      <div className="h-[80px]"></div>
+      <div className="h-[80px] z-[90]"></div>
       <div className="fixed bottom-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-4xl z-[90]">
         <Link
           to="/expenses"
           className={`flex flex-col items-center leading-5 ${
-            location.pathname === "/expenses" && "text-blue"
+            location.pathname === "/expenses" && "text-black"
           }`}
         >
-          <IoWalletOutline />
+          {location.pathname === "/expenses" ? <IoWallet /> : <IoWalletOutline />}
           <p className="text-[12px]">Expenses</p>
         </Link>
         {changeHousehold ? (
           <button
             className={`flex flex-col items-center leading-5 ${
               location.pathname === `/households/${authHousehold?.id}` &&
-              "text-blue"
+              "text-black"
             }`}
             onClick={() => setOverlay(true)}
           >
@@ -77,7 +77,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             to={`/households/${authHousehold?.id}`}
             className={`flex flex-col items-center leading-5 ${
               location.pathname === `/households/${authHousehold?.id}` &&
-              "text-blue"
+              "text-black"
             }`}
           >
             {authHousehold ? (
@@ -98,10 +98,10 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
         <Link
           to="/lists"
           className={`flex flex-col items-center leading-5 ${
-            location.pathname === "/lists" && "text-blue"
+            location.pathname === "/lists" && "text-black"
           }`}
         >
-          <PiShoppingCartSimple />
+          {location.pathname === "/lists" ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
           <p className="text-[12px]">Lists</p>
         </Link>
         {/* <Link
