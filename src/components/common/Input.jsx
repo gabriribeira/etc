@@ -18,7 +18,7 @@ const Input = ({ label, value, onChange, error }) => {
             id={label}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="border-2 rounded-xl p-2 border-black40 focus:border-black focus:outline-none text-lg placeholder:text-black40 text-black w-full"
+            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black80 text-black w-full bg-white"
             placeholder={label}
             rows="3"
           />
@@ -32,13 +32,13 @@ const Input = ({ label, value, onChange, error }) => {
                 ? "password" : label === "Email" ? "email" : label == "Value" ? "number" : label == "Date" ? "date" : "text"
             }
             onChange={(e) => onChange(e.target.value)}
-            className={`border-2 rounded-xl p-2 border-black40 focus:border-black focus:outline-none ${
+            className={`border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none ${
               (label === "Password" || label === "Confirm Password") &&
               !showPassword &&
               value != ""
                 ? "text-xl"
                 : "text-lg"
-            } placeholder:text-black40 text-black w-full`}
+            } placeholder:text-black80 text-black w-full bg-white`}
             placeholder={label}
           />
         )}
