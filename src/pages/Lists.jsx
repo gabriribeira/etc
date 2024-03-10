@@ -39,14 +39,14 @@ const Lists = () => {
   }, [listsData, authHousehold]);
 
   return (
-    <div>
+    <div className="relative bg-white min-h-screen">
       <TopBar />
-      <div className="flex flex-col px-5">
+      <div className="flex flex-col px-5 fade-in">
         <div className="flex items-center">
           <SearchFilter />
           <Filter onClick={handleFilterClick} />
         </div>
-        <div className="flex flex-col gap-y-3 mt-6">
+        <div className="flex flex-col gap-y-3 mt-5">
           {lists &&
             lists.length > 0 &&
             lists.map((list, index) => (

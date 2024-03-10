@@ -69,16 +69,16 @@ const List = () => {
     }
   }, [list, itemsData, refresh]);
   return (
-    <div>
+    <div className="bg-white min-h-screen">
       <TopBar />
       {list && (
-        <div className="flex flex-col px-5">
+        <div className="flex flex-col px-5 fade-in">
           <div className="flex items-center">
             <SearchFilter />
             <Filter onClick={handleFilterClick} />
           </div>
           <div className="flex flex-col w-full mt-6 gap-y-3">
-            <div className="flex text-white bg-blue px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
+            <div className="flex text-white bg-black bg-gradient-to-br from-black90 to-white/40 px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
               <form
                 className="flex gap-x-3 w-full items-center h-full"
                 onSubmit={handleNewItem}

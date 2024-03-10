@@ -127,7 +127,7 @@ const ItemDetails = () => {
     navigate("/lists/" + list_id);
   };
   return (
-    <div>
+    <div className="bg-white">
       <TopBar />
       <div className="flex flex-col px-5 gap-y-3">
         <Input label="Name" value={name} onChange={setName} />
