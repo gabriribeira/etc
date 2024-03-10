@@ -9,7 +9,7 @@ const Filter = ({ onClick }) => {
         onClick={onClick}
       >
         <svg
-          className="w-6 h-6 text-gray-500"
+          className="w-6 h-6 text-black80"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
