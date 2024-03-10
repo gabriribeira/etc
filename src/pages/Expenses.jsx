@@ -39,7 +39,7 @@ const Expenses = () => {
   }, [expensesData, authHousehold]);
 
   return (
-    <div className="relative">
+    <div className="relative bg-white min-h-screen">
       <TopBar />
       <div className="flex flex-col px-5">
         <DividerTabs
@@ -48,7 +48,7 @@ const Expenses = () => {
           setActiveTab={setActiveTab}
         />
         {activeTab === 0 ? (
-          <div className="flex flex-col py-5 gap-y-3">
+          <div className="flex flex-col py-5 gap-y-3 fade-in">
             {expenses &&
               expenses.map((expense, index) => (
                 <React.Fragment key={index}>
@@ -62,12 +62,12 @@ const Expenses = () => {
               ))}
           </div>
         ) : (
-          <div className="flex flex-col py-3 gap-y-3">
+          <div className="flex flex-col py-3 gap-y-3 fade-in">
             <Balances />
           </div>
         )}
       </div>
-      <NewButton path={"/expenses/new"} />
+      {activeTab === 0 && <NewButton path={"/expenses/new"} />}
       <BottomBar />
     </div>
   );

@@ -33,7 +33,7 @@ const BalanceDetails = () => {
     balance &&
     user &&
     expenses && (
-      <div className="relative">
+      <div className="relative bg-white">
         <TopBar />
         <div className="flex flex-col px-5 mt-6 fade-in">
           <div className="bg-black90 bg-gradient-to-r shadow-lg from-black90 to-white/30 rounded-2xl flex items-end relative text-white p-3 relative h-[180px]">
