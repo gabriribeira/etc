@@ -5,7 +5,6 @@ import HouseholdsData from "../data/households.json";
 import HouseholdInfo from "../components/household/HouseholdInfo";
 import Members from "../components/household/Members";
 import UsersData from "../data/users.json";
-import { IoSettingsOutline } from "react-icons/io5";
 import SustainableGoal from "../components/household/SustainableGoal";
 import Overlay from "../components/common/Overlay";
 
@@ -15,6 +14,7 @@ const Household = () => {
   const users = UsersData;
   const [householdUsers, setHouseholdUsers] = useState([]);
   const [openOverlay, setOpenOverlay] = useState(false);
+  // eslint-disable-next-line
   const [authUser, setAuthUser] = useState(null);
   const [authHousehold, setAuthHousehold] = useState(null);
   const [openOverlayFromParent, setOpenOverlayFromParent] = useState(false);
@@ -72,19 +72,13 @@ const Household = () => {
         {openOverlay && (
           <Overlay
             label="SETTINGS"
-            options={["Profile", "About", "Logout"]}
-            links={[`/users/${authUser.id}`, "/about", "/login"]}
+            options={["About", "Logout"]}
+            links={["/about", "/login"]}
             hideOverlay={() => setOpenOverlay(false)}
           />
         )}
-        <div>
+        <div className="">
           <TopBar />
-          <button
-            onClick={() => setOpenOverlay(true)}
-            className="fixed top-6 right-4 text-4xl text-black z-[101]"
-          >
-            <IoSettingsOutline />
-          </button>
           <div className="flex flex-col gap-y-6">
             <HouseholdInfo household={household} users={householdUsers} openOverlayFromParent={() => setOpenOverlayFromParent(true)} />
             <SustainableGoal />
