@@ -57,24 +57,24 @@ const BalanceDetails = () => {
             </div>
             <div className="flex flex-col mt-20">
               {balance > 0 ? (
-                <h2 className="font-light text-lg">
+                <h2 className="font-light text-base">
                   <span className="font-semibold">You</span> owe{" "}
                   <span className="font-semibold">{user.name}</span>
                 </h2>
               ) : (
-                <h2 className="font-light text-lg">
+                <h2 className="font-light text-base">
                   <span className="font-semibold">{user.name}</span> owes{" "}
                   <span className="font-semibold">you</span>
                 </h2>
               )}
-              <h1 className="text-4xl font-semibold">
+              <h1 className="text-3xl font-semibold">
                 {Math.abs(balance.toFixed(2))}
                 <span className="font-light text-2xl">€</span>
               </h1>
             </div>
           </div>
           <div className="flex flex-col mt-6 gap-y-3">
-            <h2 className="text-lg font-semibold">Expenses</h2>
+            <h2 className="text-lg font-normal">Expenses</h2>
             {expenses &&
               expenses.map((expense, index) => (
                 <ExpenseInBalance expense={expense} key={index} />

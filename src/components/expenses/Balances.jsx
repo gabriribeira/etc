@@ -95,14 +95,14 @@ const Balances = () => {
                       : <span className="font-medium">{user.name} <span className="font-light">owes</span> <span className="font-medium">you</span></span>}
                   </h2>
                   <div className="flex flex-col">
-                    <div className="text-4xl font-semibold text-white">
+                    <div className="text-3xl font-semibold text-white">
                       {Math.abs(balances.userBalances[user.id].toFixed(2))}
                       <span className="font-light text-xl">€</span>
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-start items-start h-full">
-                  <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
                     <img
                       //eslint-disable-next-line
                       src={require(`../../assets/data/users/${user.img}`)}
@@ -110,7 +110,7 @@ const Balances = () => {
                       className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                     />
                   </div>
-                  <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
                     <img
                       //eslint-disable-next-line
                       src={require(`../../assets/data/users/${authUser.img}`)}
