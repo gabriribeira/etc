@@ -13,6 +13,7 @@ const Authentication = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememeberMe, setRememberMe] = useState(false);
 
   const handleLogin = () => {
     const user = users.find((user) => user.username === username);
@@ -36,9 +37,9 @@ const Authentication = () => {
   };
 
   return (
-    <div className="bg-blue flex flex-col min-h-screen justify-between">
-      <div className="flex justify-center items-center h-full min-h-[50dvh]">
-        <img src={Logo} alt="Et Cetera Logo" className="w-[60%]" />
+    <div className="bg-black bg-gradient-to-br from-black to-white/30 flex flex-col min-h-screen justify-between">
+      <div className="flex justify-center items-center h-full min-h-[50dvh] shadow-[0px_-10px_30px_-20px_rgba(0,0,0,0.5)]">
+        <img src={Logo} alt="Et Cetera Logo" className="w-[60%] shadow-2xl" />
       </div>
       <form className="h-auto bg-white rounded-tl-[5rem] flex flex-col px-6 py-12 gap-y-6 max-h-[50dvh]">
         <Input label="Username" value={username} onChange={setUsername} />
@@ -48,7 +49,8 @@ const Authentication = () => {
             <div className="flex items-center ">
               <button
                 type="button"
-                className="mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black focus:outline-none focus:border-black"
+                className={`mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black ${rememeberMe ? "bg-black80" : "bg-white"} focus:outline-none focus:border-black`}
+                onClick={() => setRememberMe(!rememeberMe)}
               ></button>
               <p className="font-light text-sm text-black70">Remember me</p>
             </div>
