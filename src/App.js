@@ -55,7 +55,7 @@ function App() {
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/" element={<Homepage />} />
-          <Route path="/households/:1" element={<Household />} />{" "}
+          <Route path="/households/:householdId" element={<Household />} />{" "}
           {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
