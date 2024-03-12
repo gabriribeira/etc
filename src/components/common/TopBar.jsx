@@ -25,7 +25,8 @@ const TopBar = ({ description }) => {
   const isEditPage = () => {
       const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit|item)/;
       const balancePageRegex = /\/expenses\/balance/;
-      return editPageRegex.test(location.pathname) || balancePageRegex.test(location.pathname);
+      const newExpensePageRegex = /\/expenses\/new/;
+      return editPageRegex.test(location.pathname) || balancePageRegex.test(location.pathname) || newExpensePageRegex.test(location.pathname);
   };
 
   useEffect(() => {
@@ -37,10 +38,10 @@ const TopBar = ({ description }) => {
   }, [location])
 
   return (
-    <div className="flex flex-col sticky top-0 w-screen p-5 z-[100] bg-white">
+    <div className="flex flex-col sticky top-0 w-screen pb-5 px-5 pt-3 z-[100] bg-white">
       <div className="flex items-center justify-between gap-x-2 relative">
         {user && (
-          <Link to={`/users/${user.id}`} className="flex items-center gap-x-3">
+          <Link to={`/users/${user.id}`} className="flex items-center gap-x-3 z-[101]">
             <img
               //eslint-disable-next-line
               src={require(`../../assets/data/users/${user.img}`)}
