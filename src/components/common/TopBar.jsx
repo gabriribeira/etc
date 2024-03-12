@@ -46,7 +46,7 @@ const TopBar = ({ description }) => {
   }, [location]);
 
   return (
-    <div className="flex flex-col sticky top-0 w-screen pb-5 px-5 pt-3 z-[100] bg-white">
+    <div className={`flex flex-col sticky top-0 w-screen ${!showBackButton && "pb-5"} px-5 pt-3 z-[100] bg-white`}>
       <div className="flex items-center justify-between gap-x-2 relative">
         {user && (
           <Link
@@ -81,7 +81,7 @@ const TopBar = ({ description }) => {
           </button>
           {(location.pathname == "/expenses" ||
             location.pathname == "/lists") && (
-            <button type="button" className="text-2xl z-[101]">
+            <button type="button" className="text-2xl z-[101] text-black">
               <NewButton path={"/expenses/new"} />
             </button>
           )}

@@ -7,7 +7,7 @@ const NewButton = ({ path }) => {
   return (
     <Link
       to={path}
-      className="text-3xl text-black"
+      className="text-3xl text-black90"
     >
       <BsPlusCircleFill />
     </Link>
