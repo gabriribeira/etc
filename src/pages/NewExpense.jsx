@@ -71,7 +71,7 @@ const NewExpense = () => {
           <Input label="Value" value={value} onChange={setValue} />
           <div className="flex flex-col">
             <h2 className="mb-2 text-lg font-semibold">Paid By</h2>
-            <div className="border-2 border-black40 rounded-2xl p-2 flex flex items-center">
+            <div className="border-2 border-black80 rounded-2xl p-2 flex flex items-center">
               <div className="w-[35px] h-[35px] rounded-full flex items-center justify-center relative shrink-0">
                 <img
                   //eslint-disable-next-line
