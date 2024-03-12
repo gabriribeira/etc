@@ -1,43 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import UsersData from "../../data/users.json";
 
 const Expense = ({ expense }) => {
-  const [isSwiping, setIsSwiping] = useState(false);
-  const [initialX, setInitialX] = useState(0);
-  const [translateX, setTranslateX] = useState(0);
-
-  const handleTouchStart = (e) => {
-    setIsSwiping(true);
-    setInitialX(e.touches ? e.touches[0].clientX : e.clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isSwiping) return;
-    const currentX = e.touches ? e.touches[0].clientX : e.clientX;
-    setTranslateX(currentX - initialX);
-  };
-
-  const handleTouchEnd = () => {
-    setIsSwiping(false);
-    setTranslateX(0); // Reset translation when touch ends
-  };
 
   const users = UsersData;
   const user = users.find((user) => user.id === expense.user_id);
 
   return (
     <div
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleTouchStart}
-      onMouseMove={handleTouchMove}
-      onMouseUp={handleTouchEnd}
-      onMouseLeave={handleTouchEnd}
       className={`${expense.paid ? "bg-black90 bg-gradient-to-r from-black90 to-white/30 shadow-lg" : "bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40"
         } rounded-2xl flex justify-between items-center h-[180px] w-full p-3`}
-      style={{ transform: `translateX(${translateX}px)` }}
     >
       <div className={`flex flex-col justify-between h-full text-white`}>
         <h2 className="text-xl font-normal">{expense.title}</h2>
