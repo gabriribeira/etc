@@ -8,7 +8,7 @@ const Button = ({ label, submit, action, to, bg, lg, stroke }) =>
       to={to}
       className={`${
         stroke ? "bg-white" : (bg && bg != '') ? bg : "bg-blue"
-      }  ${stroke && "border-2 border-blue"} ${stroke ? "text-blue" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
+      }  ${stroke && "border-2 border-black"} ${stroke ? "text-black" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
     >
       {label}
     </Link>
@@ -18,7 +18,7 @@ const Button = ({ label, submit, action, to, bg, lg, stroke }) =>
       type={submit ? "submit" : "button"}
       className={`${
         stroke ? "bg-white" : (bg && bg != '') ? bg : "bg-black90 bg-gradient-to-r from-black90 to-white/20"
-      } ${stroke && "border-2 border-blue"} ${stroke ? "text-blue" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
+      } ${stroke && "border-2 border-black"} ${stroke ? "text-black" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
     >
       {label}
     </button>
