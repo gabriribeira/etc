@@ -10,7 +10,7 @@ const Members = ({ users, admins }) => {
       {users.map((user, index) => (
         <div
           key={index}
-          className="flex items-center justify-between bg-black10 rounded-2xl p-3"
+          className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white rounded-2xl p-3"
         >
           <Link to={`/users/${user.id}`} className="flex items-center gap-x-3">
             <img
@@ -19,14 +19,14 @@ const Members = ({ users, admins }) => {
               alt="User Profile Picture"
               className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
             />
-            <p className="text-black text-lg font-semibold">{user.name}</p>
+            <p className="text-white text-lg font-light">{user.name}</p>
           </Link>
           <div className="flex items-center gap-x-3">
             {
               admins.includes(user.id) &&
-                <p className="text-black text-base font-light">Admin</p>
+                <p className="text-white text-base font-light">Admin</p>
             }
-            <button type="button" className="text-black text-2xl"><RxDotsVertical /></button>
+            <button type="button" className="text-white text-2xl"><RxDotsVertical /></button>
           </div>
         </div>
       ))}
