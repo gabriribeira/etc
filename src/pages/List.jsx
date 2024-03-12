@@ -83,10 +83,6 @@ const List = () => {
                 className="flex gap-x-3 w-full items-center h-full"
                 onSubmit={handleNewItem}
               >
-                <button
-                  className="w-[30px] h-[30px] rounded-full bg-transparent border-2 border-white shrink-0"
-                  type="button"
-                ></button>
                 <input
                   className="text-base font-light bg-transparent w-full placeholder-white placeholder:font-light font-normal focus:border-b-2 focus:border-white focus:outline-none transition-all duration-200 mr-5"
                   placeholder="Add a new item to the list"
