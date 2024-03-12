@@ -8,7 +8,7 @@ const Input = ({ label, value, onChange, error }) => {
 
   return (
     <div className="w-full flex flex-col">
-      <label htmlFor={label} className="mb-2 text-lg font-semibold">
+      <label htmlFor={label} className="mb-2 text-lg font-medium">
         {label}
       </label>
       <div className="flex relative w-full items-center">
