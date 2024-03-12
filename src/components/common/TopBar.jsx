@@ -102,7 +102,7 @@ const TopBar = ({ description }) => {
         </CSSTransition>
       </div>
       {showBackButton && (
-        <div className="mt-10">
+        <div className="mt-8">
           <BackButton />
         </div>
       )}
