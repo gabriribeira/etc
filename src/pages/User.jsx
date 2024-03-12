@@ -99,7 +99,7 @@ const User = () => {
               {households.map((household, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between bg-black10 rounded-2xl p-3"
+                  className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white  rounded-2xl p-3 shadow-lg"
                 >
                   <div className="flex items-center gap-x-3">
                     <img
@@ -110,12 +110,12 @@ const User = () => {
                       alt="Household Profile Picture"
                       className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
                     />
-                    <p className="text-black text-lg font-semibold">
+                    <p className="text-white text-lg font-base">
                       {household.name}
                     </p>
                   </div>
                   <div className="flex items-center gap-x-3">
-                    <button type="button" className="text-black text-2xl">
+                    <button type="button" className="text-white text-2xl">
                       <RxDotsVertical />
                     </button>
                   </div>
