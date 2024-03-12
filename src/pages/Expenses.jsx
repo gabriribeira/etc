@@ -5,7 +5,6 @@ import DividerTabs from "../components/common/DividerTabs";
 import ExpensesData from "../data/expenses.json";
 import Expense from "../components/expenses/Expense";
 import Balances from "../components/expenses/Balances";
-import NewButton from "../components/common/NewButton";
 
 const Expenses = () => {
   const expensesData = ExpensesData;
@@ -67,7 +66,6 @@ const Expenses = () => {
           </div>
         )}
       </div>
-      {activeTab === 0 && <NewButton path={"/expenses/new"} />}
       <BottomBar />
     </div>
   );

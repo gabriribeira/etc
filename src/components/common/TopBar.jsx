@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
-import { RxDotsHorizontal } from "react-icons/rx";
 import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
+import NewButton from "./NewButton";
+import { RxDotsHorizontal } from "react-icons/rx";
 
 const TopBar = ({ description }) => {
   const [user, setUser] = useState(null);
@@ -78,6 +79,12 @@ const TopBar = ({ description }) => {
           >
             <RxDotsHorizontal />
           </button>
+          {(location.pathname == "/expenses" ||
+            location.pathname == "/lists") && (
+            <button type="button" className="text-2xl z-[101]">
+              <NewButton path={"/expenses/new"} />
+            </button>
+          )}
         </div>
         <CSSTransition
           in={showSettings === true}
