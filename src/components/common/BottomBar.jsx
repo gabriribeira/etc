@@ -40,7 +40,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
         <ChangeHouseholdOverlay closeOverlay={() => setOverlay(false)} />
       )}
       <div className="h-[80px] z-[90]"></div>
-      <div className="fixed bottom-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-4xl z-[90]">
+      <div className="fixed bottom-0 left-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-4xl z-[90]">
         <Link
           to="/expenses"
           className={`flex flex-col items-center leading-5 ${
