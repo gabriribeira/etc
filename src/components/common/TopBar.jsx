@@ -9,6 +9,7 @@ import { RxDotsHorizontal } from "react-icons/rx";
 
 const TopBar = ({ description }) => {
   const [user, setUser] = useState(null);
+  const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -46,9 +47,13 @@ const TopBar = ({ description }) => {
   }, [location]);
 
   return (
-    <div className={`flex flex-col sticky top-0 w-screen ${!showBackButton && "pb-5"} px-5 pt-3 z-[100] bg-white`}>
+    <div
+      className={`flex flex-col sticky top-0 w-screen ${
+        !showBackButton && "pb-5"
+      } px-5 pt-3 z-[100] bg-white`}
+    >
       <div className="flex items-center justify-between gap-x-2 relative">
-        {user && (
+        {user && !userProfileRegex.test(location.pathname) && location.pathname !== `/users/${user.id}` ? (
           <Link
             to={`/users/${user.id}`}
             className="flex items-center gap-x-3 z-[101]"
@@ -60,6 +65,10 @@ const TopBar = ({ description }) => {
               className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
             />
           </Link>
+        ) : (
+          <div className="mt-2 z-[101]">
+            <BackButton />
+          </div>
         )}
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <img
