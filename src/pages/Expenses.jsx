@@ -10,7 +10,7 @@ const Expenses = () => {
   const expensesData = ExpensesData;
   const [activeTab, setActiveTab] = useState(0);
   const [expenses, setExpenses] = useState(null);
-  const [authHousehold, setAuthHousehold] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -22,20 +22,20 @@ const Expenses = () => {
       }
       return null;
     };
-    const storedHousehold = getCookieValue("household");
-    if (storedHousehold) {
-      setAuthHousehold(storedHousehold);
+    const storedUser = getCookieValue("user");
+    if (storedUser) {
+      setAuthUser(storedUser);
     }
   }, []);
   useEffect(() => {
-    if (expensesData && authHousehold) {
+    if (expensesData && authUser) {
       const expensesAux = expensesData
-        .filter((expense) => expense.household_id === authHousehold.id)
+        .filter((expense) => expense.user_id === authUser.id  || (expense.users && expense.users.includes(authUser.id)))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
       setExpenses(expensesAux);
     }
-  }, [expensesData, authHousehold]);
+  }, [expensesData, authUser]);
 
   return (
     <div className="relative bg-white min-h-screen">
