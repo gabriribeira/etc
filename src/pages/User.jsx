@@ -69,11 +69,11 @@ const User = () => {
       <div>
         <TopBar />
         <div className="flex flex-col">
-          <div className="flex flex-col bg-black10 text-center relative">
+          <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
             {visitorIsAuthUser && (
               <Link
                 to={"/households/household/edit"}
-                className="text-blue font-semibold text-base absolute top-3 right-4"
+                className="text-white font-light text-sm absolute top-3 right-3"
               >
                 edit
               </Link>
@@ -83,10 +83,10 @@ const User = () => {
                 //eslint-disable-next-line
                 src={require(`../assets/data/users/${user.img}`)}
                 alt="Household Profile Picture"
-                className="object-center object-cover rounded-full w-[150px] h-[150px]"
+                className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
               />
-              <h1 className="font-bold text-xl mt-2">{user.name}</h1>
-              <p className="font-light text-base">@{user.username}</p>
+              <h1 className="font-normal text-xl text-white mt-2">{user.name}</h1>
+              <p className="font-light text-sm text-white">@{user.username}</p>
             </div>
           </div>
           <div className="flex flex-col px-5 mt-6">

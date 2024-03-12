@@ -6,10 +6,10 @@ import { SlArrowDown } from "react-icons/sl";
 const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
   return (
     <>
-      <div className="flex flex-col bg-black10 text-center relative">
+      <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20  text-center relative">
         <Link
           to={"/households/household/edit"}
-          className="text-blue font-semibold text-base absolute top-3 right-4"
+          className="text-white font-light text-sm absolute top-3 right-3"
         >
           edit
         </Link>
@@ -18,18 +18,18 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
             //eslint-disable-next-line
             src={require(`../../assets/data/households/${household.img}`)}
             alt="Household Profile Picture"
-            className="object-center object-cover rounded-full w-[150px] h-[150px]"
+            className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
           />
-          <div className="flex items-center gap-x-2">
-            <h1 className="font-bold text-xl mt-2">{household.name}</h1>
+          <div className="flex items-center gap-x-2 text-white">
+            <h1 className="font-normal text-xl mt-2">{household.name}</h1>
             <button
               onClick={openOverlayFromParent}
-              className="text-2xl text-black mt-2"
+              className="text-2xl text-white mt-2"
             >
               <SlArrowDown />
             </button>
           </div>
-          <p className="font-light text-base">{users.length} Members</p>
+          <p className="font-light text-sm text-white">{users.length} Members</p>
         </div>
       </div>
       <div className="flex flex-col px-5 mt-6">
