@@ -86,7 +86,7 @@ const SustainableGoal = () => {
         {tags &&
           tags.map((tag, index) => (
             <div
-              className="rounded-2xl border-2 border-green text-green text-base py-1 px-2"
+              className="rounded-2xl text-white bg-green bg-gradient-to-r from-green to-white/30 text-base py-1 px-3"
               key={index}
             >
               {tag.title}
@@ -94,8 +94,8 @@ const SustainableGoal = () => {
           ))}
       </div>
       {householdGoal && householdGoalTimes && (
-        <div className="flex flex-col bg-green/80 rounded-2xl p-3 text-white gap-y-3">
-          <h2 className="text-lg font-light text-black">{goal.goal.slug}</h2>
+        <div className="flex flex-col bg-green bg-gradient-to-br from-black/30 to-white/70 rounded-2xl p-5 text-white gap-y-3">
+          <h2 className="text-lg font-medium text-white">{goal.goal.slug}</h2>
           <img
             //eslint-disable-next-line
             src={require(`../../assets/data/goals/${goal.goal.img}`)}
@@ -103,18 +103,18 @@ const SustainableGoal = () => {
             className="w-full object-cover"
           />
           <div className="flex flex-col">
-            <h1 className="font-semibold text-2xl text-black">
+            <h1 className="font-medium text-2xl text-black">
               {goal.goal.title}
             </h1>
-            <p className="font-light text-sm text-black">{goal.goal.details}</p>
+            <p className="font-normal text-sm text-black">{goal.goal.details}</p>
           </div>
           <div className="flex flex-col mb-3">
-            <p className="text-white font-light text-sm mb-1">
+            <p className="text-black font-base text-sm mb-1">
               {(householdGoalTimes * 100) / householdGoal.amount}%
             </p>
             <ProgressBar progress={householdGoalTimes} />
           </div>
-          <Button label={"Increment"} action={handleIncrement} stroke={true} />
+          <Button label={"Increment"} action={handleIncrement} />
         </div>
       )}
     </div>

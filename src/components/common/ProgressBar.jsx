@@ -32,9 +32,9 @@ const ProgressBar = ({ progress }) => {
     }
   };
   return (
-    <div className="w-full h-2 bg-white rounded-full">
+    <div className="w-full h-3 bg-white rounded-full">
       <div
-        className={`${progressStyle(progress)} h-full bg-green60 rounded-full`}
+        className={`${progressStyle(progress)} h-full bg-black bg-gradient-to-r from-black to-green rounded-full`}
       ></div>
     </div>
   );
