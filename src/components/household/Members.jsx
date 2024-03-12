@@ -10,7 +10,7 @@ const Members = ({ users, admins }) => {
       {users.map((user, index) => (
         <div
           key={index}
-          className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white rounded-2xl p-3"
+          className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white shadow-lg rounded-2xl p-3"
         >
           <Link to={`/users/${user.id}`} className="flex items-center gap-x-3">
             <img
