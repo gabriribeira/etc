@@ -49,10 +49,10 @@ const Authentication = () => {
             <div className="flex items-center ">
               <button
                 type="button"
-                className={`mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black ${rememeberMe ? "bg-black80" : "bg-white"} focus:outline-none focus:border-black`}
+                className={`mr-1 rounded-sm w-[15px] h-[15px] border-[1px] border-black80 ${rememeberMe ? "bg-black80" : "bg-white"} focus:outline-none focus:border-black80`}
                 onClick={() => setRememberMe(!rememeberMe)}
               ></button>
-              <p className="font-light text-sm text-black70">Remember me</p>
+              <p className="font-light text-sm text-black80">Remember me</p>
             </div>
             <button type="button" className="font-light underline text-sm text-black70">
               Forgot password?

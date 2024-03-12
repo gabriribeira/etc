@@ -18,7 +18,7 @@ const Input = ({ label, value, onChange, error }) => {
             id={label}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black80 text-black w-full bg-white"
+            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black50 text-black w-full bg-white"
             placeholder={label}
             rows="3"
           />
@@ -38,7 +38,7 @@ const Input = ({ label, value, onChange, error }) => {
               value != ""
                 ? "text-xl"
                 : "text-lg"
-            } placeholder:text-black80 text-black w-full bg-white`}
+            } placeholder:text-black50 text-black w-full bg-white`}
             placeholder={label}
           />
         )}
