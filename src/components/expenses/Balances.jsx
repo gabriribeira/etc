@@ -86,7 +86,7 @@ const Balances = () => {
                   expenses: handleDetailsClick(user),
                 }}
                 key={user.id}
-                className={`bg-black90 bg-gradient-to-r from-black90 to-white/30 shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[180px]`}
+                className={`bg-black90 bg-gradient-to-r from-black90 to-white/30 shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[160px]`}
               >
                 <div className="flex flex-col justify-end h-full">
                   <h2 className="text-lg text-white font-normal">

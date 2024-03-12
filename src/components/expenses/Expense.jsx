@@ -10,7 +10,7 @@ const Expense = ({ expense }) => {
   return (
     <div
       className={`${expense.paid ? "bg-black90 bg-gradient-to-r from-black90 to-white/30 shadow-lg" : "bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40"
-        } rounded-2xl flex justify-between items-center h-[180px] w-full p-3`}
+        } rounded-2xl flex justify-between items-center h-[160px] w-full p-3`}
     >
       <div className={`flex flex-col justify-between h-full text-white`}>
         <h2 className="text-xl font-normal">{expense.title}</h2>
