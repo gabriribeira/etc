@@ -6,8 +6,10 @@ import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
 import NewButton from "./NewButton";
 import { RxDotsHorizontal } from "react-icons/rx";
+import ListsData from '../../data/lists.json';
 
 const TopBar = ({ description }) => {
+  const Lists = ListsData;
   const [user, setUser] = useState(null);
   const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
@@ -53,7 +55,9 @@ const TopBar = ({ description }) => {
       } px-5 pt-3 z-[100] bg-white`}
     >
       <div className="flex items-center justify-between gap-x-2 relative">
-        {user && !userProfileRegex.test(location.pathname) && location.pathname !== `/users/${user.id}` ? (
+        {user &&
+        !userProfileRegex.test(location.pathname) &&
+        location.pathname !== `/users/${user.id}` ? (
           <Link
             to={`/users/${user.id}`}
             className="flex items-center gap-x-3 z-[101]"
@@ -88,10 +92,14 @@ const TopBar = ({ description }) => {
           >
             <RxDotsHorizontal />
           </button>
-          {(location.pathname == "/expenses" ||
-            location.pathname == "/lists") && (
+          {location.pathname == "/expenses" && (
             <button type="button" className="text-2xl z-[101] text-black">
-              <NewButton path={"/expenses/new"} />
+              <NewButton path={`${location.pathname}/new`} />
+            </button>
+          )}
+          {(location.pathname == "/lists") && (
+            <button type="button" className="text-2xl z-[101] text-black">
+              <NewButton path={`/lists/${Lists.length + 1}`} />
             </button>
           )}
         </div>

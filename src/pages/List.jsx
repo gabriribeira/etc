@@ -54,11 +54,10 @@ const List = () => {
   };
   useEffect(() => {
     if (location.pathname && location.pathname.split("/")[2] && listsData) {
-      console.log(location.pathname.split("/")[2]);
       const list = listsData.filter(
         (list) => list.id == location.pathname.split("/")[2]
       );
-      setList(list[0]);
+      setList(list[0] );
     }
   }, [location.pathname, listsData]);
   useEffect(() => {
@@ -70,7 +69,7 @@ const List = () => {
   }, [list, itemsData, refresh]);
   return (
     <div className="bg-white min-h-screen">
-      <TopBar />
+      <TopBar  />
       {list && (
         <div className="flex flex-col px-5 fade-in">
           <div className="flex items-center">
