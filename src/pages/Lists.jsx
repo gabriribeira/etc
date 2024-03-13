@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import SearchFilter from "../components/common/SearchFilter";
-import Filter from "../components/common/Filter";
 import ShoppingList from "../components/lists/ShoppingList";
 import ListsData from "../data/lists.json";
 
@@ -10,9 +8,6 @@ const Lists = () => {
   const listsData = ListsData;
   const [lists, setLists] = useState(null);
   const [authHousehold, setAuthHousehold] = useState(null);
-  const handleFilterClick = () => {
-    console.log("Filter Clicked");
-  };
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -42,10 +37,6 @@ const Lists = () => {
     <div className="relative bg-white min-h-screen">
       <TopBar />
       <div className="flex flex-col px-5 fade-in">
-        <div className="flex items-center">
-          <SearchFilter />
-          <Filter onClick={handleFilterClick} />
-        </div>
         <div className="flex flex-col gap-y-3 mt-5">
           {lists &&
             lists.length > 0 &&
