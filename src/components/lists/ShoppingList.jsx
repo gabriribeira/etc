@@ -36,7 +36,7 @@ const ShoppingList = ({ list }) => {
           )}
         </div>
       </div>
-      <div className="text-3xl text-white">
+      <div className="text-2xl text-white">
         <PiLockSimpleOpenThin />
       </div>
     </Link>
