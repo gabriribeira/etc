@@ -4,9 +4,8 @@ import ListsData from "../data/lists.json";
 import ItemsData from "../data/items.json";
 import { useLocation, Link } from "react-router-dom";
 import TopBar from "../components/common/TopBar";
-import SearchFilter from "../components/common/SearchFilter";
+// import SearchFilter from "../components/common/SearchFilter";
 import { SlArrowRight } from "react-icons/sl";
-import Filter from "../components/common/Filter";
 import Item from "../components/lists/Item";
 
 const List = () => {
@@ -17,9 +16,6 @@ const List = () => {
   const [refresh, setRefresh] = useState(true);
   const [newItem, setNewItem] = useState("");
   const location = useLocation();
-  const handleFilterClick = () => {
-    console.log("Filter Clicked");
-  };
   const handleNewItem = (e) => {
     e.preventDefault();
     const newItemJson = {
@@ -57,7 +53,7 @@ const List = () => {
       const list = listsData.filter(
         (list) => list.id == location.pathname.split("/")[2]
       );
-      setList(list[0] );
+      setList(list[0]);
     }
   }, [location.pathname, listsData]);
   useEffect(() => {
@@ -69,41 +65,44 @@ const List = () => {
   }, [list, itemsData, refresh]);
   return (
     <div className="bg-white min-h-screen">
-      <TopBar  />
       {list && (
-        <div className="flex flex-col px-5 fade-in">
-          <div className="flex items-center">
-            <SearchFilter />
-            <Filter onClick={handleFilterClick} />
-          </div>
-          <div className="flex flex-col w-full mt-6 gap-y-3">
-            <div className="flex text-white bg-black bg-gradient-to-br from-black90 to-white/40 px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
-              <form
-                className="flex gap-x-3 w-full items-center h-full"
-                onSubmit={handleNewItem}
-              >
-                <input
-                  className="text-base font-light bg-transparent w-full placeholder-white placeholder:font-light font-normal focus:border-b-2 focus:border-white focus:outline-none transition-all duration-200 mr-5"
-                  placeholder="Add a new item to the list"
-                  value={newItem}
-                  onChange={(e) => setNewItem(e.target.value)}
-                />
-              </form>
-              <Link
-                to={`/lists/${list.id}/item/${0}`}
-                className="text-2xl text-white h-full flex items-center"
-              >
-                <SlArrowRight />
-              </Link>
+        <>
+          <TopBar listTitle={list ? list.title : ""} />
+          <div className="flex flex-col px-5 fade-in">
+            <div className="flex items-center">
+              {/* {<SearchFilter />} */}
+              {/* <Filter onClick={handleFilterClick} /> */}
             </div>
-            <div className="flex flex-col-reverse gap-y-3">
-              {items &&
-                items.map((item, index) => (
-                  <Item item={item} key={index} list_id={list.id} />
-                ))}
+            <div className="flex flex-col w-full mt-6 gap-y-3">
+              <div className="flex text-white bg-black bg-gradient-to-br from-black90 to-white/40 px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
+                <form
+                  className="flex gap-x-3 w-full items-center h-full"
+                  onSubmit={handleNewItem}
+                >
+                  <input
+                    className="text-base font-light bg-transparent w-full placeholder-white placeholder:font-light font-normal focus:border-b-2 focus:border-white focus:outline-none transition-all duration-200 mr-5"
+                    placeholder="Add a new item to the list"
+                    value={newItem}
+                    onChange={(e) => setNewItem(e.target.value)}
+                    autoFocus
+                  />
+                </form>
+                <Link
+                  to={`/lists/${list.id}/item/${0}`}
+                  className="text-2xl text-white h-full flex items-center"
+                >
+                  <SlArrowRight />
+                </Link>
+              </div>
+              <div className="flex flex-col-reverse gap-y-3">
+                {items &&
+                  items.map((item, index) => (
+                    <Item item={item} key={index} list_id={list.id} />
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
       <BottomBar />
     </div>

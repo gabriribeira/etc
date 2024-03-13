@@ -6,15 +6,18 @@ import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
 import NewButton from "./NewButton";
 import { RxDotsHorizontal } from "react-icons/rx";
-import ListsData from '../../data/lists.json';
+import ListsData from "../../data/lists.json";
+import Filter from "./Filter";
 
-const TopBar = ({ description }) => {
+const TopBar = ({ description, listTitle }) => {
   const Lists = ListsData;
   const [user, setUser] = useState(null);
   const userProfileRegex = /\/(users)\/\d+/;
+  const listRegex = /\/lists\/\d+/;
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [listTitleInput, setListTitleInput] = useState(listTitle)
 
   useEffect(() => {
     const getCookieValue = (cookieName) => {
@@ -29,14 +32,20 @@ const TopBar = ({ description }) => {
     getCookieValue("user");
   }, []);
 
+  const handleFilterClick = () => {
+    console.log("Filter Clicked");
+  };
+
   const isEditPage = () => {
     const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit|item)/;
     const balancePageRegex = /\/expenses\/balance/;
     const newExpensePageRegex = /\/expenses\/new/;
+    const listRegex = /\/lists\/\d+/;
     return (
       editPageRegex.test(location.pathname) ||
       balancePageRegex.test(location.pathname) ||
-      newExpensePageRegex.test(location.pathname)
+      newExpensePageRegex.test(location.pathname) ||
+      listRegex.test(location.pathname)
     );
   };
 
@@ -97,10 +106,13 @@ const TopBar = ({ description }) => {
               <NewButton path={`${location.pathname}/new`} />
             </button>
           )}
-          {(location.pathname == "/lists") && (
+          {location.pathname == "/lists" && (
             <button type="button" className="text-2xl z-[101] text-black">
               <NewButton path={`/lists/${Lists.length + 1}`} />
             </button>
+          )}
+          {listRegex.test(location.pathname) && (
+            <Filter onClick={handleFilterClick} />
           )}
         </div>
         <CSSTransition
@@ -119,8 +131,13 @@ const TopBar = ({ description }) => {
         </CSSTransition>
       </div>
       {showBackButton && (
-        <div className="mt-8">
+        <div
+          className={`mt-8 ${
+            listTitle && "w-full flex items-center"
+          }`}
+        >
           <BackButton />
+          {listTitle && <input type={"text"} className="text-xl font-normal focus:border-b-2 focus:border-black text-black w-full bg-transparent focus:outline-none transition-all duration-200" value={listTitleInput} onChange={(e) => setListTitleInput(e.target.value)} />}
         </div>
       )}
       {description && (
@@ -133,6 +150,7 @@ const TopBar = ({ description }) => {
 TopBar.propTypes = {
   text: PropTypes.string,
   description: PropTypes.string,
+  listTitle: PropTypes.string,
 };
 
 export default TopBar;

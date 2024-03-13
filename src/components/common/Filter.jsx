@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Filter = ({ onClick }) => {
   return (
-    <div className="flex items-center justify-center ml-2">
+    <div className="flex items-center justify-center">
       <button
         className="flex items-center justify-center bg-white rounded-full w-10 h-10"
         onClick={onClick}
