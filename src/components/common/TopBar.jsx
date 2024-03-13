@@ -133,11 +133,11 @@ const TopBar = ({ description, listTitle }) => {
       {showBackButton && (
         <div
           className={`mt-8 ${
-            listTitle && "w-full flex items-center"
+            listTitle && "w-full flex items-center relative"
           }`}
         >
           <BackButton />
-          {listTitle && <input type={"text"} className="text-xl font-normal focus:border-b-2 focus:border-black text-black w-full bg-transparent focus:outline-none transition-all duration-200" value={listTitleInput} onChange={(e) => setListTitleInput(e.target.value)} />}
+          {listTitle && <div className="absolute left-0 top-0 flex items-center w-full h-full justify-center"><input type={"text"} className="text-xl font-medium focus:border-b-2 focus:border-black text-black bg-transparent focus:outline-none transition-all duration-200 w-full text-center" value={listTitleInput} onChange={(e) => setListTitleInput(e.target.value)} /></div>}
         </div>
       )}
       {description && (
