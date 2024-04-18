@@ -89,7 +89,7 @@ const NewExpense = () => {
             label={"Members"}
           />
           <Input label="Date" value={date} onChange={setDate} />
-          <Input label="Details" value={details} onChange={setDetails} />
+          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
           <Button
             label="Create Expense"
             action={handleCreateExpense}

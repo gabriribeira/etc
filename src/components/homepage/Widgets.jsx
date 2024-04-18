@@ -273,24 +273,10 @@ const Widgets = () => {
         </p>
       </Link>
       <div className="flex w-full gap-x-3 text-white">
-        <Link
-          to={"/tasks"}
-          className="w-[50%] bg-black90 rounded-2xl p-3 h-[200px] flex flex-col justify-between relative"
-        >
-          <WidgetIcon icon={"tasks"} />
-          <h2 className="text-base font-light">Tasks</h2>
-          <div className="flex flex-col">
-            <h1 className="font-semibold text-4xl">
-              {completedTasks}/{tasks}
-            </h1>
-            <p className="font-light text-base">
-              {completedTasks == tasks ? "nothing to do" : "left to complete"}
-            </p>
-          </div>
-        </Link>
+        
         <Link
           to={"/expenses"}
-          className="w-[50%] bg-salmon rounded-2xl p-3 h-[200px] flex flex-col justify-between relative"
+          className="w-full bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40 rounded-2xl p-3 h-[200px] flex flex-col justify-between relative"
         >
           <WidgetIcon icon={"expenses"} />
           <h2 className="text-base font-light">Expenses</h2>
@@ -316,7 +302,7 @@ const Widgets = () => {
       {householdGoal && authHousehold ? (
         <Link
           to={`/households/${authHousehold.id}`}
-          className="flex flex-col bg-green rounded-2xl p-3 text-white relative"
+          className="flex flex-col bg-green bg-gradient-to-l shadow-lg from-green to-black90/40 rounded-2xl p-3 text-white relative"
         >
           <WidgetIcon icon={"goal"} />
           <h2 className="text-base font-light">Household Goal</h2>

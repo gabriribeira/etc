@@ -17,7 +17,7 @@ const TopBar = ({ description, listTitle }) => {
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [listTitleInput, setListTitleInput] = useState(listTitle)
+  const [listTitleInput, setListTitleInput] = useState(listTitle);
 
   useEffect(() => {
     const getCookieValue = (cookieName) => {
@@ -32,19 +32,21 @@ const TopBar = ({ description, listTitle }) => {
     getCookieValue("user");
   }, []);
 
-  const handleFilterClick = () => {
-    console.log("Filter Clicked");
-  };
+ 
 
   const isEditPage = () => {
     const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit|item)/;
     const balancePageRegex = /\/expenses\/balance/;
     const newExpensePageRegex = /\/expenses\/new/;
+    const newListPageRegex = /\/lists\/new/;
+    const newHouseholdPageRegex = /\/households\/new/;
     const listRegex = /\/lists\/\d+/;
     return (
       editPageRegex.test(location.pathname) ||
       balancePageRegex.test(location.pathname) ||
       newExpensePageRegex.test(location.pathname) ||
+      newListPageRegex.test(location.pathname) ||
+      newHouseholdPageRegex.test(location.pathname) ||
       listRegex.test(location.pathname)
     );
   };
@@ -58,6 +60,7 @@ const TopBar = ({ description, listTitle }) => {
   }, [location]);
 
   return (
+    <header>
     <div
       className={`flex flex-col sticky top-0 w-screen ${
         !showBackButton && "pb-5"
@@ -98,25 +101,37 @@ const TopBar = ({ description, listTitle }) => {
               setShowSettings(!showSettings);
             }}
             className="text-2xl z-[101]"
+            aria-label="Button Settings"
           >
             <RxDotsHorizontal />
           </button>
+
           {location.pathname == "/expenses" && (
             <button type="button" className="text-2xl z-[101] text-black">
-              <NewButton path={`${location.pathname}/new`} />
+            
+              <NewButton path={`${location.pathname}/new`} aria="New Expense" />
+            
             </button>
           )}
           {location.pathname == "/lists" && (
             <button type="button" className="text-2xl z-[101] text-black">
-              <NewButton path={`/lists/${Lists.length + 1}`} />
+              <NewButton path={`/lists/${Lists.length + 1}`} aria="New List" />
+            </button>
+          )}
+          {location.pathname == "/lists/new" && (
+            <button type="button" className="text-2xl z-[101] text-black">
+              <NewButton path={`/lists/${Lists.length + 1}`} aria="New List" />
             </button>
           )}
           {listRegex.test(location.pathname) && (
-            <Filter onClick={handleFilterClick} />
+           
+              <Filter />
+            
           )}
         </div>
+
         <CSSTransition
-          in={showSettings === true}
+          in={showSettings}
           timeout={500}
           classNames="menu-primary"
           className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
@@ -124,12 +139,16 @@ const TopBar = ({ description, listTitle }) => {
         >
           <Overlay
             label="SETTINGS"
-            options={["About", "Logout"]}
-            links={["/about", "/login"]}
+            options={["Profile", "Notifications", "About", "Logout"]}
+            links={["/users", "/", "/about", "/login"]}
             hideOverlay={() => setShowSettings(false)}
           />
         </CSSTransition>
+
+        
+      
       </div>
+
       {showBackButton && (
         <div
           className={`mt-8 ${
@@ -137,13 +156,14 @@ const TopBar = ({ description, listTitle }) => {
           }`}
         >
           <BackButton />
-          {listTitle && <div className="absolute left-0 top-0 flex items-center w-full h-full justify-center"><input type={"text"} className="text-xl font-medium focus:border-b-2 focus:border-black text-black bg-transparent focus:outline-none transition-all duration-200 w-full text-center" value={listTitleInput} onChange={(e) => setListTitleInput(e.target.value)} /></div>}
+          {listTitle && <div className="absolute left-0 top-0 flex items-center w-full h-full justify-center"><input type={"text"} className="text-xl font-medium focus:border-b-2 focus:border-black text-black bg-transparent focus:outline-none transition-all duration-200 w-full text-center" value={listTitleInput} onChange={(e) => setListTitleInput(e.target.value)} aria-label="List Title" /></div>}
         </div>
       )}
       {description && (
         <p className="text-black60 text-base mt-2">{description}</p>
       )}
     </div>
+    </header>
   );
 };
 

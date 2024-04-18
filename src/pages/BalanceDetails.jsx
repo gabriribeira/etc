@@ -36,7 +36,7 @@ const BalanceDetails = () => {
       <div className="relative bg-white">
         <TopBar />
         <div className="flex flex-col px-5 mt-6 fade-in">
-          <div className="bg-black90 bg-gradient-to-r shadow-lg from-black90 to-white/30 rounded-2xl flex items-end relative text-white p-3 relative h-[160px]">
+          <div className="bg-black90  rounded-2xl flex items-end relative text-white p-3 relative h-[160px]">
             <div className="flex top-3 right-3 absolute">
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
                 <img

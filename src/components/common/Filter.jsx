@@ -7,6 +7,7 @@ const Filter = ({ onClick }) => {
       <button
         className="flex items-center justify-center bg-white rounded-full w-10 h-10"
         onClick={onClick}
+        aria-label="Filter"
       >
         <svg
           className="w-6 h-6 text-black80"

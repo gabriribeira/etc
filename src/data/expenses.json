@@ -42,5 +42,16 @@
     "household_id": 1,
     "paid": true,
     "date": "2024-01-03"
+  },
+  {
+    "id": 5,
+    "title": "Almoço do Bar DECA",
+    "value": 15.30,
+    "details": "Não esqueçam de pagar o almoço do bar deca!",
+    "user_id": 5,
+    "users": [1, 2, 3],
+    "household_id": 1,
+    "paid": true,
+    "date": "2024-03-13"
   }
 ]
