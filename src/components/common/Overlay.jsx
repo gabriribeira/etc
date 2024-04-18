@@ -7,9 +7,13 @@ import { LuUser } from "react-icons/lu";
 import { RiNotification4Line } from "react-icons/ri";
 import { SlArrowRight } from "react-icons/sl";
 import { CiLogout } from "react-icons/ci";
+import { FiCheck } from "react-icons/fi";
+import { HiOutlineTrash } from "react-icons/hi";
+import { BiPencil } from "react-icons/bi";
+import { RxCross2 } from "react-icons/rx";
 import Cookies from "js-cookie";
 
-const Overlay = ({ label, options, links, hideOverlay }) => {
+const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     Cookies.remove("user");
@@ -18,22 +22,22 @@ const Overlay = ({ label, options, links, hideOverlay }) => {
   };
   
   useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (
-				!document
-					.getElementById('overlay')
-					.contains(event.target)
-			) {
-				hideOverlay();
-			}
-		};
+    const handleClickOutside = (event) => {
+      if (
+        !document
+          .getElementById('overlay')
+          .contains(event.target)
+      ) {
+        hideOverlay();
+      }
+    };
 
-		window.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('mousedown', handleClickOutside);
 
-		return () => {
-			window.removeEventListener('mousedown', handleClickOutside);
-		};
-	}, []);
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="fixed h-screen w-screen top-0 left-0 z-[102]">
@@ -50,19 +54,28 @@ const Overlay = ({ label, options, links, hideOverlay }) => {
           <div className="flex items-center gap-x-3">
             <h1 className="font-semibold text-xl text-black">{label}</h1>
           </div>
-          {options.map((option, index) =>
+          {options.map((option, index) => 
             option !== "Logout" ? (
               <Link
                 key={index}
                 to={links[index]}
                 action={hideOverlay}
-                className="w-full text-lg flex items-center relative gap-y-3 gap-x-3"
+                className={`w-full text-lg flex items-center relative gap-y-3 gap-x-3 ${
+                  (option === "Delete shopping list" || option === "Delete item") ? "text-red-600" : ""
+                }`}
+                onClick={onClicks ? onClicks[index] : null} // Adicionando manipulador de evento de clique apenas se onClicks for fornecido
               >
                 <div className="text-2xl">
                   {option === "About" && <GoInfo />}
                   {option === "Notifications" && <RiNotification4Line />}
                   {option === "Profile" && <LuUser />}
                   {option === "Logout" && <CiLogout />}
+                  {option === "Close shopping list" && <RxCross2 />}
+                  {option === "Edit shopping list" && <BiPencil />}
+                  {option === "Edit item details" && <BiPencil />}
+                  {option === "Delete shopping list" && <HiOutlineTrash />}
+                  {option === "Delete item" && <HiOutlineTrash />}
+                  {option === "Reopen shopping list" && <FiCheck />}
                 </div>
                 {option}
                 <div className="absolute right-3">
@@ -100,6 +113,7 @@ Overlay.propTypes = {
   options: PropTypes.array.isRequired,
   links: PropTypes.string.isRequired,
   hideOverlay: PropTypes.func.isRequired,
+  onClicks: PropTypes.array, // Tornando a propriedade onClicks opcional
 };
 
 export default Overlay;

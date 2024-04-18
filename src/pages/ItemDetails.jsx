@@ -129,27 +129,29 @@ const ItemDetails = () => {
   return (
     <div className="bg-white">
       <TopBar />
-      <div className="flex flex-col px-5 gap-y-3">
-        <Input label="Name" value={name} onChange={setName} />
-        <Input label="Value" value={value} onChange={setValue} />
-        <AmountInput
-          label="Amount"
-          value={amount}
-          onChange={setAmount}
-          valueUnit={unit}
-          onChangeUnit={setUnit}
-        />
-        <MembersInput label={"Members"} value={members} onChange={setMembers} />
-        <Input label="Details" value={details} onChange={setDetails} />
-        <Input label="Brand" value={brand} onChange={setBrand} />
-        <Input label="Store" value={store} onChange={setStore} />
-        <Button
-          label="Done"
-          action={() => {
-            handleAddItem();
-          }}
-        />
-      </div>
+      <main>
+        <div className="flex flex-col px-5 gap-y-3">
+          <Input label="Name" value={name} onChange={setName} />
+          <Input label="Value" value={value} onChange={setValue} />
+          <AmountInput
+            label="Amount"
+            value={amount}
+            onChange={setAmount}
+            valueUnit={unit}
+            onChangeUnit={setUnit}
+          />
+          <MembersInput label={"Members"} value={members} onChange={setMembers} />
+          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
+          <Input label="Brand" value={brand} onChange={setBrand} />
+          <Input label="Store" value={store} onChange={setStore} />
+          <Button
+            label="Done"
+            action={() => {
+              handleAddItem();
+            }}
+          />
+        </div>
+      </main>
       <BottomBar />
     </div>
   );

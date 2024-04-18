@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import UsersData from "../../data/users.json";
 import { GoPencil } from "react-icons/go";
-import TopBar from "./TopBar";
 import Button from "./Button";
 
 //eslint-disable-next-line
@@ -30,7 +29,7 @@ const MembersInput = ({ value, onChange, label }) => {
     <>
       {openOverlay && (
         <div className="fixed w-screen h-[100vh] bg-white top-0 left-0 z-10">
-          <TopBar />
+          
           <div className="flex flex-col px-5 py-3 gap-y-6">
             <div className="flex flex-col">
               <h1 className="font-semibold text-lg">Members</h1>
@@ -65,10 +64,10 @@ const MembersInput = ({ value, onChange, label }) => {
                       className={`transition-all duration-300 text-base font-normal absolute bottom-1 left-1 rounded-full py-1 px-2 ${
                         !selectedUsers.includes(user.id)
                           ? "bg-white/80 text-black"
-                          : "text-white bg-black/60"
+                          : "text-white bg-black"
                       }`}
                     >
-                      {user.name}
+                      {user.name.split(' ')[0]}
                     </h1>
                   </button>
                 ))}
@@ -83,7 +82,7 @@ const MembersInput = ({ value, onChange, label }) => {
       )}
       <div className="flex flex-col">
         <h1 className="font-semibold text-lg">{label ? label : "Active"}</h1>
-        <div className="flex items-center gap-x-3">
+        <div className="flex flex-wrap items-center gap-x-3">
           {users &&
             users.map(
               (user, index) =>
@@ -103,10 +102,11 @@ const MembersInput = ({ value, onChange, label }) => {
             )}
           <button
             onClick={() => setOpenOverlay(true)}
-            className="w-[35px] h-[35px] rounded-full border-2 border-black text-xl flex items-center justify-center"
+            className="w-[35px] h-[35px] rounded-full bg-black text-xl flex items-center justify-center"
             type="button"
+            aria-label="Edit Members"
           >
-            <GoPencil />
+            <GoPencil color="white"  />
           </button>
         </div>
       </div>

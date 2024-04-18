@@ -7,7 +7,7 @@ const ConfirmationDialog = ({ title, details, label, bg, showConfirmation, setSh
     <CSSTransition
       in={showConfirmation}
       timeout={500}
-      unmountOnExit 
+      unmountOnExit
     >
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[102] bg-black bg-opacity-50">
         <div className="bg-white p-5 rounded-lg shadow-lg flex flex-col items-center justify-center">

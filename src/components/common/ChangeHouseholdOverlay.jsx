@@ -103,7 +103,7 @@ const ChangeHouseholdOverlay = ({ closeOverlay }) => {
               </button>
             ))}
         </div>
-        <Button label={"Add New"} action={closeOverlay} stroke={true} />
+        <Button label={"Add New"} to="/households/new" action={closeOverlay} stroke={true} />
       </div>
     </div>
   );

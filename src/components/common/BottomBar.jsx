@@ -39,17 +39,19 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
       {openOverlay && (
         <ChangeHouseholdOverlay closeOverlay={() => setOverlay(false)} />
       )}
+      <footer>
       <div className="h-[80px] z-[90]"></div>
       <div className="fixed bottom-0 left-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-3xl z-[90]">
-        <Link
+      <Link
           to="/expenses"
           className={`flex flex-col items-center leading-5 ${
             location.pathname === "/expenses" && "text-black"
           }`}
         >
-          {location.pathname === "/expenses" ? <IoWallet /> : <IoWalletOutline />}
+          {location.pathname.startsWith("/expenses") ? <IoWallet /> : <IoWalletOutline />}
           <p className="text-[12px]">Expenses</p>
-        </Link>
+      </Link>
+        
         {changeHousehold ? (
           <button
             className={`flex flex-col items-center leading-5 ${
@@ -64,7 +66,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
                 src={require(
                   `../../assets/data/households/${authHousehold.img}`
                 )}
-                alt="Household"
+                alt="Menu Household"
                 className="w-[35px] h-[35px] rounded-full object-cover shrink-0"
               />
             ) : (
@@ -86,7 +88,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
                 src={require(
                   `../../assets/data/households/${authHousehold.img}`
                 )}
-                alt="Household"
+                alt="Menu Household"
                 className="w-[30px] h-[30px] rounded-full object-cover shrink-0"
               />
             ) : (
@@ -101,7 +103,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             location.pathname === "/lists" && "text-black"
           }`}
         >
-          {location.pathname === "/lists" ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
+          {location.pathname.startsWith("/lists") ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
           <p className="text-[12px]">Lists</p>
         </Link>
         {/* <Link
@@ -123,6 +125,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
           <p className="text-[12px]">Tasks</p>
         </Link> */}
       </div>
+      </footer>
     </>
   );
 };

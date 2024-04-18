@@ -61,6 +61,7 @@ const NewHousehold = () => {
             label="Description"
             value={description}
             onChange={setDescription}
+            placeholder="Description"
           />
         </div>
         <div className="h-full my-6">
