@@ -152,7 +152,7 @@ const TopBar = ({ description, listTitle }) => {
                 onClick={handleShowFilter}
                 className="text-2xl z-[101] text-black"
               >
-                <Filter />
+                <Filter  />
               </button>
             )}
           </div>
