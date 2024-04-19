@@ -10,11 +10,11 @@ const ConfirmationDialog = ({ title, details, label, bg, showConfirmation, setSh
       unmountOnExit
     >
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[102] bg-black bg-opacity-50">
-        <div className="bg-white p-5 rounded-lg shadow-lg flex flex-col items-center justify-center">
+        <div className="bg-white p-5 mx-5 rounded-lg shadow-lg flex flex-col items-center justify-center">
           <p><strong>{title}</strong></p>
           <p className="items-center mb-3 mt-2 px-3 text-center">{details}</p>
           <div className="flex justify-end mt-3">
-            {label !== "Close" &&
+            {label !== "CloseX" &&
             <button className="bg-white border-2 border-black text-black px-8 py-2 rounded-md mr-3" style={{minWidth: '120px'}} onClick={() => setShowConfirmation(false)}>Cancel</button>
             }
             <button className={`${bg === "bg-red-600" ? "bg-red-600" : "bg-blue"} text-white px-8 py-2 rounded-md`} style={{minWidth: '120px'}} onClick={action}>{label}</button>
