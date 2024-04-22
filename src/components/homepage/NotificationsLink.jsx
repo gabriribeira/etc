@@ -7,6 +7,7 @@ const NotificationsLink = () => {
     <Link
       to={"/notifications"}
       className="text-3xl text-black absolute top-7 right-5"
+      aria-label="Notifications"
     >
       <RiNotification4Line />
     </Link>

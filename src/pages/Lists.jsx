@@ -3,6 +3,9 @@ import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import ShoppingList from "../components/lists/ShoppingList";
 import ListsData from "../data/lists.json";
+import Button from "../components/common/Button";
+import {BsStars} from 'react-icons/bs';
+
 
 const Lists = () => {
   const listsData = ListsData;
@@ -35,9 +38,28 @@ const Lists = () => {
 
   return (
     <div className="relative bg-white min-h-screen">
+      
       <TopBar />
+      
+      <main>
       <div className="flex flex-col px-5 fade-in">
         <div className="flex flex-col gap-y-3 mt-5">
+        
+          <div>
+          <Button 
+            label={
+              <span className="flex gap-x-2 justify-center items-center">
+                <BsStars color="white" size={30} />
+                Generate List With AI
+              </span>
+            }
+            bg="bg-gradient-to-r from-blue to-salmon text-white"
+            to="/lists/new"
+            aria="Generate List With AI Button"
+          />
+             
+          </div>
+        
           {lists &&
             lists.length > 0 &&
             lists.map((list, index) => (
@@ -45,7 +67,10 @@ const Lists = () => {
             ))}
         </div>
       </div>
+      </main>
+      
       <BottomBar />
+      
     </div>
   );
 };

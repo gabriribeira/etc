@@ -68,62 +68,64 @@ const User = () => {
     user && (
       <div>
         <TopBar />
-        <div className="flex flex-col">
-          <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
-            {visitorIsAuthUser && (
-              <Link
-                to={"/households/household/edit"}
-                className="text-white font-light text-sm absolute top-3 right-3"
-              >
-                edit
-              </Link>
-            )}
-            <div className="py-16 flex flex-col items-center justify-center">
-              <img
-                //eslint-disable-next-line
-                src={require(`../assets/data/users/${user.img}`)}
-                alt="Household Profile Picture"
-                className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
-              />
-              <h1 className="font-normal text-xl text-white mt-2">{user.name}</h1>
-              <p className="font-light text-sm text-white">@{user.username}</p>
-            </div>
-          </div>
-          <div className="flex flex-col px-5 mt-6">
-            <h1 className="font-semibold text-lg mb-2">Description</h1>
-            <p className="text-black text-base">{user.description}</p>
-          </div>
-          <div className="flex flex-col px-5 mt-6">
-            <h1 className="font-semibold text-lg mb-2">Households</h1>
-            <div className="flex flex-col gap-y-3">
-              {households.map((household, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white  rounded-2xl p-3 shadow-lg"
+        <main>
+          <div className="flex flex-col">
+            <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
+              {visitorIsAuthUser && (
+                <Link
+                  to={"/households/household/edit"}
+                  className="text-white font-light text-sm absolute top-3 right-3"
                 >
-                  <div className="flex items-center gap-x-3">
-                    <img
-                      //eslint-disable-next-line
-                      src={require(
-                        `../assets/data/households/${household.img}`
-                      )}
-                      alt="Household Profile Picture"
-                      className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
-                    />
-                    <p className="text-white text-lg font-base">
-                      {household.name}
-                    </p>
+                  edit
+                </Link>
+              )}
+              <div className="py-16 flex flex-col items-center justify-center">
+                <img
+                  //eslint-disable-next-line
+                  src={require(`../assets/data/users/${user.img}`)}
+                  alt="Household Profile Picture"
+                  className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                />
+                <h1 className="font-normal text-xl text-white mt-2">{user.name}</h1>
+                <p className="font-light text-sm text-white">@{user.username}</p>
+              </div>
+            </div>
+            <div className="flex flex-col px-5 mt-6">
+              <h1 className="font-semibold text-lg mb-2">Description</h1>
+              <p className="text-black text-base">{user.description}</p>
+            </div>
+            <div className="flex flex-col px-5 mt-6">
+              <h1 className="font-semibold text-lg mb-2">Households</h1>
+              <div className="flex flex-col gap-y-3">
+                {households.map((household, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white  rounded-2xl p-3 shadow-lg"
+                  >
+                    <div className="flex items-center gap-x-3">
+                      <img
+                        //eslint-disable-next-line
+                        src={require(
+                          `../assets/data/households/${household.img}`
+                        )}
+                        alt="Household Profile Picture"
+                        className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                      />
+                      <p className="text-white text-lg font-base">
+                        {household.name}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-x-3">
+                      <button type="button" className="text-white text-2xl" aria-label="Household settings">
+                        <RxDotsVertical />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-x-3">
-                    <button type="button" className="text-white text-2xl">
-                      <RxDotsVertical />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </main>
         <BottomBar />
       </div>
     )

@@ -38,34 +38,37 @@ const Expenses = () => {
   }, [expensesData, authUser]);
 
   return (
+    
     <div className="relative bg-white min-h-screen">
       <TopBar />
-      <div className="flex flex-col px-5">
-        <DividerTabs
-          tabs={["Expenses", "Balances"]}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
-        {activeTab === 0 ? (
-          <div className="flex flex-col py-5 gap-y-3 fade-in">
-            {expenses &&
-              expenses.map((expense, index) => (
-                <React.Fragment key={index}>
-                  {index === 0 || expenses[index - 1]?.date !== expense.date ? (
-                    <h1 className="font-light text-base">
-                      {formatDate(expense.date)}
-                    </h1>
-                  ) : null}
-                  <Expense expense={expense} />
-                </React.Fragment>
-              ))}
-          </div>
-        ) : (
-          <div className="flex flex-col py-3 gap-y-3 fade-in">
-            <Balances />
-          </div>
-        )}
-      </div>
+      <main>
+        <div className="flex flex-col px-5">
+          <DividerTabs
+            tabs={["Expenses", "Balances"]}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+          {activeTab === 0 ? (
+            <div className="flex flex-col py-5 gap-y-3 fade-in">
+              {expenses &&
+                expenses.map((expense, index) => (
+                  <React.Fragment key={index}>
+                    {index === 0 || expenses[index - 1]?.date !== expense.date ? (
+                      <h1 className="font-light text-base">
+                        {formatDate(expense.date)}
+                      </h1>
+                    ) : null}
+                    <Expense expense={expense} />
+                  </React.Fragment>
+                ))}
+            </div>
+          ) : (
+            <div className="flex flex-col py-3 gap-y-3 fade-in">
+              <Balances />
+            </div>
+          )}
+        </div>
+      </main>
       <BottomBar />
     </div>
   );

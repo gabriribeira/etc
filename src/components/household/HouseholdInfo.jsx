@@ -10,6 +10,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
         <Link
           to={"/households/household/edit"}
           className="text-white font-light text-sm absolute top-3 right-3"
+          aria-label="Edit household"
         >
           edit
         </Link>
@@ -25,6 +26,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
             <button
               onClick={openOverlayFromParent}
               className="text-2xl text-white mt-2"
+              aria-label="Change household button"
             >
               <SlArrowDown />
             </button>

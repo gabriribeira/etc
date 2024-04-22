@@ -41,12 +41,22 @@
   },
   {
     "id": 5,
-    "username": "user",
-    "name": "User",
-    "email": "user@ua.pt",
-    "description": "This is a Default User Account",
-    "img": "gabriribeira.webp",
-    "password": "user123",
-    "households": [1, 2]
+    "username": "leocoelho",
+    "name": "Leonardo Coelho",
+    "email": "leo.coelho@ua.pt",
+    "description": "Estudante de MCTW na Universidade de Aveiro.",
+    "img": "leo.webp",
+    "password": "leo123",
+    "households": [2]
+  },
+  {
+    "id": 6,
+    "username": "nathaliam",
+    "name": "Nathalia Magalhães",
+    "email": "nathalia.magalhaes@ua.pt",
+    "description": "Estudante de MCTW na Universidade de Aveiro.",
+    "img": "nathalia.webp",
+    "password": "nathalia123",
+    "households": [2]
   }
 ]

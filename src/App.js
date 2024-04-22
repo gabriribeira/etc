@@ -5,7 +5,6 @@ import Authentication from "./pages/Authentication";
 import Expense from "./pages/Expense";
 import Expenses from "./pages/Expenses";
 import Goals from "./pages/Goals";
-import Homepage from "./pages/Homepage";
 import Household from "./pages/Household";
 import InviteMembers from "./pages/InviteMembers";
 import ItemDetails from "./pages/ItemDetails";
@@ -23,6 +22,7 @@ import About from "./pages/About";
 import EditHousehold from "./pages/EditHousehold";
 import BalanceDetails from "./pages/BalanceDetails";
 import AddMembers from "./pages/AddMembers";
+import NewList from "./pages/NewList";
 // import Calendar from "./pages/Calendar";
 // import EditEvent from "./pages/EditEvent";
 // import EditTask from "./pages/EditTask";
@@ -54,13 +54,14 @@ function App() {
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<Lists />} />
           <Route path="/households/:householdId" element={<Household />} />{" "}
           {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
           <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
+          <Route path="/lists/new" element={<NewList />} /> 
           {/* <Route path="/event/new" element={<NewEvent />} /> */}
           <Route path="/expenses/new" element={<NewExpense />} />
           <Route path="/households/new" element={<NewHousehold />} />

@@ -26,7 +26,7 @@ const Members = ({ users, admins }) => {
               admins.includes(user.id) &&
                 <p className="text-white text-base font-light">Admin</p>
             }
-            <button type="button" className="text-white text-2xl"><RxDotsVertical /></button>
+            <button type="button" className="text-white text-2xl" aria-label="Edit member"><RxDotsVertical /></button>
           </div>
         </div>
       ))}

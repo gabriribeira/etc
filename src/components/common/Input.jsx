@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const Input = ({ label, value, onChange, error, placeholder }) => {
+const Input = ({ label, placeholder, value, onChange, error }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -17,6 +17,7 @@ const Input = ({ label, value, onChange, error, placeholder }) => {
             name={label}
             id={label}
             value={value}
+            aria-label={label}
             onChange={(e) => onChange(e.target.value)}
             className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-noneplaceholder:text-black50 text-black w-full bg-white"
             placeholder={placeholder ? placeholder : label}
@@ -27,6 +28,7 @@ const Input = ({ label, value, onChange, error, placeholder }) => {
             name={label}
             id={label}
             value={value}
+            aria-label= {label}
             type={
               (label === "Password" || label === "Confirm Password") && !showPassword
                 ? "password" : label === "Email" ? "email" : label == "Value" ? "number" : label == "Date" ? "date" : "text"
@@ -47,6 +49,7 @@ const Input = ({ label, value, onChange, error, placeholder }) => {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="text-xl absolute right-3"
+            aria-label="Show password"
           >
             {showPassword ? <BsEye /> : <BsEyeSlash />}
           </button>
@@ -59,10 +62,10 @@ const Input = ({ label, value, onChange, error, placeholder }) => {
 
 Input.propTypes = {
   label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
-  placeholder: PropTypes.string
 };
 
 export default Input;

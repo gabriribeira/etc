@@ -7,6 +7,8 @@ import Carolina from "../assets/data/users/carolina.webp";
 import Gabriel from "../assets/data/users/gabriribeira.webp";
 import Ines from "../assets/data/users/ines.webp";
 import Lara from "../assets/data/users/lara.webp";
+import Leo from "../assets/data/users/leo.webp";
+import Nathalia from "../assets/data/users/nathalia.webp";
 import Deca from "../assets/imgs/about/deca.webp";
 
 const About = () => {
@@ -164,7 +166,7 @@ const About = () => {
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
               />
             </div>
-            <div className="flex items-center justify-between py-6">
+            <div className="border-b-2 border-white/50 flex items-center justify-between py-6">
               <div className="flex flex-col">
                 <h3 className="font-medium text-base">Lara Mendes</h3>
                 <p className="text-white/50 font-light">laramendes@ua.pt</p>
@@ -172,6 +174,28 @@ const About = () => {
               <img
                 src={Lara}
                 alt="Lara"
+                className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+              />
+            </div>
+            <div className="border-b-2 border-white/50 flex items-center justify-between py-6">
+              <div className="flex flex-col">
+                <h3 className="font-medium text-base">Leonardo Coelho</h3>
+                <p className="text-white/50 font-light">leo.coelho@ua.pt</p>
+              </div>
+              <img
+                src={Leo}
+                alt="Leo"
+                className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+              />
+            </div>
+            <div className="flex items-center justify-between py-6">
+              <div className="flex flex-col">
+                <h3 className="font-medium text-base">Nathalia Magalhães</h3>
+                <p className="text-white/50 font-light">nathalia.magalhaes@ua.pt</p>
+              </div>
+              <img
+                src={Nathalia}
+                alt="Nathalia"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
               />
             </div>

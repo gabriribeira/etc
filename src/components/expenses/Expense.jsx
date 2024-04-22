@@ -29,7 +29,7 @@ const Expense = ({ expense }) => {
   return (
     authUser && expense &&
     <div
-      className={`${expense.user_id !== authUser.id ? "bg-black90 bg-gradient-to-r from-black90 to-white/30 shadow-lg" : "bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40"
+      className={`${expense.user_id !== authUser.id ? "bg-black90  shadow-lg" : "bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40"
         } rounded-2xl flex justify-between items-center h-[160px] w-full p-3`}
     >
       <div className={`flex flex-col justify-between h-full text-white`}>
