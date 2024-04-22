@@ -5,12 +5,30 @@ import ShoppingList from "../components/lists/ShoppingList";
 import ListsData from "../data/lists.json";
 import Button from "../components/common/Button";
 import {BsStars} from 'react-icons/bs';
+//import Filter from "../components/common/Filter";
+import { CSSTransition } from "react-transition-group";
+import FilterOverlay from "../components/common/FilterOverlay";
 
 
 const Lists = () => {
   const listsData = ListsData;
   const [lists, setLists] = useState(null);
   const [authHousehold, setAuthHousehold] = useState(null);
+  const [showFilter, setShowFilter] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+
+  const handleShowFilter = () => {
+    setShowFilter(!showFilter);
+    console.log(showFilter);
+  }
+
+  const setFilter = (newFilters) => {
+    setAppliedFilters(newFilters);
+  };
+
+  const filters = ['Lists'];
+
+
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -42,6 +60,31 @@ const Lists = () => {
       <TopBar />
       
       <main>
+      <div className="px-5 flex justify-end">
+      <button
+          type="button"
+          onClick={handleShowFilter}
+          className="text-2xl z-[101] text-black"
+      >
+        <p>Filter</p>
+      </button>
+      </div>
+
+      <CSSTransition
+          in={showFilter}
+          timeout={500}
+          classNames="filter-overlay"
+          unmountOnExit
+        >
+          <FilterOverlay
+            appliedFilters={appliedFilters}
+            setFilter={setFilter}
+            filters={filters}
+            hideFilters={handleShowFilter}
+          />
+        </CSSTransition>
+
+
       <div className="flex flex-col px-5 fade-in">
         <div className="flex flex-col gap-y-3 mt-5">
         

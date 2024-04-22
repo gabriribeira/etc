@@ -130,7 +130,7 @@ const ShoppingList = ({ list }) => {
     <ConfirmationDialog
       title="Close Shopping List?"
       details="Once you open it, members won't be able to add items to the list."
-      label="close"
+      label="Close"
       bg="bg-red-600"
       showConfirmation={showCloseConfirmation}
       setShowConfirmation={setShowCloseConfirmation}

@@ -8,6 +8,11 @@ import ConfirmationDialog from "../common/ConfirmationDialog";
 const Item = ({ item, list_id }) => {
   const [showEditItem, setShowEditItem] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  const handleCheck = () => {
+    setChecked(!checked);
+  }
 
   const handleDelete = () => {
     // lógica para excluir o item
@@ -18,10 +23,19 @@ const Item = ({ item, list_id }) => {
 
   return (
     <div className="w-full flex items-center justify-between bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40 rounded-2xl p-3 gap-x-3">
-      <div className="flex flex-col justify-between h-full w-full gap-x-3 w-full text-lg leading-5 text-white">
+      <div className="flex items-center gap-x-3">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={handleCheck}
+          className="rounded-full appearance-none w-8 h-6 border-2 border-gray-300 checked:bg-black checked:border-white checked:border-2 focus:outline-none focus:border-white focus:ring-1 focus:ring-gray-400"
+        />
+        
+      <div className={`flex flex-col justify-between h-full w-full gap-x-3 w-full text-lg leading-5 text-white ${checked ? 'line-through' : ''}`}>
         <h1 className="font-medium text-lg leading-5">{item.name}</h1>
         {item.brand && <p className="font-light text-sm">{item.brand}</p>}
         {item.amount && <p className="font-medium text-sm">{item.amount} {item.unit}</p>}
+      </div>
       </div>
       <button className="text-2xl text-white" aria-label="Edit Item" onClick={() => setShowEditItem(!showEditItem)}>
         <RxDotsVertical />

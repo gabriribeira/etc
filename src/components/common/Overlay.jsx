@@ -7,10 +7,10 @@ import { LuUser } from "react-icons/lu";
 import { RiNotification4Line } from "react-icons/ri";
 import { SlArrowRight } from "react-icons/sl";
 import { CiLogout } from "react-icons/ci";
-import { FiCheck } from "react-icons/fi";
+import { FiLock, FiUnlock } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi";
 import { BiPencil } from "react-icons/bi";
-import { RxCross2 } from "react-icons/rx";
+//import { RxCross2 } from "react-icons/rx";
 import Cookies from "js-cookie";
 
 const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
@@ -70,12 +70,12 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
                   {option === "Notifications" && <RiNotification4Line />}
                   {option === "Profile" && <LuUser />}
                   {option === "Logout" && <CiLogout />}
-                  {option === "Close shopping list" && <RxCross2 />}
+                  {option === "Close shopping list" && <FiLock />}
                   {option === "Edit shopping list" && <BiPencil />}
                   {option === "Edit item details" && <BiPencil />}
                   {option === "Delete shopping list" && <HiOutlineTrash />}
                   {option === "Delete item" && <HiOutlineTrash />}
-                  {option === "Reopen shopping list" && <FiCheck />}
+                  {option === "Reopen shopping list" && <FiUnlock />}
                 </div>
                 {option}
                 <div className="absolute right-3">
