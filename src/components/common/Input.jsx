@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const Input = ({ label, value, onChange, error }) => {
+const Input = ({ label, value, onChange, error, placeholder }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -12,14 +12,14 @@ const Input = ({ label, value, onChange, error }) => {
         {label}
       </label>
       <div className="flex relative w-full items-center">
-        {label === "Description" || label === "Details" ? (
+        {label === "Description" || label === "Details" || label === "" ? (
           <textarea
             name={label}
             id={label}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black50 text-black w-full bg-white"
-            placeholder={label}
+            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-noneplaceholder:text-black50 text-black w-full bg-white"
+            placeholder={placeholder ? placeholder : label}
             rows="3"
           />
         ) : (
@@ -39,7 +39,7 @@ const Input = ({ label, value, onChange, error }) => {
                 ? "text-xl"
                 : "text-lg"
             } placeholder:text-black50 text-black w-full bg-white`}
-            placeholder={label}
+            placeholder={placeholder ? placeholder : label}
           />
         )}
         {(label === "Password" || label === "Confirm Password") && (
@@ -62,6 +62,7 @@ Input.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
+  placeholder: PropTypes.string
 };
 
 export default Input;
