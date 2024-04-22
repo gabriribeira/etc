@@ -36,7 +36,7 @@ Button.propTypes = {
   lg: PropTypes.bool,
   stroke: PropTypes.bool,
   turnDisabled: PropTypes.bool,
-  customBorder: PropTypes.string
+  customBorder: PropTypes.string,
   aria: PropTypes.string,
 };
 
