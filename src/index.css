@@ -115,6 +115,10 @@ body {
   }
 }
 
+.text-lg {
+  font-size: 1rem;
+}
+
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -141,4 +145,18 @@ body {
   transform: translateY(100%);
   transition: all 500ms ease;
   margin-left: -1.25rem;
+}
+
+.ai-linear-text-gradient {
+  background: linear-gradient(to right, #1F4F80 0%, #FF6F61 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ai-border-gradient {
+  background: 
+    linear-gradient(#F3F0E8 0 0) padding-box,
+    linear-gradient(to right, #1F4F80, #FF6F61) border-box;
+    border: 4px solid transparent;
+    opacity: var(--tw-bg-opacity);
 }

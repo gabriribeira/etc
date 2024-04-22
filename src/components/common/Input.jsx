@@ -12,15 +12,15 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
         {label}
       </label>
       <div className="flex relative w-full items-center">
-        {label === "Description" || label === "Details" || label === "Enter Prompt" ? (
+        {label === "Description" || label === "Details" || label === "" ? (
           <textarea
             name={label}
             id={label}
             value={value}
             aria-label={label}
             onChange={(e) => onChange(e.target.value)}
-            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black50 text-black w-full bg-white"
-            placeholder={placeholder}
+            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-noneplaceholder:text-black50 text-black w-full bg-white"
+            placeholder={placeholder ? placeholder : label}
             rows="3"
           />
         ) : (
@@ -41,7 +41,7 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
                 ? "text-xl"
                 : "text-lg"
             } placeholder:text-black50 text-black w-full bg-white`}
-            placeholder={label}
+            placeholder={placeholder ? placeholder : label}
           />
         )}
         {(label === "Password" || label === "Confirm Password") && (
