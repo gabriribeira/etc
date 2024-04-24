@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "../common/Overlay";
 import ConfirmationDialog from "../common/ConfirmationDialog";
-
-import { RxDotsVertical } from "react-icons/rx";
+import { FiLock } from "react-icons/fi";
+import { FiUnlock } from "react-icons/fi";
 
 const ShoppingList = ({ list }) => {
   const itemsData = ItemsData;
@@ -75,7 +75,7 @@ const ShoppingList = ({ list }) => {
               e.preventDefault();
               setShowEditList(!showEditList);
             }}>
-          <RxDotsVertical />
+          {list.closed ? <FiLock /> : <FiUnlock />}
         </button>
       </div>
     </Link>

@@ -5,10 +5,10 @@ import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
 import NewButton from "./NewButton";
-import { RxDotsHorizontal } from "react-icons/rx";
 import ListsData from "../../data/lists.json";
 import Filter from "./Filter";
 import FilterOverlay from "./FilterOverlay";
+import { IoSettingsOutline } from "react-icons/io5";
 
 const TopBar = ({ description, listTitle }) => {
   const Lists = ListsData;
@@ -35,9 +35,18 @@ const TopBar = ({ description, listTitle }) => {
     setAppliedFilters(newFilters);
   };
 
-  const filters = ['State', 'Products For', 'Include'];
+  
+  const [filters, setFilters] = useState([]);
 
-
+  useEffect(() => {
+    if (location.pathname === "/lists") {
+      setFilters(['Lists']);
+    } else if (/^\/lists\/\d+$/.test(location.pathname)) {
+      setFilters(['State', 'Products For', 'Include']);
+    }
+  }, [location.pathname]);
+  
+  
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -66,6 +75,18 @@ const TopBar = ({ description, listTitle }) => {
       listRegex.test(location.pathname)
     );
   };
+
+  const shouldShowFilterButton = () => {
+    const urlParts = location.pathname.split('/');
+    const listNumber = parseInt(urlParts[urlParts.length - 1]); 
+    if(isNaN(listNumber)) return false; 
+  
+    const maxListNumber = Lists.length;
+  
+    return listNumber <= maxListNumber;
+  };
+  
+  
 
   useEffect(() => {
     if (isEditPage()) {
@@ -111,6 +132,9 @@ const TopBar = ({ description, listTitle }) => {
             />
           </div>
           <div className="flex items-center gap-x-5">
+
+
+          {/^\/households\/\d+$/.test(location.pathname) && (
             <button
               type="button"
               onClick={() => {
@@ -119,8 +143,10 @@ const TopBar = ({ description, listTitle }) => {
               className="text-2xl z-[101]"
               aria-label="Button Settings"
             >
-              <RxDotsHorizontal />
+              <IoSettingsOutline size={30} />
             </button>
+          )}
+
 
             {location.pathname === "/expenses" && (
               <button type="button" className="text-2xl z-[101] text-black">
@@ -130,29 +156,33 @@ const TopBar = ({ description, listTitle }) => {
                 />
               </button>
             )}
+
+
             {location.pathname === "/lists" && (
-              <button type="button" className="text-2xl z-[101] text-black">
-                <NewButton
-                  path={`/lists/${Lists.length + 1}`}
-                  aria="New List"
-                />
-              </button>
-            )}
-            {location.pathname === "/lists/new" && (
-              <button type="button" className="text-2xl z-[101] text-black">
-                <NewButton
-                  path={`/lists/${Lists.length + 1}`}
-                  aria="New List"
-                />
-              </button>
-            )}
-            {listRegex.test(location.pathname) && (
+              <>
               <button
                 type="button"
                 onClick={handleShowFilter}
                 className="text-2xl z-[101] text-black"
               >
-                <Filter  />
+                <Filter />
+              </button>
+              <button type="button" className="text-2xl z-[101] text-black">
+                <NewButton
+                  path={`/lists/${Lists.length + 1}`}
+                  aria="New List"
+                />
+              </button>
+              </>
+            )}
+            
+            {shouldShowFilterButton() && (
+              <button
+                type="button"
+                onClick={handleShowFilter}
+                className="text-2xl z-[101] text-black"
+              >
+                <Filter />
               </button>
             )}
           </div>
@@ -173,6 +203,8 @@ const TopBar = ({ description, listTitle }) => {
           />
         </CSSTransition>
 
+
+
         <CSSTransition
           in={showFilterOverlay}
           timeout={500}
@@ -186,6 +218,7 @@ const TopBar = ({ description, listTitle }) => {
             hideFilters={toggleFilterOverlay}
           />
         </CSSTransition>
+        
       </div>
 
       {showBackButton && (
