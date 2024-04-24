@@ -15,7 +15,7 @@ const NewExpense = () => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
-  const [details, setDetails] = useState("");
+  
   //eslint-disable-next-line
   const [paidBy, setPaidBy] = useState("");
   const [members, setMembers] = useState([]);
@@ -53,7 +53,6 @@ const NewExpense = () => {
       title,
       value: Number(value),
       date,
-      details,
       user_id: authUser.id,
       users: members,
       paid: false,
@@ -71,7 +70,7 @@ const NewExpense = () => {
           <Input label="Value" value={value} onChange={setValue} />
           <div className="flex flex-col">
             <h2 className="mb-2 text-lg font-semibold">Paid By</h2>
-            <div className="border-2 border-black80 rounded-2xl p-2 flex flex items-center">
+            <div className="border border-black80 rounded-2xl p-2 flex flex items-center">
               <div className="w-[35px] h-[35px] rounded-full flex items-center justify-center relative shrink-0">
                 <img
                   //eslint-disable-next-line
@@ -89,7 +88,7 @@ const NewExpense = () => {
             label={"Members"}
           />
           <Input label="Date" value={date} onChange={setDate} />
-          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
+          
           <Button
             label="Create Expense"
             action={handleCreateExpense}

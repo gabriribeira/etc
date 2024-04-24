@@ -21,12 +21,12 @@ const AmountInput = ({ label, value, onChange, valueUnit, onChangeUnit }) => {
           value={value}
           type="number"
           onChange={(e) => onChange(e.target.value)}
-          className={`border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black80 text-black w-full bg-white`}
+          className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black80 text-black w-full bg-white`}
           placeholder={label}
         />
         <div className="flex relative w-full items-center transition-all duration-300">
           <button
-            className={`border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg ${
+            className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg ${
               valueUnit ? "text-black" : "text-black50"
             } text-start w-full flex items-center justify-between`}
             onClick={() => setShowOptions(!showOptions)}
@@ -38,7 +38,7 @@ const AmountInput = ({ label, value, onChange, valueUnit, onChangeUnit }) => {
             </span>
           </button>
           {showOptions && (
-            <div className="absolute top-[100%] border-2 border-black border-t-0 rounded-2xl flex flex-col w-full  transition-all duration-300 bg-white z-[10] rounded-t-none -mt-3 pt-3">
+            <div className="absolute top-[100%] border border-black border-t-0 rounded-2xl flex flex-col w-full  transition-all duration-300 bg-white z-[10] rounded-t-none -mt-3 pt-3">
               {options &&
                 options.map((option, index) => (
                   <button

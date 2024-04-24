@@ -19,7 +19,7 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
             value={value}
             aria-label={label}
             onChange={(e) => onChange(e.target.value)}
-            className="border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-noneplaceholder:text-black50 text-black w-full bg-white"
+            className="border rounded-xl p-2 border-black80 focus:border-black focus:outline-noneplaceholder:text-black50 text-black w-full bg-white"
             placeholder={placeholder ? placeholder : label}
             rows="3"
           />
@@ -34,7 +34,7 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
                 ? "password" : label === "Email" ? "email" : label == "Value" ? "number" : label == "Date" ? "date" : "text"
             }
             onChange={(e) => onChange(e.target.value)}
-            className={`border-2 rounded-xl p-2 border-black80 focus:border-black focus:outline-none ${
+            className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none ${
               (label === "Password" || label === "Confirm Password") &&
               !showPassword &&
               value != ""
