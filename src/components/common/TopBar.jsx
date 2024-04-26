@@ -5,10 +5,13 @@ import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
 import NewButton from "./NewButton";
-import { RxDotsHorizontal } from "react-icons/rx";
 import ListsData from "../../data/lists.json";
-import Filter from "./Filter";
+//import Filter from "./Filter";
 import FilterOverlay from "./FilterOverlay";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoFilter } from "react-icons/io5";
+import { RxDotsHorizontal } from "react-icons/rx";
+import { RiNotification4Line } from "react-icons/ri";
 
 const TopBar = ({ description, listTitle }) => {
   const Lists = ListsData;
@@ -18,9 +21,9 @@ const TopBar = ({ description, listTitle }) => {
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [listTitleInput, setListTitleInput] = useState(listTitle);
   const [showFilterOverlay, setShowFilterOverlay] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
+  const [showEditList, setShowEditList] = useState(false);
 
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
@@ -31,13 +34,27 @@ const TopBar = ({ description, listTitle }) => {
     console.log(showFilterOverlay);
   };
 
+  const handleShowEditList = () => {
+    setShowEditList(!showEditList);
+    console.log(showFilterOverlay);
+  };
+
   const setFilter = (newFilters) => {
     setAppliedFilters(newFilters);
   };
 
-  const filters = ['State', 'Products For', 'Include'];
+  
+  const [filters, setFilters] = useState([]);
 
-
+  useEffect(() => {
+    if (location.pathname === "/lists") {
+      setFilters(['Lists']);
+    } else if (/^\/lists\/\d+$/.test(location.pathname)) {
+      setFilters(['State', 'Products For', 'Include']);
+    }
+  }, [location.pathname]);
+  
+  
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -66,6 +83,18 @@ const TopBar = ({ description, listTitle }) => {
       listRegex.test(location.pathname)
     );
   };
+
+  const shouldShowFilterButton = () => {
+    const urlParts = location.pathname.split('lists/');
+    const listNumber = parseInt(urlParts[urlParts.length - 1]); 
+    if(isNaN(listNumber)) return false; 
+  
+    const maxListNumber = Lists.length;
+  
+    return listNumber <= maxListNumber;
+  };
+  
+  
 
   useEffect(() => {
     if (isEditPage()) {
@@ -111,6 +140,11 @@ const TopBar = ({ description, listTitle }) => {
             />
           </div>
           <div className="flex items-center gap-x-5">
+
+
+          {/^\/households\/\d+$/.test(location.pathname) && (
+            <>
+            <RiNotification4Line size={25} />
             <button
               type="button"
               onClick={() => {
@@ -119,42 +153,73 @@ const TopBar = ({ description, listTitle }) => {
               className="text-2xl z-[101]"
               aria-label="Button Settings"
             >
-              <RxDotsHorizontal />
+              <IoSettingsOutline size={25} />
             </button>
+            </>
+          )}
+
 
             {location.pathname === "/expenses" && (
+              <>
               <button type="button" className="text-2xl z-[101] text-black">
                 <NewButton
                   path={`${location.pathname}/new`}
                   aria="New Expense"
                 />
               </button>
-            )}
-            {location.pathname === "/lists" && (
-              <button type="button" className="text-2xl z-[101] text-black">
-                <NewButton
-                  path={`/lists/${Lists.length + 1}`}
-                  aria="New List"
-                />
-              </button>
-            )}
-            {location.pathname === "/lists/new" && (
-              <button type="button" className="text-2xl z-[101] text-black">
-                <NewButton
-                  path={`/lists/${Lists.length + 1}`}
-                  aria="New List"
-                />
-              </button>
-            )}
-            {listRegex.test(location.pathname) && (
               <button
                 type="button"
                 onClick={handleShowFilter}
                 className="text-2xl z-[101] text-black"
               >
-                <Filter  />
+                <IoFilter />
+              </button>
+              
+              </>
+            )}
+
+
+            {location.pathname === "/lists" && (
+              <>
+              <button type="button" className="text-2xl z-[101] text-black">
+                <NewButton
+                  path={`/lists/${Lists.length + 1}`}
+                  aria="New List"
+                />
+              </button>
+              <button
+                type="button"
+                onClick={handleShowFilter}
+                className="text-2xl z-[101] text-black"
+              >
+                <IoFilter />
+              </button>
+              
+              </>
+            )}
+            
+            {shouldShowFilterButton() && (
+               
+              <button
+                type="button"
+                onClick={handleShowFilter}
+                className="text-2xl z-[101] text-black"
+              >
+                <IoFilter />
               </button>
             )}
+
+              {shouldShowFilterButton() && (
+               
+               <button
+                 type="button"
+                 onClick={handleShowEditList}
+                 className="text-2xl z-[101] text-black"
+               >
+                 <RxDotsHorizontal />
+               </button>
+             )}
+
           </div>
         </div>
 
@@ -173,6 +238,37 @@ const TopBar = ({ description, listTitle }) => {
           />
         </CSSTransition>
 
+
+        <CSSTransition
+          in={showEditList}
+          timeout={500}
+          classNames="menu-primary"
+          className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
+          unmountOnExit
+        >
+          <Overlay
+            label=""
+            options={[
+              "Close shopping list",
+              "Edit shopping list",
+              "Delete shopping list"
+            ]}
+            links={[
+              "/lists",
+              "/lists",
+              "/lists"
+            ]}
+            hideOverlay={() => setShowEditList(false)}
+            onClicks={[
+              () => {}, 
+              () => {}, 
+              () => {} 
+            ]}
+          />
+        </CSSTransition>
+
+
+
         <CSSTransition
           in={showFilterOverlay}
           timeout={500}
@@ -186,6 +282,7 @@ const TopBar = ({ description, listTitle }) => {
             hideFilters={toggleFilterOverlay}
           />
         </CSSTransition>
+        
       </div>
 
       {showBackButton && (
@@ -197,13 +294,7 @@ const TopBar = ({ description, listTitle }) => {
           <BackButton />
           {listTitle && (
             <div className="absolute left-0 top-0 flex items-center w-full h-full justify-center">
-              <input
-                type={"text"}
-                className="text-xl font-medium focus:border-b-2 focus:border-black text-black bg-transparent focus:outline-none transition-all duration-200 w-full text-center"
-                value={listTitleInput}
-                onChange={(e) => setListTitleInput(e.target.value)}
-                aria-label="List Title"
-              />
+              <p className="text-black text-base font-bold text-xl">{listTitle}</p>
             </div>
           )}
         </div>

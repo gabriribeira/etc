@@ -135,7 +135,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
                   checkIfFilterIsApplied("Opened") && "font-bold"
                 }`}
               >
-                Opened
+                Unlocked
                 {checkIfFilterIsApplied("Opened") && (
                   <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
                 )}
@@ -146,7 +146,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
                   checkIfFilterIsApplied("Closed") && "font-bold"
                 }`}
               >
-                Closed
+                Locked
                 {checkIfFilterIsApplied("Closed") && (
                   <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
                 )}

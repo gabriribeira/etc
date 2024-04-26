@@ -22,13 +22,13 @@ const Item = ({ item, list_id }) => {
   };
 
   return (
-    <div className="w-full flex items-center justify-between bg-salmon bg-gradient-to-l shadow-lg from-salmon to-black90/40 rounded-2xl p-3 gap-x-3">
+    <div className="w-full flex items-center justify-between bg-black rounded-2xl p-3 gap-x-3">
       <div className="flex items-center gap-x-3">
         <input
           type="checkbox"
           checked={checked}
           onChange={handleCheck}
-          className="rounded-full appearance-none w-8 h-6 border-2 border-gray-300 checked:bg-black checked:border-white checked:border-2 focus:outline-none focus:border-white focus:ring-1 focus:ring-gray-400"
+          className="rounded-full appearance-none w-8 h-6 border-2 border-gray-300 checked:bg-white checked:border-white checked:border-2 focus:outline-none focus:border-white focus:ring-1 focus:ring-gray-400"
         />
         
       <div className={`flex flex-col justify-between h-full w-full gap-x-3 w-full text-lg leading-5 text-white ${checked ? 'line-through' : ''}`}>

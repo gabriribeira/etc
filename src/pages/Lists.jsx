@@ -6,27 +6,18 @@ import ListsData from "../data/lists.json";
 import Button from "../components/common/Button";
 import {BsStars} from 'react-icons/bs';
 //import Filter from "../components/common/Filter";
-import { CSSTransition } from "react-transition-group";
-import FilterOverlay from "../components/common/FilterOverlay";
+
 
 
 const Lists = () => {
   const listsData = ListsData;
   const [lists, setLists] = useState(null);
   const [authHousehold, setAuthHousehold] = useState(null);
-  const [showFilter, setShowFilter] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useState([]);
+  
+  //const [appliedFilters, setAppliedFilters] = useState([]);
+  const Lists = ListsData;
 
-  const handleShowFilter = () => {
-    setShowFilter(!showFilter);
-    console.log(showFilter);
-  }
-
-  const setFilter = (newFilters) => {
-    setAppliedFilters(newFilters);
-  };
-
-  const filters = ['Lists'];
+ 
 
 
   useEffect(() => {
@@ -60,35 +51,15 @@ const Lists = () => {
       <TopBar />
       
       <main>
-      <div className="px-5 flex justify-end">
-      <button
-          type="button"
-          onClick={handleShowFilter}
-          className="text-2xl z-[101] text-black"
-      >
-        <p>Filter</p>
-      </button>
-      </div>
+      
 
-      <CSSTransition
-          in={showFilter}
-          timeout={500}
-          classNames="filter-overlay"
-          unmountOnExit
-        >
-          <FilterOverlay
-            appliedFilters={appliedFilters}
-            setFilter={setFilter}
-            filters={filters}
-            hideFilters={handleShowFilter}
-          />
-        </CSSTransition>
+      
 
 
       <div className="flex flex-col px-5 fade-in">
         <div className="flex flex-col gap-y-3 mt-5">
         
-          <div>
+          <div className="flex justify-center items-center">
           <Button 
             label={
               <span className="flex gap-x-2 justify-center items-center">
@@ -97,11 +68,15 @@ const Lists = () => {
               </span>
             }
             bg="bg-gradient-to-r from-blue to-salmon text-white"
-            to="/lists/new"
+            to={`/lists/${Lists.length + 1}`}
             aria="Generate List With AI Button"
           />
-             
+          
+            
           </div>
+
+          
+          
         
           {lists &&
             lists.length > 0 &&
