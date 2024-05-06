@@ -74,15 +74,18 @@ const TopBar = ({ description, listTitle }) => {
     const newExpensePageRegex = /\/expenses\/new/;
     const newListPageRegex = /\/lists\/new/;
     const newHouseholdPageRegex = /\/households\/new/;
+    const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
     return (
       editPageRegex.test(location.pathname) ||
       balancePageRegex.test(location.pathname) ||
       newExpensePageRegex.test(location.pathname) ||
       newListPageRegex.test(location.pathname) ||
       newHouseholdPageRegex.test(location.pathname) ||
+      editItemPageRegex.test(location.pathname) ||
       listRegex.test(location.pathname)
     );
   };
+  
 
   const shouldShowFilterButton = () => {
     const urlParts = location.pathname.split('lists/');
@@ -105,10 +108,10 @@ const TopBar = ({ description, listTitle }) => {
   }, [location]);
 
   return (
-    <header>
+    <header className="fixed top-0 left-0 w-screen z-[101] bg-white ">
       <div
         className={`flex flex-col sticky top-0 w-screen ${
-          !showBackButton && "pb-5"
+          !showBackButton && "pb-2"
         } px-5 pt-3 z-[100] bg-white`}
       >
         <div className="flex items-center justify-between gap-x-2 relative">
@@ -273,6 +276,7 @@ const TopBar = ({ description, listTitle }) => {
           in={showFilterOverlay}
           timeout={500}
           classNames="filter-overlay"
+          className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
           unmountOnExit
         >
           <FilterOverlay

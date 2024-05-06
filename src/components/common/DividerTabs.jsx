@@ -9,11 +9,11 @@ const DividerTabs = ({ tabs, activeTab, setActiveTab }) => {
           <button
             key={index}
             className={`flex justify-center items-center py-2 cursor-pointer transition-all duration-300 rounded-lg shadow-lg ${
-              activeTab === index ? "bg-salmon text-white w-[64%] bg-gradient-to-l from-salmon to-black/20" : "w-[34%] from-white to-black/10 bg-gradient-to-r"
+              activeTab === index ? "bg-black text-white w-[64%] " : "w-[34%] border-2 border-black from-white to-black/10 bg-gradient-to-r"
             }`}
             onClick={() => setActiveTab(index)}
           >
-            <p className={`text-lg ${activeTab === index ? 'font-regular' : 'font-light'}`}>{tab}</p>
+            <p className={`text-lg ${activeTab === index ? 'font-regular' : 'font-regular'}`}>{tab}</p>
           </button>
         ))}
     </div>

@@ -100,12 +100,9 @@ const List = () => {
       {list && <TopBar listTitle={list.title} />}
       {list ? (
         <>
-          <main>
+          <main className="mt-28"> 
             <div className="flex flex-col px-5 fade-in">
-              <div className="flex items-center">
-                {/* {<SearchFilter />} */}
-                {/* <Filter onClick={handleFilterClick} /> */}
-              </div>
+             
               <div className="flex flex-col w-full mt-6 gap-y-3">
                 <div className="flex text-black border border-black px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
                   <form
@@ -118,6 +115,7 @@ const List = () => {
                       value={newItem}
                       onChange={(e) => setNewItem(e.target.value)}
                       autoFocus
+                      required
                     />
                   </form>
                   <Link
@@ -141,7 +139,7 @@ const List = () => {
       ) : (
         <>
         <TopBar />
-        <main>
+        <main className="mt-32">
           <div className="flex flex-col px-5 fade-in">
             <div className="flex flex-col w-full gap-y-3">
               <form>

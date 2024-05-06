@@ -28,7 +28,7 @@ const MembersInput = ({ value, onChange, label }) => {
   return (
     <>
       {openOverlay && (
-        <div className="fixed w-screen h-[100vh] bg-white top-0 left-0 z-10">
+        <div className="fixed mt-28 w-screen h-[100vh] bg-white top-0 left-0 z-10">
           
           <div className="flex flex-col px-5 py-3 gap-y-6">
             <div className="flex flex-col">
@@ -42,7 +42,7 @@ const MembersInput = ({ value, onChange, label }) => {
                 users.map((user, index) => (
                   <button
                     key={index}
-                    className={`transition-all duration-300 h-[10rem] rounded-2xl flex items-center justify-center col-span-1 relative`}
+                    className={`transition-all duration-300 h-[5rem] rounded-2xl flex items-center justify-center col-span-1 relative`}
                     onClick={() => {
                       if (selectedUsers.includes(user.id)) {
                         setSelectedUsers(selectedUsers.filter((id) => id !== user.id));

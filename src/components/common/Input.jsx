@@ -42,8 +42,10 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
                 : "text-lg"
             } placeholder:text-black50 text-black w-full bg-white`}
             placeholder={placeholder ? placeholder : label}
+            
           />
         )}
+        
         {(label === "Password" || label === "Confirm Password") && (
           <button
             type="button"
