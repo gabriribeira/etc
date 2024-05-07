@@ -79,7 +79,7 @@ const Household = () => {
         )}
         <div className="">
           <TopBar />
-          <main>
+          <main className="mt-20">
             <div className="flex flex-col gap-y-6">
               <HouseholdInfo household={household} users={householdUsers} openOverlayFromParent={() => setOpenOverlayFromParent(true)} />
               <SustainableGoal />

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import RequireAuth from "./components/middlewares/RequireAuth";
 import Authentication from "./pages/Authentication";
 import Expense from "./pages/Expense";
@@ -54,7 +54,7 @@ function App() {
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
-          <Route path="/" element={<Lists />} />
+          <Route path="/" element={<Navigate to="/lists" />} />
           <Route path="/households/:householdId" element={<Household />} />{" "}
           {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />

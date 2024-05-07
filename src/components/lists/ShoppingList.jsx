@@ -47,7 +47,7 @@ const ShoppingList = ({ list }) => {
     <>
     <Link
       to={`/lists/${list.id}`}
-      className="flex items-start w-full bg-black90 shadow-xl justify-between p-3 h-[140px] rounded-2xl relative"
+      className="flex items-start w-full bg-black shadow-xl justify-between p-3 h-[130px] rounded-2xl relative"
     >
       <div className="flex flex-col h-full text-white justify-between">
         <div className="flex flex-col">
@@ -57,12 +57,12 @@ const ShoppingList = ({ list }) => {
           </p>
         </div>
         <div className="flex items-center w-full justify-start gap-x-3">
-          <p className="font-light text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
+          <p className="font-bold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
             {items.length} products
           </p>
           {list.closed && (
-            <p className="font-light text-sm bg-black text-white border-white border-2 py-1 px-5 rounded-full w-fit">
-              Closed
+            <p className="text-sm font-bold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
+              locked
             </p>
           )}
         </div>

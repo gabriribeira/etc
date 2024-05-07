@@ -39,7 +39,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
       {openOverlay && (
         <ChangeHouseholdOverlay closeOverlay={() => setOverlay(false)} />
       )}
-      <footer>
+      <footer className="z-[89]">
       <div className="h-[80px] z-[90]"></div>
       <div className="fixed bottom-0 left-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-3xl z-[90]">
       <Link

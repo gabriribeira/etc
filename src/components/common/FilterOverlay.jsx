@@ -66,7 +66,14 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
   };
 
   const checkIfFilterIsApplied = (filterItem) => {
-    if (appliedFilters.filter((item) => item == filterItem).length > 0) {
+    if (
+      (filterItem === "All" || filterItem === "AllLists" || filterItem === "Everyone") &&
+      appliedFilters.length === 0
+    ) {
+      return true;
+    }
+    // Verificar se o filtro atual está aplicado
+    if (appliedFilters.includes(filterItem)) {
       return true;
     } else {
       return false;

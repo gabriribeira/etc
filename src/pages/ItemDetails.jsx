@@ -129,9 +129,9 @@ const ItemDetails = () => {
   return (
     <div className="bg-white">
       <TopBar />
-      <main>
+      <main className="mt-36 mb-16">
         <div className="flex flex-col px-5 gap-y-3">
-          <Input label="Name" value={name} onChange={setName} />
+          <Input label="Name *" value={name} onChange={setName} required />
           <Input label="Value" value={value} onChange={setValue} />
           <AmountInput
             label="Amount"
