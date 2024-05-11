@@ -84,12 +84,12 @@ const Onboarding = () => {
       text: "start collaborating on shopping and expenses.",
     },
     {
-      image: iconCart,
+      image: iconSustainable,
       title: "choose your sustainable goals",
       text: "add products with specific details and preferred stores.",
     },
     {
-      image: iconSustainable,
+      image: iconCart,
       title: "creating a shopping list",
       text: "add products with specific details and preferred stores.",
     },
