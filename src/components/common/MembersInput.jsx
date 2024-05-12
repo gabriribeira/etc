@@ -80,9 +80,20 @@ const MembersInput = ({ value, onChange, label }) => {
           </div>
         </div>
       )}
-      <div className="flex flex-col">
-        <h1 className="font-semibold text-lg">{label ? label : "Active"}</h1>
-        <div className="flex flex-wrap items-center gap-x-3">
+      <div className="flex flex-col gap-y-1">
+      <div className="flex justify-start w-full bg-black10 rounded-lg py-2 items-center pl-2">
+          <button
+            onClick={() => setOpenOverlay(true)}
+            className="w-[35px] h-[35px] rounded-full bg-black text-xl flex items-center justify-center"
+            type="button"
+            aria-label="Edit Members"
+          >
+            <GoPencil color="white"  />
+          </button>
+          <h1 className="font-semibold text-lg ml-2">{label ? label : "Active"}</h1>
+      </div>
+
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 w-full bg-black10 rounded-lg py-2 pl-2 mt-0">
           {users &&
             users.map(
               (user, index) =>
@@ -100,16 +111,9 @@ const MembersInput = ({ value, onChange, label }) => {
                   </div>
                 )
             )}
-          <button
-            onClick={() => setOpenOverlay(true)}
-            className="w-[35px] h-[35px] rounded-full bg-black text-xl flex items-center justify-center"
-            type="button"
-            aria-label="Edit Members"
-          >
-            <GoPencil color="white"  />
-          </button>
+          
         </div>
-      </div>
+        </div>
     </>
   );
 };

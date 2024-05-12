@@ -140,7 +140,7 @@ const ItemDetails = () => {
             valueUnit={unit}
             onChangeUnit={setUnit}
           />
-          <MembersInput label={"Members"} value={members} onChange={setMembers} />
+          <MembersInput label={"Edit Members"} value={members} onChange={setMembers} />
           <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
           <Input label="Brand" value={brand} onChange={setBrand} />
           <Input label="Store" value={store} onChange={setStore} />

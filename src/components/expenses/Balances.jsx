@@ -8,6 +8,14 @@ const Balances = () => {
   const usersData = UsersData;
   const [balances, setBalances] = useState(null);
   const [authUser, setAuthUser] = useState(null);
+
+  const getUserDisplayName = (user) => {
+    const nameParts = user.name.split(" ");
+    const firstName = nameParts[0];
+    const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
+    return `${firstName} ${lastNameInitial}.`;
+  };
+
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -88,20 +96,9 @@ const Balances = () => {
                 key={user.id}
                 className={`bg-black shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[130px]`}
               >
-                <div className="flex flex-col justify-end h-full">
-                  <h2 className="text-lg text-white font-normal">
-                    {balances[user.id] > 0
-                      ? <span><span className="font-medium">You</span> <span className="font-light">owe</span> <span className="font-medium">{balances.userBalances[user.id]}</span></span>
-                      : <span className="font-medium">{user.name} <span className="font-light">owes</span> <span className="font-medium">you</span></span>}
-                  </h2>
-                  <div className="flex flex-col">
-                    <div className="text-3xl font-semibold text-white">
-                      {Math.abs(balances.userBalances[user.id].toFixed(2))}
-                      <span className="font-light text-xl">€</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-start items-start h-full">
+                <div className="flex flex-col h-full w-full justify-between">
+                  
+                <div className="flex justify-start w-full ">
                   <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
                     <img
                       //eslint-disable-next-line
@@ -118,7 +115,32 @@ const Balances = () => {
                       className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                     />
                   </div>
+
+                  <div className="flex ml-2 grow">
+                  <h2 className="text-lg text-white font-normal">
+                    {balances[user.id] > 0
+                      ? <span><span className="font-medium">You</span> <span className="font-light">owe</span> <span className="font-medium">{balances.userBalances[user.id]}</span></span>
+                      : <span className="font-medium">{getUserDisplayName(user)} <span className="font-light">owes</span> <span className="font-medium">you</span></span>}
+                  </h2>
+                  </div>
+
+                  <div className="flex ml-2 justify-end">
+                    <div className="text-2xl font-semibold text-salmon">
+                      {Math.abs(balances.userBalances[user.id].toFixed(2))}
+                      <span className="font-light text-xl">€</span>
+                    </div>
+                  </div>
+                  
                 </div>
+
+                <div className="flex justify-start w-full" id="2">
+                  <p className="font-bold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
+                    expenses
+                  </p>
+                </div>
+                </div>
+                
+                
               </Link>
             )
         )}

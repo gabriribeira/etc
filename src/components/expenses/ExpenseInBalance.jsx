@@ -14,7 +14,7 @@ const ExpenseInBalance = ({ expense }) => {
   return (
     user &&
     expense && (
-      <div className={`bg-salmon/90 bg-gradient-to-l shadow-lg from-salmon to-black90/40 rounded-2xl flex justify-between items-center h-[160px] w-full p-3`}>
+      <div className={`bg-black rounded-2xl flex justify-between items-center h-[130px] w-full p-3`}>
       <div className={`flex flex-col justify-between h-full text-white`}>
         <h2 className="text-lg font-normal">{expense.title}</h2>
         <div className="flex flex-col">

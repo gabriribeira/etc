@@ -65,10 +65,10 @@ const NewExpense = () => {
     authUser && (
       <div className="bg-white">
         <TopBar />
+        <main className="mt-32">
         <form className="flex flex-col px-5 gap-y-6">
-          <Input label="Title" value={title} onChange={setTitle} />
-          <Input label="Value" value={value} onChange={setValue} />
-          <div className="flex flex-col">
+
+          <div className="flex flex-col w-full">
             <h2 className="mb-2 text-lg font-semibold">Paid By</h2>
             <div className="border border-black80 rounded-2xl p-2 flex flex items-center">
               <div className="w-[35px] h-[35px] rounded-full flex items-center justify-center relative shrink-0">
@@ -82,12 +82,25 @@ const NewExpense = () => {
               <p className="font-semibold text-lg ml-3">{authUser.name}</p>
             </div>
           </div>
+
+          <Input label="Title" value={title} onChange={setTitle} />
+
+          <div className="flex w-full gap-x-2 ">
+
+            <div className="w-50">
+              <Input label="Value" value={value} onChange={setValue}  />
+            </div>
+            
+            <Input label="Date" value={date} onChange={setDate} />
+          
+          </div>
+          
+
           <MembersInput
             value={members}
             onChange={setMembers}
-            label={"Members"}
+            label={"Edit members"}
           />
-          <Input label="Date" value={date} onChange={setDate} />
           
           <Button
             label="Create Expense"
@@ -95,6 +108,7 @@ const NewExpense = () => {
             className="btn btn-primary"
           />
         </form>
+        </main>
         <BottomBar />
       </div>
     )

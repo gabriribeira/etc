@@ -9,7 +9,7 @@ const Button = ({ label, submit, action, to, bg, lg, stroke, turnDisabled, custo
       aria-label={aria}
       className={`${
         stroke ? "bg-white" : (bg && bg != '') ? bg : "bg-blue"
-      }  ${stroke && "border-2 border-black"} ${stroke ? "text-black" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
+      }  ${stroke && "border-2 border-black"} ${stroke ? "text-black" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none flex ${aria === "Button See Archive" ? "" : 'text-center justify-center'}`}
     >
       {label}
     </Link>
@@ -20,7 +20,7 @@ const Button = ({ label, submit, action, to, bg, lg, stroke, turnDisabled, custo
       aria-label={aria}
       className={`${
         stroke ? "bg-white" : (bg && bg != '') ? bg : `${turnDisabled ? "bg-black40"  : "bg-black90 bg-gradient-to-r from-black90 to-white/20"}`
-      } ${stroke ? (customBorder ? customBorder : "border-2 border-black") : ""} ${stroke ? "text-black" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none text-center flex justify-center`}
+      } ${stroke ? (customBorder ? customBorder : "border-2 border-black") : ""} ${stroke ? "text-black" : "text-white"} rounded-lg ${lg == true ? "py-5" : "py-3"} text-md font-medium w-full focus:outline-none flex ${aria === "Button See Archive" ? "" : 'text-center justify-center'}`}
       disabled={turnDisabled ? turnDisabled : ""}
     >
       {label}

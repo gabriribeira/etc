@@ -68,7 +68,7 @@ const User = () => {
     user && (
       <div>
         <TopBar />
-        <main>
+        <main className="mt-16">
           <div className="flex flex-col">
             <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
               {visitorIsAuthUser && (
