@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
-import iconLogo from "../assets/imgs/etc/short_logo_salmon.webp";
+import iconLogo from "../assets/imgs/icon/etc.gif";
 import iconSetup from "../assets/imgs/icon/setup.png";
 import iconCart from "../assets/imgs/icon/cart.png";
 import iconSustainable from "../assets/imgs/icon/sustainable.png";
