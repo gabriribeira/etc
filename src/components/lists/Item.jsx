@@ -31,20 +31,30 @@ const Item = ({ item, list_id }) => {
           className="rounded  w-6 h-6 border-2 border-gray-300 checked:bg-black checked:border-none checked:shadow-none"
         />
         
-      <div className={`flex flex-col justify-between h-full w-full gap-x-3 w-full text-lg leading-5 text-white ${checked ? 'line-through' : ''}`}>
-        <h1 className="font-medium text-lg leading-5">{item.name}</h1>
-        {item.brand && <p className="font-light text-sm">{item.brand}</p>}
-        {item.amount && <p className="font-medium text-sm">{item.amount} {item.unit}</p>}
+        <div className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}>
+          <h1 className={`font-medium text-lg leading-5 ${checked ? 'line-through' : ''}`}>{item.name}</h1>
+          {item.brand && <p className="font-light text-sm">{item.brand}</p>}
+          {item.amount && <p className="font-medium text-sm">{item.amount} {item.unit}</p>}
+        </div>
       </div>
+      
+      <div className="flex items-center">
+        {item.photo ? (
+          <div className="rounded-full bg-white w-10 h-10">
+            <img src={require(`../../assets/imgs/products/${item.photo}`)} className="w-full h-full rounded-full object-cover"  />
+          </div>
+        ) : ( null )}
+        
+        <button className="text-2xl text-white ml-3" aria-label="Edit Item" onClick={() => setShowEditItem(!showEditItem)}>
+          <RxDotsVertical />
+        </button>
       </div>
-      <button className="text-2xl text-white" aria-label="Edit Item" onClick={() => setShowEditItem(!showEditItem)}>
-        <RxDotsVertical />
-      </button>
+
       <CSSTransition
         in={showEditItem}
         timeout={500}
         classNames="menu-primary"
-        className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
+        className="fixed top-[60px] right-0 bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
         unmountOnExit
       >
         <Overlay
@@ -74,9 +84,9 @@ const Item = ({ item, list_id }) => {
         setShowConfirmation={setShowConfirmation}
         action={handleDelete}
       />
-
     </div>
   );
+  
 };
 
 Item.propTypes = {

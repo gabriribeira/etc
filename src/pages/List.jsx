@@ -50,6 +50,7 @@ const List = () => {
       details: "",
       brand: "",
       store: "",
+      photo: "",
       amount: null,
       unit: "",
       members: [],
@@ -87,6 +88,7 @@ const List = () => {
       setRefresh(false);
     }
   }, [list, itemsData, refresh]);
+  
   useEffect(() => {
     setRecipeSelected(false);
     setEventSelected(false);
@@ -151,7 +153,7 @@ const List = () => {
                   </>
                 )}
                 <br />
-                <MembersInput label={"Members"} value={members} onChange={setMembers} />
+                <MembersInput label={"Edit Members"} value={members} onChange={setMembers} />
                 <div className="mt-6 flex flex-row justify-between align-middle items-center">
                   <div className="flex align-middle items-center">
                     <img src={AiStarsImg}/>

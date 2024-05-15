@@ -9,7 +9,8 @@ import ListsData from "../../data/lists.json";
 //import Filter from "./Filter";
 import FilterOverlay from "./FilterOverlay";
 import { IoSettingsOutline } from "react-icons/io5";
-import { IoFilter } from "react-icons/io5";
+import { IoFilterCircleOutline } from "react-icons/io5";
+
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
 
@@ -142,7 +143,7 @@ const TopBar = ({ description, listTitle }) => {
               className="h-[25px]"
             />
           </div>
-          <div className="flex items-center gap-x-5">
+          <div className="flex items-center gap-x-3">
 
 
           {/^\/households\/\d+$/.test(location.pathname) && (
@@ -164,19 +165,20 @@ const TopBar = ({ description, listTitle }) => {
 
             {location.pathname === "/expenses" && (
               <>
-              <button type="button" className="text-2xl z-[101] text-black">
-                <NewButton
-                  path={`${location.pathname}/new`}
-                  aria="New Expense"
-                />
-              </button>
               <button
                 type="button"
                 onClick={handleShowFilter}
                 className="text-2xl z-[101] text-black"
               >
-                <IoFilter />
+                <IoFilterCircleOutline size={35} />
               </button>
+              <button type="button" className="text-2xl z-[101] text-black mr-1">
+                <NewButton
+                  path={`${location.pathname}/new`}
+                  aria="New Expense"
+                />
+              </button>
+              
               
               </>
             )}
@@ -184,18 +186,19 @@ const TopBar = ({ description, listTitle }) => {
 
             {location.pathname === "/lists" && (
               <>
-              <button type="button" className="text-2xl z-[101] text-black">
+              <button
+                type="button"
+                onClick={handleShowFilter}
+                className="text-3xl z-[101] text-black"
+              >
+                <IoFilterCircleOutline size={35} />
+              </button>
+
+              <button type="button" className="text-3xl z-[101] text-black mr-1">
                 <NewButton
                   path={`/lists/${Lists.length + 1}`}
                   aria="New List"
                 />
-              </button>
-              <button
-                type="button"
-                onClick={handleShowFilter}
-                className="text-2xl z-[101] text-black"
-              >
-                <IoFilter />
               </button>
               
               </>
@@ -208,7 +211,7 @@ const TopBar = ({ description, listTitle }) => {
                 onClick={handleShowFilter}
                 className="text-2xl z-[101] text-black"
               >
-                <IoFilter />
+                <IoFilterCircleOutline size={35} />
               </button>
             )}
 
