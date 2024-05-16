@@ -6,11 +6,11 @@ const Category = ({ category, value, onChange, filter }) => {
     category && (
       <button
         onClick={() => filter ? onChange(category.title) : onChange(category)}
-        className={`w-auto py-1 px-4 rounded-2xl text-base font-normal text-center transition-all duration-300 cursor-pointer`}
+        className={`w-auto py-1 px-2 bg-white rounded-2xl text-base font-normal text-center transition-all duration-300 cursor-pointer`}
         style={{
-          backgroundColor: value ? category.color : "#fcfcfc",
+          backgroundColor: value ? category.color : "#f3f0e8",
           border: `2px solid ${category.color}`,
-          color: value ? "#fcfcfc" : category.color,
+          color: value ? "#f3f0e8" : category.color,
         }}
         type="button"
       >

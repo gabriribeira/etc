@@ -41,7 +41,7 @@ const Expenses = () => {
     
     <div className="relative bg-white min-h-screen">
       <TopBar />
-      <main>
+      <main className="pt-20">
         <div className="flex flex-col px-5">
           <DividerTabs
             tabs={["Expenses", "Balances"]}

@@ -7,6 +7,7 @@ import MembersInput from "../components/common/MembersInput";
 import UsersData from "../data/users.json";
 import ExpensesData from "../data/expenses.json";
 import { useNavigate } from "react-router-dom";
+import CategoriesInput from "../components/common/CategoriesInput";
 
 const NewExpense = () => {
   const usersData = UsersData;
@@ -15,7 +16,8 @@ const NewExpense = () => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
-  const [details, setDetails] = useState("");
+  const [category, setCategory] = useState("");
+  
   //eslint-disable-next-line
   const [paidBy, setPaidBy] = useState("");
   const [members, setMembers] = useState([]);
@@ -53,7 +55,6 @@ const NewExpense = () => {
       title,
       value: Number(value),
       date,
-      details,
       user_id: authUser.id,
       users: members,
       paid: false,
@@ -66,12 +67,12 @@ const NewExpense = () => {
     authUser && (
       <div className="bg-white">
         <TopBar />
-        <form className="flex flex-col px-5 gap-y-6">
-          <Input label="Title" value={title} onChange={setTitle} />
-          <Input label="Value" value={value} onChange={setValue} />
-          <div className="flex flex-col">
+        <main className="pt-32">
+        <form className="flex flex-col px-5 gap-y-4">
+
+          <div className="flex flex-col w-full">
             <h2 className="mb-2 text-lg font-semibold">Paid By</h2>
-            <div className="border-2 border-black80 rounded-2xl p-2 flex flex items-center">
+            <div className="border border-black80 rounded-2xl p-2 flex flex items-center">
               <div className="w-[35px] h-[35px] rounded-full flex items-center justify-center relative shrink-0">
                 <img
                   //eslint-disable-next-line
@@ -83,19 +84,35 @@ const NewExpense = () => {
               <p className="font-semibold text-lg ml-3">{authUser.name}</p>
             </div>
           </div>
+
+          <Input label="Title" value={title} onChange={setTitle} />
+
+          <div className="flex w-full gap-x-2 ">
+
+            <div className="w-50">
+              <Input label="Value" value={value} onChange={setValue}  />
+            </div>
+            
+            <Input label="Date" value={date} onChange={setDate} />
+          
+          </div>
+          
+
           <MembersInput
             value={members}
             onChange={setMembers}
-            label={"Members"}
+            label={"Edit members"}
           />
-          <Input label="Date" value={date} onChange={setDate} />
-          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
+
+          <CategoriesInput label={"Category"} onChange={setCategory} value={category} type="Expense"/>
+          
           <Button
             label="Create Expense"
             action={handleCreateExpense}
             className="btn btn-primary"
           />
         </form>
+        </main>
         <BottomBar />
       </div>
     )

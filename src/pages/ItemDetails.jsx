@@ -8,6 +8,8 @@ import UsersData from "../data/users.json";
 import Button from "../components/common/Button";
 import ItemsData from "../data/items.json";
 import { useNavigate, useLocation } from "react-router-dom";
+import CategoriesInput from "../components/common/CategoriesInput";
+import PhotoInput from "../components/common/PhotoInput";
 
 const ItemDetails = () => {
   const usersData = UsersData;
@@ -22,10 +24,12 @@ const ItemDetails = () => {
   const [details, setDetails] = useState("");
   const [brand, setBrand] = useState("");
   const [store, setStore] = useState("");
+  const [category, setCategory] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [authUser, setAuthUser] = useState(null);
   const [list_id, setList_id] = useState(null);
   const [suggestions, setSuggestions] = useState(null);
-  //eslint-disable-next-line
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,6 +52,7 @@ const ItemDetails = () => {
     };
     fetchData();
   }, []);
+  
   useEffect(() => {
     if (usersData) {
       setMembers(
@@ -57,6 +62,7 @@ const ItemDetails = () => {
       );
     }
   }, [usersData]);
+  
   useEffect(() => {
     if (location && itemsData) {
       setList_id(location.pathname.split("/")[2]);
@@ -74,10 +80,13 @@ const ItemDetails = () => {
           setDetails(item[0].details);
           setBrand(item[0].brand);
           setStore(item[0].store);
+          setCategory(item[0].category);
+          setPhoto(item[0].photo);
         }
       }
     }
   }, [location, itemsData]);
+  
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -95,6 +104,7 @@ const ItemDetails = () => {
       setAuthUser(storedUser);
     }
   }, []);
+  
   useEffect(() => {
     if (name.length > 2) {
       if (suggestions) {
@@ -106,6 +116,7 @@ const ItemDetails = () => {
       }
     }
   }, [name]);
+  
   const handleAddItem = () => {
     const newItem = {
       id: itemsData.length + 1,
@@ -118,6 +129,8 @@ const ItemDetails = () => {
       amount: amount,
       unit: unit,
       members: members,
+      category: category,
+      img_url: photo,
       suggestion: false,
       created_at: new Date().toISOString().split("T")[0],
       created_by: authUser.id,
@@ -126,13 +139,17 @@ const ItemDetails = () => {
     console.log(itemsData);
     navigate("/lists/" + list_id);
   };
+  
   return (
     <div className="bg-white">
       <TopBar />
-      <main>
+      <main className="pt-32 mb-16 gap-x-5">
+        <div className="flex justify-start px-5 gap-3 mb-5">
+          <PhotoInput onChange={setPhoto} value={photo} />
+          <Input label="Name *" value={name} placeholder="Name" onChange={setName} required />
+        </div>
+
         <div className="flex flex-col px-5 gap-y-3">
-          <Input label="Name" value={name} onChange={setName} />
-          <Input label="Value" value={value} onChange={setValue} />
           <AmountInput
             label="Amount"
             value={amount}
@@ -140,20 +157,27 @@ const ItemDetails = () => {
             valueUnit={unit}
             onChangeUnit={setUnit}
           />
-          <MembersInput label={"Members"} value={members} onChange={setMembers} />
-          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
+          <p className="font-medium mt-2">Members</p>
+          <div className="flex flex-col gap-y-4">
+          <MembersInput label={"Edit Members"} value={members} onChange={setMembers} />
           <Input label="Brand" value={brand} onChange={setBrand} />
+          <CategoriesInput onChange={setCategory} value={category} label={"Category"} categorySelected={category} type="List"/>
+          
           <Input label="Store" value={store} onChange={setStore} />
+          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
+          
           <Button
             label="Done"
             action={() => {
               handleAddItem();
             }}
           />
+          </div>
         </div>
       </main>
       <BottomBar />
     </div>
   );
 };
+
 export default ItemDetails;

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import RequireAuth from "./components/middlewares/RequireAuth";
 import Authentication from "./pages/Authentication";
 import Expense from "./pages/Expense";
+import ExpenseDetail from "./components/expenses/ExpenseDetail";
 import Expenses from "./pages/Expenses";
 import Goals from "./pages/Goals";
 import Household from "./pages/Household";
@@ -22,15 +23,7 @@ import About from "./pages/About";
 import EditHousehold from "./pages/EditHousehold";
 import BalanceDetails from "./pages/BalanceDetails";
 import AddMembers from "./pages/AddMembers";
-import NewList from "./pages/NewList";
-// import Calendar from "./pages/Calendar";
-// import EditEvent from "./pages/EditEvent";
-// import EditTask from "./pages/EditTask";
-// import Task from "./pages/Task";
-// import TaskManager from "./pages/TaskManager";
-// import Tasks from "./pages/Tasks";
-// import NewTask from "./pages/NewTask";
-// import NewEvent from "./pages/NewEvent";
+import NewList from "./components/lists/NewList";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -51,10 +44,11 @@ function App() {
             element={<EditHousehold />}
           />
           <Route path="/expenses/:expense" element={<Expense />} />
+          <Route path="/expense-details/:expenseId" element={<ExpenseDetail />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
-          <Route path="/" element={<Lists />} />
+          <Route path="/" element={<Navigate to="/lists" />} />
           <Route path="/households/:householdId" element={<Household />} />{" "}
           {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />

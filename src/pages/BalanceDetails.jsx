@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TopBar from "../components/common/TopBar";
 import BottomBar from "../components/common/BottomBar";
 import ExpenseInBalance from "../components/expenses/ExpenseInBalance";
@@ -11,6 +11,26 @@ const BalanceDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { balance, user, expenses } = location.state || {};
+  const [authUser, setAuthUser] = useState(null);
+
+  useEffect(() => {
+    const getCookieValue = (cookieName) => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === cookieName) {
+          return JSON.parse(decodeURIComponent(value));
+        }
+      }
+      return null;
+    };
+
+    const storedUser = getCookieValue("user");
+    if (storedUser) {
+      setAuthUser(storedUser);
+    }
+  }, []);
+
   const handlePaidBalance = () => {
     expenses.forEach((expense) => {
       expensesData.forEach((expenseData) => {
@@ -29,19 +49,27 @@ const BalanceDetails = () => {
     });
     navigate("/expenses");
   };
+
+  const getUserDisplayName = (user) => {
+    const nameParts = user.name.split(" ");
+    const firstName = nameParts[0];
+    const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
+    return `${firstName} ${lastNameInitial}.`;
+  };
+
+  if (!balance || !user || !expenses || !authUser) return null;
+
   return (
-    balance &&
-    user &&
-    expenses && (
-      <div className="relative bg-white">
-        <TopBar />
+    <div className="relative bg-white min-h-screen flex flex-col">
+      <TopBar />
+      <main className="pt-28 flex-grow">
         <div className="flex flex-col px-5 mt-6 fade-in">
-          <div className="bg-black90  rounded-2xl flex items-end relative text-white p-3 relative h-[160px]">
-            <div className="flex top-3 right-3 absolute">
+          <div className="bg-black rounded-2xl flex justify-start w-full relative text-white p-3 relative h-[72px]">
+            <div className="flex top-3 right-3 ">
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
                 <img
                   //eslint-disable-next-line
-                  src={require(`../assets/data/users/gabriribeira.webp`)}
+                  src={require(`../assets/data/users/${authUser.img}`)}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                 />
@@ -49,40 +77,41 @@ const BalanceDetails = () => {
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
                 <img
                   //eslint-disable-next-line
-                  src={require(`../assets/data/users/carolina.webp`)}
+                  src={require(`../assets/data/users/${user.img}`)}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                 />
               </div>
             </div>
-            <div className="flex flex-col mt-20">
+            <div className="flex flex-col ml-2 grow">
               {balance > 0 ? (
                 <h2 className="font-light text-base">
                   <span className="font-semibold">You</span> owe{" "}
-                  <span className="font-semibold">{user.name}</span>
+                  <span className="font-semibold">{getUserDisplayName(user)}</span>
                 </h2>
               ) : (
                 <h2 className="font-light text-base">
-                  <span className="font-semibold">{user.name}</span> owes{" "}
+                  <span className="font-semibold">{getUserDisplayName(user)}</span> owes{" "}
                   <span className="font-semibold">you</span>
                 </h2>
               )}
-              <h1 className="text-3xl font-semibold">
-                {Math.abs(balance.toFixed(2))}
-                <span className="font-light text-2xl">€</span>
-              </h1>
+            </div>
+            <div className="flex text-2xl font-semibold text-salmon ml-2">
+              {Math.abs(balance).toFixed(2)}
+              <span className="font-light text-2xl">€</span>
             </div>
           </div>
-          <div className="flex flex-col mt-6 gap-y-3">
+          <div className="flex flex-col mt-6 pb-24 gap-y-3">
             <h2 className="text-lg font-normal">Expenses</h2>
             {expenses &&
               expenses.map((expense, index) => (
-                <ExpenseInBalance expense={expense} key={index} />
+                <ExpenseInBalance expense={expense} authUser={authUser} key={index} />
               ))}
           </div>
         </div>
+
         {balance < 0 ? (
-          <div className="mt-6 fixed bottom-[80px] bg-white w-screen p-5">
+          <div className="fixed bottom-[80px] bg-white w-full p-5">
             <Button label="Define as paid" action={handlePaidBalance} />
           </div>
         ) : (
@@ -92,9 +121,9 @@ const BalanceDetails = () => {
             this balance as paid!
           </p>
         )}
-        <BottomBar />
-      </div>
-    )
+      </main>
+      <BottomBar />
+    </div>
   );
 };
 

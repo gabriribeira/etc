@@ -8,6 +8,16 @@ const Balances = () => {
   const usersData = UsersData;
   const [balances, setBalances] = useState(null);
   const [authUser, setAuthUser] = useState(null);
+  const [showMoreCredits, setShowMoreCredits] = useState(false);
+  const [showMoreDebts, setShowMoreDebts] = useState(false);
+
+  const getUserDisplayName = (user) => {
+    const nameParts = user.name.split(" ");
+    const firstName = nameParts[0];
+    const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
+    return `${firstName} ${lastNameInitial}.`;
+  };
+
   useEffect(() => {
     const getCookieValue = (cookieName) => {
       const cookies = document.cookie.split("; ");
@@ -25,6 +35,7 @@ const Balances = () => {
       setAuthUser(storedUser);
     }
   }, []);
+
   useEffect(() => {
     if (expensesData && usersData && authUser) {
       const calculatedBalances = calculateBalances(
@@ -40,26 +51,50 @@ const Balances = () => {
     const userBalances = {};
     const userExpenses = {};
 
-    // Initialize balances and expenses
+    // Initialize balances and expenses for the authenticated user only
     users.forEach((user) => {
-      userBalances[user.id] = 0;
-      userExpenses[user.id] = [];
+      if (
+        user.id === authenticatedUserId ||
+        expenses.some(
+          (exp) =>
+            exp.users.includes(user.id) &&
+            exp.users.includes(authenticatedUserId)
+        )
+      ) {
+        userBalances[user.id] = 0;
+        userExpenses[user.id] = [];
+      }
     });
 
-    // Calculate balances and track expenses based on expenses
+    // Calculate balances and track expenses based on expenses involving the authenticated user
     expenses.forEach((expense) => {
-      if (!expense.paid) {
+      if (
+        !expense.paid &&
+        (expense.users.includes(authenticatedUserId) ||
+          expense.user_id === authenticatedUserId)
+      ) {
         const numberOfUsers = expense.users.length || 1; // Avoid division by zero
         const amountPerUser = expense.value / numberOfUsers;
 
-        userBalances[expense.user_id] += expense.value;
-
-        expense.users.forEach((userId) => {
-          if (userId !== authenticatedUserId) {
-            userBalances[userId] -= amountPerUser;
-            userExpenses[userId].push(expense);
-          }
-        });
+        if (expense.user_id === authenticatedUserId) {
+          // The authenticated user paid the expense
+          expense.users.forEach((userId) => {
+            if (userId !== authenticatedUserId) {
+              userBalances[userId] -= amountPerUser; // They owe the authenticated user
+              userExpenses[userId].push({
+                ...expense,
+                amountOwed: `+${amountPerUser.toFixed(2)}`,
+              });
+            }
+          });
+        } else if (expense.users.includes(authenticatedUserId)) {
+          // The authenticated user owes part of this expense
+          userBalances[expense.user_id] += amountPerUser; // Authenticated user owes the payer
+          userExpenses[expense.user_id].push({
+            ...expense,
+            amountOwed: `-${amountPerUser.toFixed(2)}`,
+          });
+        }
       }
     });
 
@@ -70,38 +105,38 @@ const Balances = () => {
     return balances.userExpenses[user.id];
   };
 
+  const totalCredits = Object.values(balances?.userBalances || {}).filter(
+    (balance) => balance < 0
+  ).length;
+  const totalDebts = Object.values(balances?.userBalances || {}).filter(
+    (balance) => balance > 0
+  ).length;
+
+  const creditUsers = usersData.filter(
+    (user) => user.id !== authUser?.id && balances?.userBalances[user.id] < 0
+  );
+  const debtUsers = usersData.filter(
+    (user) => user.id !== authUser?.id && balances?.userBalances[user.id] > 0
+  );
+
   return (
     <>
+      <p className="mt-3">My Receivables ({totalCredits})</p>
       {balances &&
-        usersData.map(
-          (user) =>
-            user.id !== authUser.id &&
-            (balances.userBalances[user.id] < 0 ||
-              balances.userBalances[user.id] > 0) && (
-              <Link
-                to={"/expenses/balance"}
-                state={{
-                  balance: balances.userBalances[user.id],
-                  user: user,
-                  expenses: handleDetailsClick(user),
-                }}
-                key={user.id}
-                className={`bg-black90 shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[160px]`}
-              >
-                <div className="flex flex-col justify-end h-full">
-                  <h2 className="text-lg text-white font-normal">
-                    {balances[user.id] > 0
-                      ? <span><span className="font-medium">You</span> <span className="font-light">owe</span> <span className="font-medium">{balances.userBalances[user.id]}</span></span>
-                      : <span className="font-medium">{user.name} <span className="font-light">owes</span> <span className="font-medium">you</span></span>}
-                  </h2>
-                  <div className="flex flex-col">
-                    <div className="text-3xl font-semibold text-white">
-                      {Math.abs(balances.userBalances[user.id].toFixed(2))}
-                      <span className="font-light text-xl">€</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-start items-start h-full">
+        creditUsers.slice(0, showMoreCredits ? creditUsers.length : 2).map(
+          (user) => (
+            <Link
+              to={"/expenses/balance"}
+              state={{
+                balance: balances.userBalances[user.id],
+                user: user,
+                expenses: handleDetailsClick(user),
+              }}
+              key={user.id}
+              className={`bg-black shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[130px]`}
+            >
+              <div className="flex flex-col h-full w-full justify-between">
+                <div className="flex justify-start w-full ">
                   <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
                     <img
                       //eslint-disable-next-line
@@ -118,10 +153,109 @@ const Balances = () => {
                       className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                     />
                   </div>
+
+                  <div className="flex ml-2 grow">
+                    <h2 className="text-lg text-white font-normal">
+                      <span className="font-medium">{getUserDisplayName(user)}</span>{" "}
+                      <span className="font-light">owes</span><span className="font-semibold"> You </span>
+                      
+                    </h2>
+                  </div>
+
+                  <div className="flex ml-2 justify-end">
+                    <div className="text-2xl font-semibold text-salmon">
+                      {Math.abs(balances.userBalances[user.id]).toFixed(2)}
+                      <span className="font-light text-xl">€</span>
+                    </div>
+                  </div>
                 </div>
-              </Link>
-            )
+
+                <div className="flex justify-start w-full" id="2">
+                  <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
+                    {balances.userExpenses[user.id].length} expense
+                    {balances.userExpenses[user.id].length > 1 ? "s" : ""}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          )
         )}
+      {creditUsers.length > 2 && (
+        <div className="w-full text-left mb-3">
+        <button
+          onClick={() => setShowMoreCredits(!showMoreCredits)}
+          className="text-blue-500 font-bold"
+        >
+          {showMoreCredits ? "See less" : "See more"}
+        </button>
+      </div>
+      )}
+      <p>My Debts ({totalDebts})</p>
+      {balances &&
+        debtUsers.slice(0, showMoreDebts ? debtUsers.length : 2).map(
+          (user) => (
+            <Link
+              to={"/expenses/balance"}
+              state={{
+                balance: balances.userBalances[user.id],
+                user: user,
+                expenses: handleDetailsClick(user),
+              }}
+              key={user.id}
+              className="bg-black shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[130px]"
+            >
+              <div className="flex flex-col h-full w-full justify-between">
+                <div className="flex justify-start w-full">
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
+                    <img
+                      src={require(`../../assets/data/users/${user.img}`)}
+                      alt="User Profile Picture"
+                      className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                    />
+                  </div>
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
+                    <img
+                      src={require(`../../assets/data/users/${authUser.img}`)}
+                      alt="Auth User Profile Picture"
+                      className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                    />
+                  </div>
+                  <div className="flex ml-2 grow">
+                    <h2 className="text-lg text-white font-normal">
+                      <span className="font-medium">You owe </span>
+                      <span className="font-medium">{getUserDisplayName(user)}</span>{" "}
+                      <span className="font-light">
+                        {Math.abs(balances.userBalances[user.id]).toFixed(2)}€
+                      </span>
+                    </h2>
+                  </div>
+                  <div className="flex ml-2 justify-end">
+                    <div className="text-2xl font-semibold text-salmon">
+                      {Math.abs(balances.userBalances[user.id]).toFixed(2)}
+                      <span className="font-light text-xl">€</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-start w-full" id="2">
+                  <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
+                    {balances.userExpenses[user.id].length} expense
+                    {balances.userExpenses[user.id].length > 1 ? "s" : ""}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          )
+        )}
+      {debtUsers.length > 2 && (
+        <div className="w-full text-left">
+        <button
+          onClick={() => setShowMoreDebts(!showMoreDebts)}
+          className="text-blue-500"
+        >
+          {showMoreDebts ? "See less" : "See more"}
+        </button>
+        </div>
+      )}
     </>
   );
 };

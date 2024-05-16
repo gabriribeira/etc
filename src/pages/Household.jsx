@@ -77,9 +77,9 @@ const Household = () => {
             hideOverlay={() => setOpenOverlay(false)}
           />
         )}
-        <div className="">
+        <div className="relative bg-white min-h-screen">
           <TopBar />
-          <main>
+          <main className="pt-20">
             <div className="flex flex-col gap-y-6">
               <HouseholdInfo household={household} users={householdUsers} openOverlayFromParent={() => setOpenOverlayFromParent(true)} />
               <SustainableGoal />
