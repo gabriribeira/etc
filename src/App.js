@@ -24,6 +24,7 @@ import EditHousehold from "./pages/EditHousehold";
 import BalanceDetails from "./pages/BalanceDetails";
 import AddMembers from "./pages/AddMembers";
 import NewList from "./components/lists/NewList";
+import Image from "./pages/Image";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -53,6 +54,7 @@ function App() {
           {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
+          <Route path="/image/:id" element={<Image />} />
           <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/lists/new" element={<NewList />} /> 
