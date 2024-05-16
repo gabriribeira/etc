@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const Input = ({ label, placeholder, value, onChange, error, size }) => {
+const Input = ({ label, placeholder, value, onChange, error }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -40,13 +40,10 @@ const Input = ({ label, placeholder, value, onChange, error, size }) => {
               value != ""
                 ? "text-xl"
                 : "text-lg"
-            } placeholder:text-black50 text-black  bg-white ${size ? size : 'w-full'}`}
+            } placeholder:text-black50 text-black w-full bg-white`}
             placeholder={placeholder ? placeholder : label}
-            
           />
-          
         )}
-        
         {(label === "Password" || label === "Confirm Password") && (
           <button
             type="button"
@@ -69,7 +66,6 @@ Input.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
-  size: PropTypes.string,
 };
 
 export default Input;

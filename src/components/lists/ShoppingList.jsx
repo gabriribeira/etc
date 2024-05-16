@@ -57,26 +57,20 @@ const ShoppingList = ({ list }) => {
           </p>
         </div>
         <div className="flex items-center w-full justify-start gap-x-3">
-          <p className="font-bold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
+          <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
             {items.length} products
           </p>
           {list.closed && (
-            <p className="text-sm font-bold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
+            <p className="text-sm font-semibold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
               locked
             </p>
           )}
         </div>
       </div>
       <div className="text-2xl text-white">
-        <button
-        type="button"
-        aria-label="Button Edit List"
-         onClick={(e) => {
-              e.preventDefault();
-              setShowEditList(!showEditList);
-            }}>
+        
           {list.closed ? <FiLock /> : <FiUnlock />}
-        </button>
+        
       </div>
     </Link>
     <CSSTransition

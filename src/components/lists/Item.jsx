@@ -4,15 +4,17 @@ import { RxDotsVertical } from "react-icons/rx";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "../common/Overlay";
 import ConfirmationDialog from "../common/ConfirmationDialog";
+import ImageOverlay from "../common/ImageOverlay";
 
 const Item = ({ item, list_id }) => {
   const [showEditItem, setShowEditItem] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
 
   const handleCheck = () => {
     setChecked(!checked);
-  }
+  };
 
   const handleDelete = () => {
     // lógica para excluir o item
@@ -28,23 +30,23 @@ const Item = ({ item, list_id }) => {
           type="checkbox"
           checked={checked}
           onChange={handleCheck}
-          className="rounded  w-6 h-6 border-2 border-gray-300 checked:bg-black checked:border-none checked:shadow-none"
+          className="appearance-none h-6 w-6 border-2 border-white rounded bg-black checked:bg-black checked:border-white checked:shadow-none checked:after:content-['✔'] checked:after:text-white checked:after:flex checked:after:items-center checked:after:justify-center"
         />
-        
+
         <div className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}>
           <h1 className={`font-medium text-lg leading-5 ${checked ? 'line-through' : ''}`}>{item.name}</h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
           {item.amount && <p className="font-medium text-sm">{item.amount} {item.unit}</p>}
         </div>
       </div>
-      
+
       <div className="flex items-center">
-        {item.photo ? (
-          <div className="rounded-full bg-white w-10 h-10">
-            <img src={require(`../../assets/imgs/products/${item.photo}`)} className="w-full h-full rounded-full object-cover"  />
+        {item.img_url ? (
+          <div className="rounded-full bg-white w-10 h-10" onClick={() => setShowImageOverlay(true)}>
+            <img src={require(`../../assets/imgs/products/${item.img_url}`)} className="w-full h-full rounded-full object-cover" alt="Product" />
           </div>
-        ) : ( null )}
-        
+        ) : (null)}
+
         <button className="text-2xl text-white ml-3" aria-label="Edit Item" onClick={() => setShowEditItem(!showEditItem)}>
           <RxDotsVertical />
         </button>
@@ -69,24 +71,31 @@ const Item = ({ item, list_id }) => {
           ]}
           hideOverlay={() => setShowEditItem(false)}
           onClicks={[
-            () => {}, 
-            () => setShowConfirmation(true) 
+            () => {},
+            () => setShowConfirmation(true)
           ]}
         />
       </CSSTransition>
-        
-      <ConfirmationDialog 
-        title= "Delete Item?"
-        details= "The item will be removed from the shopping list."
-        label = "Delete"
-        bg = "bg-red-600"
+
+      <ConfirmationDialog
+        title="Delete Item?"
+        details="The item will be removed from the shopping list."
+        label="Delete"
+        bg="bg-red-600"
         showConfirmation={showConfirmation}
         setShowConfirmation={setShowConfirmation}
         action={handleDelete}
       />
+
+      {showImageOverlay && (
+        <ImageOverlay
+          img_url={item.img_url}
+          name={item.name}
+          onClose={() => setShowImageOverlay(false)}
+        />
+      )}
     </div>
   );
-  
 };
 
 Item.propTypes = {

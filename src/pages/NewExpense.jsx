@@ -7,6 +7,7 @@ import MembersInput from "../components/common/MembersInput";
 import UsersData from "../data/users.json";
 import ExpensesData from "../data/expenses.json";
 import { useNavigate } from "react-router-dom";
+import CategoriesInput from "../components/common/CategoriesInput";
 
 const NewExpense = () => {
   const usersData = UsersData;
@@ -15,6 +16,7 @@ const NewExpense = () => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
+  const [category, setCategory] = useState("");
   
   //eslint-disable-next-line
   const [paidBy, setPaidBy] = useState("");
@@ -65,8 +67,8 @@ const NewExpense = () => {
     authUser && (
       <div className="bg-white">
         <TopBar />
-        <main className="mt-32">
-        <form className="flex flex-col px-5 gap-y-6">
+        <main className="pt-32">
+        <form className="flex flex-col px-5 gap-y-4">
 
           <div className="flex flex-col w-full">
             <h2 className="mb-2 text-lg font-semibold">Paid By</h2>
@@ -101,6 +103,8 @@ const NewExpense = () => {
             onChange={setMembers}
             label={"Edit members"}
           />
+
+          <CategoriesInput label={"Category"} onChange={setCategory} value={category} type="Expense"/>
           
           <Button
             label="Create Expense"

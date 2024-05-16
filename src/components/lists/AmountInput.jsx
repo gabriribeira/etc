@@ -11,20 +11,20 @@ const AmountInput = ({ label, value, onChange, valueUnit, onChangeUnit }) => {
   };
   return (
     <div className="flex flex-col">
-      <label htmlFor={label} className="mb-2 text-lg font-semibold">
+      <label htmlFor={label} className="mb-2 text-lg font-medium">
         {label}
       </label>
-      <div className="flex items-center w-full gap-x-3">
+      <div className="flex items-center gap-x-2">
         <input
           name={label}
           id={label}
           value={value}
           type="number"
           onChange={(e) => onChange(e.target.value)}
-          className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black80 text-black w-full bg-white`}
-          placeholder={label}
+          className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg placeholder:text-black80 text-black w-10 bg-white`}
+          placeholder=" "
         />
-        <div className="flex relative w-full items-center transition-all duration-300">
+        <div className="flex relative w-32 items-center transition-all duration-300">
           <button
             className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none text-lg ${
               valueUnit ? "text-black" : "text-black50"

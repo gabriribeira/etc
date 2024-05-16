@@ -70,7 +70,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
                   {option === "Notifications" && <RiNotification4Line />}
                   {option === "Profile" && <LuUser />}
                   {option === "Logout" && <CiLogout />}
-                  {option === "Close shopping list" && <FiLock />}
+                  {option === "Lock shopping list" && <FiLock />}
                   {option === "Edit shopping list" && <BiPencil />}
                   {option === "Edit item details" && <BiPencil />}
                   {option === "Delete shopping list" && <HiOutlineTrash />}

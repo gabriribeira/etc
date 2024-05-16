@@ -47,7 +47,7 @@
     "description": "Estudante de MCTW na Universidade de Aveiro.",
     "img": "leo.webp",
     "password": "leo123",
-    "households": [2]
+    "households": [1]
   },
   {
     "id": 6,
@@ -57,6 +57,6 @@
     "description": "Estudante de MCTW na Universidade de Aveiro.",
     "img": "nathalia.webp",
     "password": "nathalia123",
-    "households": [2]
+    "households": [1]
   }
 ]

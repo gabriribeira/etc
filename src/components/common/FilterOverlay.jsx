@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
-import CategoriesInput from "./CategoriesInput";
+import CategoriesData from "../../data/categories.json";
 import { IoCheckmark } from "react-icons/io5";
 
-const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
+const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, location }) => {
   const handleFilters = (filterItem) => {
     setFilter((prevFilters) => {
       if (prevFilters.includes(filterItem)) {
@@ -12,53 +12,45 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
       } else {
         if (["All", "Unchecked", "Checked"].includes(filterItem)) {
           return ["All", "Unchecked", "Checked"].includes(filterItem)
-            ? filterItem == "All"
+            ? filterItem === "All"
               ? [...prevFilters, filterItem].filter(
                   (item) => item !== "Unchecked" && item !== "Checked"
                 )
-              : filterItem == "Unchecked"
-                ? [...prevFilters, filterItem].filter(
-                    (item) => item !== "All" && item !== "Checked"
-                  )
-                : filterItem == "Checked"
-                  ? [...prevFilters, filterItem].filter(
-                      (item) => item !== "All" && item !== "Unchecked"
-                    )
-                  : [...prevFilters, filterItem]
+              : filterItem === "Unchecked"
+              ? [...prevFilters, filterItem].filter(
+                  (item) => item !== "All" && item !== "Checked"
+                )
+              : filterItem === "Checked"
+              ? [...prevFilters, filterItem].filter(
+                  (item) => item !== "All" && item !== "Unchecked"
+                )
+              : [...prevFilters, filterItem]
             : ["Everyone", "You"].filter((item) => item !== filterItem);
-
         } else if (["AllLists", "Opened", "Closed"].includes(filterItem)) {
           return ["AllLists", "Opened", "Closed"].includes(filterItem)
-            ? filterItem == "AllLists"
+            ? filterItem === "AllLists"
               ? [...prevFilters, filterItem].filter(
                   (item) => item !== "Opened" && item !== "Closed"
                 )
-              : filterItem == "Opened"
-                ? [...prevFilters, filterItem].filter(
-                    (item) => item !== "AllLists" && item !== "Closed"
-                  )
-                : filterItem == "Closed"
-                  ? [...prevFilters, filterItem].filter(
-                      (item) => item !== "AllLists" && item !== "Opened"
-                    )
-                  : [...prevFilters, filterItem]
-            : ["Everyone", "You"].filter((item) => item !== filterItem);
-        
-          }else if (["Everyone", "You"].includes(filterItem)) {
-          return ["Everyone", "You"].includes(filterItem)
-            ? filterItem == "Everyone"
+              : filterItem === "Opened"
               ? [...prevFilters, filterItem].filter(
-                  (item) => item !== "You"
+                  (item) => item !== "AllLists" && item !== "Closed"
                 )
-              : filterItem == "You"
-                ? [...prevFilters, filterItem].filter(
-                    (item) => item !== "Everyone"
-                  )
-                : [...prevFilters, filterItem]
+              : filterItem === "Closed"
+              ? [...prevFilters, filterItem].filter(
+                  (item) => item !== "AllLists" && item !== "Opened"
+                )
+              : [...prevFilters, filterItem]
             : ["Everyone", "You"].filter((item) => item !== filterItem);
-        } 
-        
-          else {
+        } else if (["Everyone", "You"].includes(filterItem)) {
+          return ["Everyone", "You"].includes(filterItem)
+            ? filterItem === "Everyone"
+              ? [...prevFilters, filterItem].filter((item) => item !== "You")
+              : filterItem === "You"
+              ? [...prevFilters, filterItem].filter((item) => item !== "Everyone")
+              : [...prevFilters, filterItem]
+            : ["Everyone", "You"].filter((item) => item !== filterItem);
+        } else {
           return [...prevFilters, filterItem];
         }
       }
@@ -72,17 +64,11 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
     ) {
       return true;
     }
-    // Verificar se o filtro atual está aplicado
-    if (appliedFilters.includes(filterItem)) {
-      return true;
-    } else {
-      return false;
-    }
+    return appliedFilters.includes(filterItem);
   };
 
   const displayFilters = (filterItem) => {
     switch (filterItem) {
-
       case "State":
         return (
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
@@ -121,45 +107,45 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
             </button>
           </div>
         );
-      
-        case "Lists":
-          return (
-            <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
-              <button
-                onClick={() => handleFilters("AllLists")}
-                className={`relative flex items-center ${
-                  checkIfFilterIsApplied("AllLists") && "font-bold"
-                }`}
-              >
-                All
-                {checkIfFilterIsApplied("AllLists") && (
-                  <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
-                )}
-              </button>
-              <button
-                onClick={() => handleFilters("Opened")}
-                className={`relative flex items-center ${
-                  checkIfFilterIsApplied("Opened") && "font-bold"
-                }`}
-              >
-                Unlocked
-                {checkIfFilterIsApplied("Opened") && (
-                  <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
-                )}
-              </button>
-              <button
-                onClick={() => handleFilters("Closed")}
-                className={`relative flex items-center ${
-                  checkIfFilterIsApplied("Closed") && "font-bold"
-                }`}
-              >
-                Locked
-                {checkIfFilterIsApplied("Closed") && (
-                  <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
-                )}
-              </button>
-            </div>
-          );
+
+      case "Lists":
+        return (
+          <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
+            <button
+              onClick={() => handleFilters("AllLists")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("AllLists") && "font-bold"
+              }`}
+            >
+              All
+              {checkIfFilterIsApplied("AllLists") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Opened")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Opened") && "font-bold"
+              }`}
+            >
+              Unlocked
+              {checkIfFilterIsApplied("Opened") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Closed")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Closed") && "font-bold"
+              }`}
+            >
+              Locked
+              {checkIfFilterIsApplied("Closed") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+          </div>
+        );
 
       case "Products For":
         return (
@@ -238,6 +224,54 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
             </button>
           </div>
         );
+
+      case "Category": {
+        const categoryType = location.pathname === "/expenses" ? "Expense" : "List";
+        return (
+          <div className="flex flex-wrap gap-2">
+            {CategoriesData.filter(category => category.type === categoryType).map((category, index) => (
+              <button
+                key={index}
+                onClick={() => handleFilters(category.title)}
+                className={`py-1 px-2 border border-black rounded-2xl text-base font-normal transition-all duration-300 ${
+                  checkIfFilterIsApplied(category.title) ? "bg-black text-white" : "bg-white text-black"
+                }`}
+              >
+                {category.title}
+              </button>
+            ))}
+          </div>
+        );
+      }
+
+      case "Paid by":
+        return (
+          <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
+            <button
+              onClick={() => handleFilters("You")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("You") && "font-bold"
+              }`}
+            >
+              Everyone
+              {checkIfFilterIsApplied("You") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Others")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Others") && "font-bold"
+              }`}
+            >
+              Only you
+              {checkIfFilterIsApplied("Others") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+          </div>
+        );
+
       default:
         return "All";
     }
@@ -249,29 +283,19 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
         onClick={hideFilters}
         className="fixed h-screen w-screen bg-black/20 top-0 left-0"
       ></div>
-      <div className="absolute bg-white bottom-0  left-0 w-screen rounded-t-[2rem] px-5 py-10">
+      <div className="absolute bg-white bottom-0 left-0 w-screen rounded-t-[2rem] px-5 py-10">
         <div className="absolute top-[10px] left-0 w-screen flex justify-center">
           <div className="w-[25%] h-[5px] bg-black/50 rounded-full"></div>
         </div>
         <div className="flex flex-col w-full gap-y-3 mb-5">
           <h1 className="font-semibold text-2xl">Filters</h1>
           {filters &&
-            filters.map((filterItem, index) =>
-              filterItem === "Category" ? (
-                <CategoriesInput
-                  key={index}
-                  label={"Categories"}
-                  filter={true}
-                  onChange={handleFilters}
-                  categorySelected={appliedFilters}
-                />
-              ) : (
-                <div key={index} className="flex flex-col">
-                  <h2 className="font-semibold text-lg">{filterItem}</h2>
-                  {displayFilters(filterItem)}
-                </div>
-              )
-            )}
+            filters.map((filterItem, index) => (
+              <div key={index} className="flex flex-col">
+                <h2 className="font-semibold text-lg">{filterItem}</h2>
+                {displayFilters(filterItem)}
+              </div>
+            ))}
         </div>
         <Button label={"Apply Filters"} action={hideFilters} />
       </div>
@@ -284,6 +308,7 @@ FilterOverlay.propTypes = {
   setFilter: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   hideFilters: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default FilterOverlay;

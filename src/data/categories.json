@@ -1,27 +1,116 @@
 [
     {
         "id": 1,
-        "title": "Kitchen",
-        "color": "#ffA9a0"
+        "title": "Dairy",
+        "color": "#000",
+        "type": "List"
     },
     {
         "id": 2,
-        "title": "Living Room",
-        "color": "#6f94b3"
+        "title": "Protein",
+        "color": "#000",
+        "type": "List"
     },
     {
         "id": 3,
-        "title": "Bathroom",
-        "color": "#b5d2b6"
+        "title": "Pantry",
+        "color": "#000",
+        "type": "List"
     },
     {
         "id": 4,
-        "title": "Private",
-        "color": "#2b2b2b"
+        "title": "Veggies",
+        "color": "#000",
+        "type": "List"
     },
     {
         "id": 5,
+        "title": "Fruits",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 6,
+        "title": "Drinks",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 7,
+        "title": "Bakery",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 8,
+        "title": "Home & Higiene",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 9,
+        "title": "Canned",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 10,
+        "title": "Bath & Beauty",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 11,
+        "title": "Snacks",
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 12,
         "title": "Other",
-        "color": "#ffA9a0"
+        "color": "#000",
+        "type": "List"
+    },
+    {
+        "id": 13,
+        "title": "Food",
+        "color": "#000",
+        "type": "Expense"
+    },
+    {
+        "id": 14,
+        "title": "Utilities",
+        "color": "#000",
+        "type": "Expense"
+    },
+    {
+        "id": 15,
+        "title": "Transportation",
+        "color": "#000",
+        "type": "Expense"
+    },
+    {
+        "id": 16,
+        "title": "Housing",
+        "color": "#000",
+        "type": "Expense"
+    },
+    {
+        "id": 17,
+        "title": "Entertainment",
+        "color": "#000",
+        "type": "Expense"
+    },
+    {
+        "id": 18,
+        "title": "Bakery",
+        "color": "#000",
+        "type": "Expense"
+    },
+    {
+        "id": 19,
+        "title": "Other",
+        "color": "#000",
+        "type": "Expense"
     }
 ]
