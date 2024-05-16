@@ -29,7 +29,7 @@
     "user_id": 1,
     "users": [1, 2, 3, 4],
     "household_id": 1,
-    "paid": true,
+    "paid": false,
     "date": "2024-01-01"
   },
   {
@@ -38,20 +38,9 @@
     "value": 2.50,
     "details": "Epa paga lá a tua parte do Spotify, eu preciso dos 2 euros para comprar tabaco!",
     "user_id": 2,
-    "users": [1],
-    "household_id": 1,
-    "paid": true,
-    "date": "2024-01-03"
-  },
-  {
-    "id": 5,
-    "title": "Almoço do Bar DECA",
-    "value": 15.30,
-    "details": "Não esqueçam de pagar o almoço do bar deca!",
-    "user_id": 5,
     "users": [1, 2, 3],
     "household_id": 1,
-    "paid": true,
-    "date": "2024-03-13"
+    "paid": false,
+    "date": "2024-01-03"
   }
 ]

@@ -6,6 +6,7 @@ import Button from "../components/common/Button";
 import HouseholdsData from "../data/households.json";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import BottomBar from "../components/common/BottomBar";
 
 const NewHousehold = () => {
   const households = HouseholdsData;
@@ -47,6 +48,7 @@ const NewHousehold = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar />
+      <main className="pt-32">
       <form className="flex flex-1 flex-col w-full h-auto justify-between px-5">
         <div className="flex flex-col w-full gap-y-6 h-auto">
           <div className="my-4">
@@ -68,6 +70,8 @@ const NewHousehold = () => {
           <Button label="Submit" action={handleNewHousehold} />
         </div>
       </form>
+      </main>
+      <BottomBar />
     </div>
   );
 };

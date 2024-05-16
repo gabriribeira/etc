@@ -16,9 +16,6 @@ const Lists = () => {
   const [authHousehold, setAuthHousehold] = useState(null);
   
   //const [appliedFilters, setAppliedFilters] = useState([]);
-  const Lists = ListsData;
-
- 
 
 
   useEffect(() => {
@@ -51,7 +48,7 @@ const Lists = () => {
       
       <TopBar />
       
-      <main className="mt-16">
+      <main className="pt-16">
 
       <div className="flex flex-col px-5 fade-in">
         <div className="flex flex-col gap-y-3 mt-5">
@@ -65,7 +62,8 @@ const Lists = () => {
               </span>
             }
             bg="bg-gradient-to-r from-blue to-salmon text-white"
-            to={`/lists/${Lists.length + 1}`}
+            to={`/lists/new`}
+            state={{ aiToggle: true }}
             aria="Generate List With AI Button"
           />
           </div>
