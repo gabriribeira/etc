@@ -24,7 +24,7 @@ const Item = ({ item, list_id }) => {
   };
 
   const handleImageClick = () => {
-    navigate(`/image/${item.id}`);
+    navigate(`/lists/${list_id}/item/${item.id}/image/`);
   };
 
   return (
