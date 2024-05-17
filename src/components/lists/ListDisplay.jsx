@@ -7,6 +7,7 @@ import { SlArrowRight } from "react-icons/sl";
 import TopBar from "../common/TopBar";
 import ListsData from "../../data/lists.json";
 import ItemsData from "../../data/items.json";
+import { FiLock } from "react-icons/fi";
 
 const ListDisplay = () => {
   const listsData = ListsData;
@@ -70,12 +71,20 @@ const ListDisplay = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      {list && <TopBar listTitle={list.title} />}
+      {list && <TopBar listTitle={list.title} listClosed={list.closed} />}
       {list ? (
         <>
           <main className="pt-28">
             <div className="flex flex-col px-5 fade-in">
               <div className="flex flex-col w-full mt-6 gap-y-3">
+                {list.closed ? 
+                <div>
+                <div className="flex text-white bg-black80 px-3 py-4 rounded-2xl w-full justify-center items-center h-full">
+                  <FiLock size={25} className="mr-3" /> Locked Shopping List 
+                </div>
+                <p className="mt-2">If you want to add more items, you need to unlock the Shopping List.</p>
+                </div>
+                :
                 <div className="flex text-black border border-black px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
                   <form
                     className="flex gap-x-3 w-full items-center h-full"
@@ -98,6 +107,7 @@ const ListDisplay = () => {
                     <SlArrowRight />
                   </Link>
                 </div>
+                }
                 <div className="flex flex-col-reverse gap-y-3">
                   {items &&
                     items.map((item, index) => (

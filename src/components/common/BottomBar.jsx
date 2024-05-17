@@ -110,7 +110,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             }`}
           >
             <div className="w-9 h-9 flex items-center justify-center">
-              {location.pathname.startsWith("/lists") ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
+              {location.pathname.startsWith("/lists") || location.pathname.startsWith("/image") ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
             </div>
             <p className="text-[12px]">Lists</p>
           </Link>

@@ -34,7 +34,7 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
                 ? "password" : label === "Email" ? "email" : label == "Value" ? "number" : label == "Date" ? "date" : "text"
             }
             onChange={(e) => onChange(e.target.value)}
-            className={`border rounded-xl p-2 border-black80 focus:border-black focus:outline-none ${
+            className={`border rounded-xl p-2 border-black80 h-12 focus:border-black focus:outline-none ${
               (label === "Password" || label === "Confirm Password") &&
               !showPassword &&
               value != ""

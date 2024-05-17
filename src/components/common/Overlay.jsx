@@ -71,6 +71,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
                   {option === "Profile" && <LuUser />}
                   {option === "Logout" && <CiLogout />}
                   {option === "Lock shopping list" && <FiLock />}
+                  {option === "Unlock shopping list" && <FiUnlock />}
                   {option === "Edit shopping list" && <BiPencil />}
                   {option === "Edit item details" && <BiPencil />}
                   {option === "Delete shopping list" && <HiOutlineTrash />}

@@ -10,7 +10,7 @@ import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
 
-const TopBar = ({ description, listTitle }) => {
+const TopBar = ({ description, listTitle, listClosed }) => {
   const [user, setUser] = useState(null);
   const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
@@ -241,7 +241,7 @@ const TopBar = ({ description, listTitle }) => {
           <Overlay
             label=""
             options={[
-              "Lock shopping list",
+              `${listClosed ? "Unlock" : "Lock"} shopping list`,
               "Edit shopping list",
               "Delete shopping list"
             ]}
@@ -294,6 +294,7 @@ const TopBar = ({ description, listTitle }) => {
 TopBar.propTypes = {
   description: PropTypes.string,
   listTitle: PropTypes.string,
+  listClosed: PropTypes.bool.isRequired,
 };
 
 export default TopBar;
