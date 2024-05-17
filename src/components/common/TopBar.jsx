@@ -77,7 +77,6 @@ const TopBar = ({ description, listTitle }) => {
   };
 
   const shouldShowFilterButton = () => {
-    // Check if URL matches /lists/{listId}/item/{itemId} pattern
     const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
     if (editItemPageRegex.test(location.pathname)) {
       return false;
@@ -94,8 +93,9 @@ const TopBar = ({ description, listTitle }) => {
 
   useEffect(() => {
     const listPageRegex = /^\/lists\/\d+$/;
+    const imagePageRegex = /^\/image\/\d+$/;
     const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
-    if (isEditPage() || listPageRegex.test(location.pathname) || editItemPageRegex.test(location.pathname)) {
+    if (isEditPage() || listPageRegex.test(location.pathname) || imagePageRegex.test(location.pathname) || editItemPageRegex.test(location.pathname)) {
       setShowBackButton(true);
     } else {
       setShowBackButton(false);

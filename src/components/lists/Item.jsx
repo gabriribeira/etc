@@ -4,13 +4,13 @@ import { RxDotsVertical } from "react-icons/rx";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "../common/Overlay";
 import ConfirmationDialog from "../common/ConfirmationDialog";
-import ImageOverlay from "../common/ImageOverlay";
+import { useNavigate } from "react-router-dom";
 
 const Item = ({ item, list_id }) => {
   const [showEditItem, setShowEditItem] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const navigate = useNavigate();
 
   const handleCheck = () => {
     setChecked(!checked);
@@ -21,6 +21,10 @@ const Item = ({ item, list_id }) => {
     console.log("Item deletado:", item.id);
     setShowConfirmation(false);
     setShowEditItem(false);
+  };
+
+  const handleImageClick = () => {
+    navigate(`/image/${item.id}`);
   };
 
   return (
@@ -42,8 +46,8 @@ const Item = ({ item, list_id }) => {
 
       <div className="flex items-center">
         {item.img_url ? (
-          <div className="rounded-full bg-white w-10 h-10" onClick={() => setShowImageOverlay(true)}>
-            <img src={require(`../../assets/imgs/products/${item.img_url}`)} className="w-full h-full rounded-full object-cover" alt="Product" />
+          <div className="rounded-full bg-white w-10 h-10" onClick={handleImageClick}>
+            <img src={require(`../../assets/imgs/products/${item.img_url}`)} className="w-full h-full rounded-full object-cover" alt={item.name} />
           </div>
         ) : (null)}
 
@@ -59,22 +63,24 @@ const Item = ({ item, list_id }) => {
         className="fixed top-[60px] right-0 bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
         unmountOnExit
       >
-        <Overlay
-          label={item.name}
-          options={[
-            "Edit item details",
-            "Delete item"
-          ]}
-          links={[
-            `/lists/${list_id}/item/${item.id}`,
-            null // Use null since delete action doesn't require a link
-          ]}
-          hideOverlay={() => setShowEditItem(false)}
-          onClicks={[
-            () => {},
-            () => setShowConfirmation(true)
-          ]}
-        />
+        
+          <Overlay
+            label={item.name}
+            options={[
+              "Edit item details",
+              "Delete item"
+            ]}
+            links={[
+              `/lists/${list_id}/item/${item.id}`,
+              null // Use null since delete action doesn't require a link
+            ]}
+            hideOverlay={() => setShowEditItem(false)}
+            onClicks={[
+              () => {},
+              () => setShowConfirmation(true)
+            ]}
+          />
+        
       </CSSTransition>
 
       <ConfirmationDialog
@@ -86,14 +92,6 @@ const Item = ({ item, list_id }) => {
         setShowConfirmation={setShowConfirmation}
         action={handleDelete}
       />
-
-      {showImageOverlay && (
-        <ImageOverlay
-          img_url={item.img_url}
-          name={item.name}
-          onClose={() => setShowImageOverlay(false)}
-        />
-      )}
     </div>
   );
 };
