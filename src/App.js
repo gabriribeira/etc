@@ -54,7 +54,7 @@ function App() {
           {/* TODO: Mudar para o id do household correto */}
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
-          <Route path="/image/:id" element={<Image />} />
+          <Route path="/lists/:list/item/:id/image" element={<Image />} />
           <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/lists/new" element={<NewList />} /> 
