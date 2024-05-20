@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+//api
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://app.save-cook.com/crawler/promoFeed.php?",
