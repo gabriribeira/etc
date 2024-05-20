@@ -104,7 +104,7 @@ const NewExpense = () => {
             label={"Edit members"}
           />
 
-          <CategoriesInput label={"Category"} onChange={setCategory} value={category} type="Expense"/>
+          <CategoriesInput label={"Category"} onChange={setCategory} value={category} categorySelected={category} type="Expense"/>
           
           <Button
             label="Create Expense"
