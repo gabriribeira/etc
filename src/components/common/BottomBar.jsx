@@ -41,78 +41,86 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
       )}
       <footer className="z-[89]">
         <div className="h-[80px] z-[90]"></div>
-        <div className="fixed bottom-0 left-0 w-screen bg-white flex items-start justify-around text-black px-5 pt-1 h-[80px] text-3xl z-[90]">
+        <div className="fixed bottom-0 pb-5 left-0 w-screen bg-white flex items-center justify-around text-black px-5 pt-1 h-[80px] text-3xl z-[90]">
           <Link
             to="/expenses"
-            className={`flex flex-col items-center leading-5 ${
+            className={`flex flex-col items-center ${
               location.pathname === "/expenses" && "text-black"
             }`}
           >
-            <div className="w-9 h-9 flex items-center justify-center">
-              {location.pathname.startsWith("/expenses") ? <IoWallet /> : <IoWalletOutline />}
+            <div className="relative flex flex-col items-center">
+              <div className="w-9 h-9 flex items-center justify-center">
+                {location.pathname.startsWith("/expenses") ? <IoWallet /> : <IoWalletOutline />}
+              </div>
+              <p className="text-[12px] absolute bottom-[-28px]">Expenses</p>
             </div>
-            <p className="text-[12px]">Expenses</p>
           </Link>
 
           {changeHousehold ? (
             <button
-              className={`flex flex-col items-center leading-5 ${
+              className={`flex flex-col items-center ${
                 location.pathname === `/households/${authHousehold?.id}` &&
                 "text-black"
               }`}
               onClick={() => setOverlay(true)}
             >
-              <div className="w-9 h-9 flex items-center justify-center">
-                {authHousehold && authHousehold.img ? (
-                  <img
-                    //eslint-disable-next-line
-                    src={require(
-                      `../../assets/data/households/${authHousehold.img}`
-                    )}
-                    alt="Menu Household"
-                    className="w-9 h-9 rounded-full object-cover"
-                  />
-                ) : (
-                  <TbUsers />
-                )}
+              <div className="relative flex flex-col items-center">
+                <div className="w-9 h-9 flex items-center justify-center">
+                  {authHousehold && authHousehold.img ? (
+                    <img
+                      //eslint-disable-next-line
+                      src={require(
+                        `../../assets/data/households/${authHousehold.img}`
+                      )}
+                      alt="Menu Household"
+                      className="w-9 h-9 rounded-full object-cover"
+                    />
+                  ) : (
+                    <TbUsers />
+                  )}
+                </div>
+                <p className="text-[12px] absolute bottom-[-28px]">Household</p>
               </div>
-              <p className="text-[12px]">Household</p>
             </button>
           ) : (
             <Link
               to={`/households/${authHousehold?.id}`}
-              className={`flex flex-col items-center leading-5 ${
+              className={`flex flex-col items-center ${
                 location.pathname === `/households/${authHousehold?.id}` &&
                 "text-black"
               }`}
             >
-              <div className="w-9 h-9 flex items-center justify-center">
-                {authHousehold ? (
-                  <img
-                    //eslint-disable-next-line
-                    src={require(
-                      `../../assets/data/households/${authHousehold.img}`
-                    )}
-                    alt="Menu Household"
-                    className="w-9 h-9 rounded-full object-cover"
-                  />
-                ) : (
-                  <TbUsers />
-                )}
+              <div className="relative flex flex-col items-center">
+                <div className="w-9 h-9 flex items-center justify-center">
+                  {authHousehold ? (
+                    <img
+                      //eslint-disable-next-line
+                      src={require(
+                        `../../assets/data/households/${authHousehold.img}`
+                      )}
+                      alt="Menu Household"
+                      className="w-9 h-9 rounded-full object-cover"
+                    />
+                  ) : (
+                    <TbUsers />
+                  )}
+                </div>
+                <p className="text-[12px] absolute bottom-[-28px]">Household</p>
               </div>
-              <p className="text-[12px]">Household</p>
             </Link>
           )}
           <Link
             to="/lists"
-            className={`flex flex-col items-center leading-5 ${
+            className={`flex flex-col items-center ${
               location.pathname === "/lists" && "text-black"
             }`}
           >
-            <div className="w-9 h-9 flex items-center justify-center">
-              {location.pathname.startsWith("/lists") || location.pathname.startsWith("/image") ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
+            <div className="relative flex flex-col items-center">
+              <div className="w-9 h-9 flex items-center justify-center">
+                {location.pathname.startsWith("/lists") ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
+              </div>
+              <p className="text-[12px] absolute bottom-[-28px]">Lists</p>
             </div>
-            <p className="text-[12px]">Lists</p>
           </Link>
         </div>
       </footer>

@@ -1,5 +1,3 @@
-// src/components/lists/ListDisplay.jsx
-
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Item from "./Item";
@@ -77,37 +75,40 @@ const ListDisplay = () => {
           <main className="pt-28">
             <div className="flex flex-col px-5 fade-in">
               <div className="flex flex-col w-full mt-6 gap-y-3">
-                {list.closed ? 
-                <div>
-                <div className="flex text-white bg-black80 px-3 py-4 rounded-2xl w-full justify-center items-center h-full">
-                  <FiLock size={25} className="mr-3" /> Locked Shopping List 
-                </div>
-                <p className="mt-2">If you want to add more items, you need to unlock the Shopping List.</p>
-                </div>
-                :
-                <div className="flex text-black border border-black px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
-                  <form
-                    className="flex gap-x-3 w-full items-center h-full"
-                    onSubmit={handleNewItem}
-                  >
-                    <input
-                      className="text-base font-light bg-transparent w-full  placeholder:font-light font-normal focus:border-b-2 focus:border-white focus:outline-none transition-all duration-200 mr-5"
-                      placeholder="Add a new item to the list"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                      autoFocus
-                      required
-                    />
-                  </form>
-                  <Link
-                    to={`/lists/${list.id}/item/${0}`}
-                    className="text-2xl text-black h-full flex items-center"
-                    aria-label="Add a new item"
-                  >
-                    <SlArrowRight />
-                  </Link>
-                </div>
-                }
+                {list.closed ? (
+                  <div>
+                    <div className="flex text-white bg-black80 px-3 py-4 rounded-2xl w-full justify-center items-center h-full">
+                      <FiLock size={25} className="mr-3" /> Locked Shopping List
+                    </div>
+                    <p className="mt-2">
+                      If you want to add more items, you need to unlock the
+                      Shopping List.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex text-black border border-black px-3 py-4 rounded-2xl w-full justify-between items-center h-full">
+                    <form
+                      className="flex gap-x-3 w-full items-center h-full"
+                      onSubmit={handleNewItem}
+                    >
+                      <input
+                        className="text-base font-light bg-transparent w-full  placeholder:font-light font-normal focus:border-b-2 focus:border-white focus:outline-none transition-all duration-200 mr-5"
+                        placeholder="Add a new item to the list"
+                        value={newItem}
+                        onChange={(e) => setNewItem(e.target.value)}
+                        autoFocus
+                        required
+                      />
+                    </form>
+                    <Link
+                      to={`/lists/${list.id}/item/${0}`}
+                      className="text-2xl text-black h-full flex items-center"
+                      aria-label="Add a new item"
+                    >
+                      <SlArrowRight />
+                    </Link>
+                  </div>
+                )}
                 <div className="flex flex-col-reverse gap-y-3">
                   {items &&
                     items.map((item, index) => (
