@@ -16,7 +16,7 @@ const ExpenseInBalance = ({ expense, authUser }) => {
 
   const amountPerUser = (expense.value / expense.users.length).toFixed(2);
   const isPaidByAuthUser = authUser.id === expense.user_id;
-  const sign = isPaidByAuthUser ? "-" : "+";
+  const amountColor = isPaidByAuthUser ? "text-salmon" : "text-blue60";
 
   const getUserDisplayName = (user) => {
     const nameParts = user.name.split(" ");
@@ -44,8 +44,8 @@ const ExpenseInBalance = ({ expense, authUser }) => {
             </p>
           </div>
           <div className="flex justify-end">
-            <div className="text-2xl font-semibold text-salmon">
-              {sign}{amountPerUser}
+            <div className={`text-2xl font-semibold ${amountColor}`}>
+              {amountPerUser}
               <span className="font-light text-xl">€</span>
             </div>
           </div>
