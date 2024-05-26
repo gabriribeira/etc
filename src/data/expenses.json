@@ -8,6 +8,7 @@
     "users": [2],
     "household_id": 1,
     "paid": false,
+    "category": "Food",
     "date": "2024-01-05"
   },
   {
@@ -18,7 +19,8 @@
     "user_id": 1,
     "users": [1, 2, 3],
     "household_id": 1,
-    "paid": false,
+    "paid": true,
+    "category": "Food",
     "date": "2024-01-03"
   },
   {
@@ -30,6 +32,7 @@
     "users": [1, 2, 3, 4],
     "household_id": 1,
     "paid": false,
+    "category": "Food",
     "date": "2024-01-01"
   },
   {
@@ -41,6 +44,7 @@
     "users": [1, 2, 3],
     "household_id": 1,
     "paid": false,
+    "category": "Entertainment",
     "date": "2024-01-03"
   }
 ]
