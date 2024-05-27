@@ -1,127 +1,94 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import { Link } from "react-router-dom";
 import { RxDotsVertical } from "react-icons/rx";
-import HouseholdData from "../data/households.json";
+import { useGetUserHouseholdsQuery, useGetUserQuery } from "../app/api";
+import DefaultProfilePicture from "../assets/data/users/leo.webp";
 import { useLocation } from "react-router-dom";
-import UsersData from "../data/users.json";
 
 const User = () => {
-  const householdData = HouseholdData;
-  const usersData = UsersData;
   const location = useLocation();
-  const [authUser, setAuthUser] = useState(null);
-  const [households, setHouseholds] = useState([]);
-  const [visitorIsAuthUser, setVisitorIsAuthUser] = useState(false);
-  const [paramUser, setParamUser] = useState(null);
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
+  const { data: user } = useGetUserQuery(location.pathname.split("/")[2]);
+  const [imageUrl, setImageUrl] = useState(DefaultProfilePicture);
+  const {
+    data: households,
+    isLoading,
+    error,
+  } = useGetUserHouseholdsQuery(location.pathname.split("/")[2]);
 
-    const storedUser = getCookieValue("user");
-    if (storedUser) {
-      setAuthUser(storedUser);
-    }
-  }, []);
   useEffect(() => {
-    if (householdData && user) {
-      authUser.households.forEach((householdId) => {
-        const household = householdData.find(
-          (household) => household.id === householdId
-        );
-        setHouseholds((households) => [...households, household]);
-      });
+    if (user) {
+      setImageUrl(user.data.img_url);
     }
-  }, [householdData, user]);
-  useEffect(() => {
-    if (location) {
-      const userAux = usersData.find(
-        (user) => user.id == location.pathname.split("/")[2]
-      );
-      if (userAux) {
-        setParamUser(userAux);
-      }
-    }
-  }, [location]);
-  useEffect(() => {
-    if (authUser && paramUser) {
-      if (authUser.id && location.pathname.split("/")[2] == authUser.id) {
-        setVisitorIsAuthUser(true);
-        setUser(authUser);
-      } else {
-        setVisitorIsAuthUser(false);
-        setUser(paramUser);
-      }
-    }
-  }, [authUser, location, paramUser]);
+  }, [user]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    user && (
+    user &&
+    households && (
       <div>
         <TopBar />
         <main className="mt-16">
           <div className="flex flex-col">
             <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
-              {visitorIsAuthUser && (
-                <Link
-                  to={"/households/household/edit"}
-                  className="text-white font-light text-sm absolute top-3 right-3"
-                >
-                  edit
-                </Link>
-              )}
               <div className="py-16 flex flex-col items-center justify-center">
                 <img
-                  //eslint-disable-next-line
-                  src={require(`../assets/data/users/${user.img}`)}
-                  alt="Household Profile Picture"
+                  src={imageUrl}
+                  alt="Profile Picture"
+                  onError={(e) => (e.currentTarget.src = DefaultProfilePicture)}
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
                 />
-                <h1 className="font-normal text-xl text-white mt-2">{user.name}</h1>
-                <p className="font-light text-sm text-white">@{user.username}</p>
+                <h1 className="font-normal text-xl text-white mt-2">
+                  {user.data.name}
+                </h1>
+                <p className="font-light text-sm text-white">
+                  @{user.data.username}
+                </p>
               </div>
             </div>
             <div className="flex flex-col px-5 mt-6">
               <h1 className="font-semibold text-lg mb-2">Description</h1>
-              <p className="text-black text-base">{user.description}</p>
+              <p className="text-black text-base">{user.data.description}</p>
             </div>
             <div className="flex flex-col px-5 mt-6">
               <h1 className="font-semibold text-lg mb-2">Households</h1>
               <div className="flex flex-col gap-y-3">
-                {households.map((household, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white  rounded-2xl p-3 shadow-lg"
-                  >
-                    <div className="flex items-center gap-x-3">
-                      <img
-                        //eslint-disable-next-line
-                        src={require(
-                          `../assets/data/households/${household.img}`
-                        )}
-                        alt="Household Profile Picture"
-                        className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
-                      />
-                      <p className="text-white text-lg font-base">
-                        {household.name}
-                      </p>
+                {households &&
+                  households.data.map((household, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between bg-black bg-gradient-to-r from-black to-white/30 text-white rounded-2xl p-3 shadow-lg"
+                    >
+                      <div className="flex items-center gap-x-3">
+                        <img
+                          src={household.img_url}
+                          alt="Household Profile Picture"
+                          onError={(e) =>
+                            (e.currentTarget.src = DefaultProfilePicture)
+                          }
+                          className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                        />
+                        <p className="text-white text-lg font-base">
+                          {household.name}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-x-3">
+                        <button
+                          type="button"
+                          className="text-white text-2xl"
+                          aria-label="Household settings"
+                        >
+                          <RxDotsVertical />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-x-3">
-                      <button type="button" className="text-white text-2xl" aria-label="Household settings">
-                        <RxDotsVertical />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           </div>
@@ -131,4 +98,5 @@ const User = () => {
     )
   );
 };
+
 export default User;
