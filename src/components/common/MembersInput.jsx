@@ -13,7 +13,9 @@ const MembersInput = ({ value, onChange, label }) => {
 
   useEffect(() => {
     if (usersData) {
-      const filteredUsers = usersData.filter(user => user.households.includes(1));
+      const filteredUsers = usersData.filter((user) =>
+        user.households.includes(1)
+      );
       setUsers(filteredUsers);
     }
   }, [usersData]);
@@ -43,7 +45,9 @@ const MembersInput = ({ value, onChange, label }) => {
                     className={`transition-all duration-300 h-[5rem] rounded-2xl flex items-center justify-center col-span-1 relative`}
                     onClick={() => {
                       if (selectedUsers.includes(user.id)) {
-                        setSelectedUsers(selectedUsers.filter((id) => id !== user.id));
+                        setSelectedUsers(
+                          selectedUsers.filter((id) => id !== user.id)
+                        );
                       } else {
                         setSelectedUsers([...selectedUsers, user.id]);
                       }
@@ -65,16 +69,24 @@ const MembersInput = ({ value, onChange, label }) => {
                           : "text-white bg-black"
                       }`}
                     >
-                      {user.name.split(' ')[0]}
+                      {user.name.split(" ")[0]}
                     </h1>
                   </button>
                 ))}
             </div>
             <div className="flex flex-col">
               <p>Dividing by</p>
-              <p className="text-xl font-semibold">{selectedUsers.length} Members</p>
+              <p className="text-xl font-semibold">
+                {selectedUsers.length} Members
+              </p>
             </div>
-            <Button label="Add Members" action={() => {onChange(selectedUsers); setOpenOverlay(false)}} />
+            <Button
+              label="Add Members"
+              action={() => {
+                onChange(selectedUsers);
+                setOpenOverlay(false);
+              }}
+            />
           </div>
         </div>
       )}
@@ -88,7 +100,9 @@ const MembersInput = ({ value, onChange, label }) => {
           >
             <GoPencil color="white" />
           </button>
-          <h1 className="font-semibold text-lg ml-2">{label ? label : "Active"}</h1>
+          <h1 className="font-semibold text-lg ml-2">
+            {label ? label : "Active"}
+          </h1>
         </div>
 
         {selectedUsers.length > 0 && (
