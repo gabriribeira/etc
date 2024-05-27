@@ -101,7 +101,6 @@ const Item = ({ item, list_id }) => {
             () => {},
             () => setShowConfirmation(true)
           ]}
-          options={["Edit item details", "Delete item"]}
         />
       </CSSTransition>
 
