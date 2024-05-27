@@ -29,6 +29,7 @@ import BalanceDetails from "./pages/BalanceDetails";
 import AddMembers from "./pages/AddMembers";
 import NewList from "./components/lists/NewList";
 import Image from "./pages/Image";
+import EditUser from "./pages/EditUser";
 // import io from "socket.io-client";
 import GoogleAuthCallback from "./pages/GoogleAuthCallback";
 // import { useSelector } from "react-redux";
@@ -94,10 +95,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/add-members" element={<AddMembers />} />
-          <Route
-            path="/household/edit"
-            element={<EditHousehold />}
-          />
+          <Route path="/households/:household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route
             path="/expense-details/:expenseId"
@@ -110,7 +108,7 @@ function App() {
           <Route path="/household" element={<Household />} />
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
-          <Route path="/image/:id" element={<Image />} />
+          <Route path="/lists/:list/item/:id/image" element={<Image />} />
           <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/lists/new" element={<NewList />} />
@@ -120,6 +118,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
+          <Route path="/users/:user/edit" element={<EditUser />} />
           <Route path="/profile" element={<Profile />} />
           {/* <Route path="/event/new" element={<NewEvent />} /> */}
           {/* <Route path="/calendar" element={<Calendar />} /> */}

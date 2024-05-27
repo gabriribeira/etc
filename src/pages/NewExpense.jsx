@@ -16,6 +16,9 @@ const NewExpense = () => {
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
+
+  //eslint-disable-next-line
+  const [paidBy, setPaidBy] = useState("");
   const [members, setMembers] = useState([]);
   const authUser = useSelector((state) => state.auth.user);
   const [createExpense, { isLoading }] = useCreateExpenseMutation();

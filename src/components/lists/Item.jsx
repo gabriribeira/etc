@@ -5,6 +5,7 @@ import { CSSTransition } from "react-transition-group";
 import Overlay from "../common/Overlay";
 import ConfirmationDialog from "../common/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
+import { HiOutlineCheck } from "react-icons/hi";
 
 const Item = ({ item, list_id }) => {
   const [showEditItem, setShowEditItem] = useState(false);
@@ -24,30 +25,33 @@ const Item = ({ item, list_id }) => {
   };
 
   const handleImageClick = () => {
-    navigate(`/image/${item.id}`);
+    navigate(`/lists/${list_id}/item/${item.id}/image/`);
   };
 
   return (
     <div className="w-full flex items-center justify-between bg-black rounded-2xl p-3 gap-x-3">
       <div className="flex items-center gap-x-3">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={handleCheck}
-          className="appearance-none h-6 w-6 border-2 border-white rounded bg-black checked:bg-black checked:border-white checked:shadow-none checked:after:content-['✔'] checked:after:text-white checked:after:flex checked:after:items-center checked:after:justify-center"
-        />
-
-        <div
-          className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}
-        >
-          <h1
-            className={`font-medium text-lg leading-5 ${
-              checked ? "line-through" : ""
-            }`}
-          >
-            {item.name}
-          </h1>
+        <div className="relative h-6 w-6">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={handleCheck}
+            className="appearance-none h-full w-full border-2 border-white rounded bg-black checked:bg-black checked:border-white checked:shadow-none"
+          />
+          {checked && (
+            <div className="absolute inset-0 flex items-center justify-center text-white pointer-events-none">
+              <HiOutlineCheck />
+            </div>
+          )}
+        </div>
+        <div className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}>
+          <h1 className={`font-medium text-lg leading-5 ${checked ? 'line-through' : ''}`}>{item.name}</h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
+          {item.amount && (
+            <p className="font-medium text-sm">
+              {item.amount} {item.unit}
+            </p>
+          )}
           {item.amount && (
             <p className="font-medium text-sm">
               {item.amount} {item.unit}
@@ -70,7 +74,13 @@ const Item = ({ item, list_id }) => {
             />
           </div>
         ) : null}
+        ) : null}
 
+        <button
+          className="text-2xl text-white ml-3"
+          aria-label="Edit Item"
+          onClick={() => setShowEditItem(!showEditItem)}
+        >
         <button
           className="text-2xl text-white ml-3"
           aria-label="Edit Item"

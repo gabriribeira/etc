@@ -10,6 +10,8 @@ import FilterOverlay from "./FilterOverlay";
 import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
+import blank_profile from "../../assets/data/users/blank-profile.webp";
+import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
 
 const TopBar = ({ description, listTitle, listClosed }) => {
   const user = useSelector((state) => state.auth.user);
@@ -19,6 +21,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
   const [showFilterOverlay, setShowFilterOverlay] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
+  const [showListOptions, setShowListOptions] = useState(false); // State for list options overlay
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -37,6 +40,10 @@ const TopBar = ({ description, listTitle, listClosed }) => {
 
   const handleShowEditList = () => {
     setShowEditList(!showEditList);
+  };
+
+  const handleShowListOptions = () => {
+    setShowListOptions(!showListOptions); // Toggle list options overlay
   };
 
   const setFilter = (newFilters) => {
@@ -92,17 +99,30 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     const listPageRegex = /^\/lists\/\d+$/;
     const imagePageRegex = /^\/image\/\d+$/;
     const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
+    const expenseDetailsPageRegex = /^\/expenses\/expensedetails\/\d+$/;
+    const editUserPageRegex = /^\/users\/\d+\/edit$/;
+    const userPageRegex = /^\/users\/\d+$/;
+  
     if (
+      
       isEditPage() ||
+     
       listPageRegex.test(location.pathname) ||
+     
       imagePageRegex.test(location.pathname) ||
+     
       editItemPageRegex.test(location.pathname)
+     ||
+      expenseDetailsPageRegex.test(location.pathname) ||
+      editUserPageRegex.test(location.pathname) ||
+      userPageRegex.test(location.pathname)
     ) {
       setShowBackButton(true);
     } else {
       setShowBackButton(false);
     }
   }, [location]);
+  
 
   const shouldShowEditListButton = () => {
     const listPageRegex = /^\/lists\/\d+$/;
@@ -117,25 +137,70 @@ const TopBar = ({ description, listTitle, listClosed }) => {
         } px-5 pt-3 z-[100] bg-white`}
       >
         <div className="flex items-center justify-between gap-x-2 relative">
-          {user && location.pathname && location.pathname !== `/profile` ? (
-            <Link to={`/profile`} className="flex items-center gap-x-3 z-[101]">
-              <img
-                // eslint-disable-next-line
-                src={image}
-                alt="User Profile Picture"
-                className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
-              />
-            </Link>
+          {location.pathname === "/lists" ? (
+            <>
+              <button
+                type="button"
+                onClick={handleShowListOptions}
+                className="text-2xl z-[101]"
+                aria-label="List Options"
+              >
+                <RxDotsHorizontal />
+              </button>
+              <CSSTransition
+                in={showListOptions}
+                timeout={500}
+                classNames="menu-primary"
+                className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
+                unmountOnExit
+              >
+                <Overlay
+                  label=" "
+                  options={[
+                    <div key="select-lists" className="flex items-center gap-x-2">
+                      <IoIosCheckboxOutline />
+                      <span>Select lists</span>
+                    </div>
+                  ]}
+                  links={["/lists"]}
+                  hideOverlay={() => setShowListOptions(false)}
+                />
+              </CSSTransition>
+            </>
           ) : (
-            <div className="mt-2 z-[101]">
-              <BackButton />
-            </div>
+            user &&
+            !userProfileRegex.test(location.pathname) &&
+            location.pathname !== `/users/${user.id}` ? (
+              <Link
+                to={`/users/${user.id}`}
+                className="flex items-center gap-x-3 z-[101]"
+              >
+                <img
+                  // eslint-disable-next-line
+                  src={user.img ? require(`../../assets/data/users/${user.img}`) : blank_profile}
+                  alt="User Profile Picture"
+                  className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                />
+              </Link>
+            ) : (
+              <Link
+                to={`/users/${user?.id}`}
+                className="flex items-center gap-x-3 z-[101]"
+              >
+                <img
+                  // eslint-disable-next-line
+                  src={blank_profile}
+                  alt="User Profile Picture"
+                  className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                />
+              </Link>
+            )
           )}
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
             <img
               // eslint-disable-next-line
               src={require(`../../assets/imgs/etc/short_logo_salmon.webp`)}
-              alt="User Profile Picture"
+              alt="Logo"
               className="h-[25px]"
             />
           </div>

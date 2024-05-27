@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 import UsersData from "../../data/users.json";
 import { GoPencil } from "react-icons/go";
 import Button from "./Button";
 
-//eslint-disable-next-line
 const MembersInput = ({ value, onChange, label }) => {
   const usersData = UsersData;
   const [openOverlay, setOpenOverlay] = useState(false);
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     if (usersData) {
@@ -26,6 +27,15 @@ const MembersInput = ({ value, onChange, label }) => {
     }
   }, [value]);
 
+  let type;
+  if (location.pathname === "/lists/new") {
+    type = "list";
+  } else if (location.pathname.match(/\/lists\/\d+\/item/)) {
+    type = "product";
+  } else {
+    type = "expense";
+  }
+
   return (
     <>
       {openOverlay && (
@@ -33,16 +43,18 @@ const MembersInput = ({ value, onChange, label }) => {
           <div className="flex flex-col px-5 py-3 gap-y-6">
             <div className="flex flex-col">
               <h1 className="font-semibold text-lg">Members</h1>
-              <p className="text-base text-black50">
-                Assign the members taking part of this product.
+              <p className="text-sm text-black50">
+                Assign the members taking part of this {type}.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3">
               {users &&
                 users.map((user, index) => (
                   <button
                     key={index}
-                    className={`transition-all duration-300 h-[5rem] rounded-2xl flex items-center justify-center col-span-1 relative`}
+                    className={`transition-all duration-300 h-[3rem] rounded-2xl flex items-center justify-start col-span-1 relative ${
+                      selectedUsers.includes(user.id) ? "bg-black20 text-black" : "bg-black90 text-white opacity-60"
+                    }`}
                     onClick={() => {
                       if (selectedUsers.includes(user.id)) {
                         setSelectedUsers(
@@ -54,23 +66,20 @@ const MembersInput = ({ value, onChange, label }) => {
                     }}
                     type="button"
                   >
-                    <img
-                      //eslint-disable-next-line
-                      src={require(`../../assets/data/users/${user.img}`)}
-                      alt="User Profile Picture"
-                      className={`transition-all duration-300 w-full h-full object-cover object-center rounded-2xl bg-black ${
-                        !selectedUsers.includes(user.id) && "opacity-50"
-                      }`}
-                    />
-                    <h1
-                      className={`transition-all duration-300 text-base font-normal absolute bottom-1 left-1 rounded-full py-1 px-2 ${
-                        !selectedUsers.includes(user.id)
-                          ? "bg-white/80 text-black"
-                          : "text-white bg-black"
+                    <div className="w-[35px] h-[35px] rounded-full flex items-center shrink-0 relative">
+                      <img
+                        src={require(`../../assets/data/users/${user.img}`)}
+                        alt="User Profile Picture"
+                        className="w-full h-full rounded-full object-cover object-center ml-2 absolute "
+                      />
+                    </div>
+                    <p
+                      className={`transition-all duration-300 text-base font-semibold ml-3 ${
+                        selectedUsers.includes(user.id) ? "text-black" : "text-white"
                       }`}
                     >
-                      {user.name.split(" ")[0]}
-                    </h1>
+                      {user.name.split(' ')[0]} {user.name.split(' ')[1][0]}.
+                    </p>
                   </button>
                 ))}
             </div>
@@ -116,7 +125,6 @@ const MembersInput = ({ value, onChange, label }) => {
                       className="w-[35px] h-[35px] rounded-full flex items-center shrink-0 relative"
                     >
                       <img
-                        //eslint-disable-next-line
                         src={require(`../../assets/data/users/${user.img}`)}
                         alt="User Profile Picture"
                         className="w-full h-full rounded-full object-cover object-center absolute top-0 left-0"

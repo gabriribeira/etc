@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import UsersData from "../../data/users.json";
 
 const Expense = ({ expense }) => {
-  const users = UsersData;
-  const user = users.find((user) => user.id === expense.user_id);
+  const user = UsersData.find((user) => user.id === expense.user_id);
   const [authUser, setAuthUser] = useState(null);
+  const paid = expense.paid;
 
   const getUserDisplayName = (user) => {
     const nameParts = user.name.split(" ");
@@ -35,9 +35,12 @@ const Expense = ({ expense }) => {
 
   return (
     authUser && expense && (
-      <Link to={`/expense-details/${expense.id}`} className="w-full">
+      <Link to={{
+        pathname: `/expenses/expensedetails/${expense.id}`,
+        state: { expense }
+      }} className="w-full">
         <div
-          className={`${expense.user_id !== authUser.id ? "bg-black  shadow-lg" : "bg-black shadow-lg from-salmon to-black90/40"
+          className={`${expense.user_id !== authUser.id ? "bg-black shadow-lg" : "bg-black shadow-lg from-salmon to-black90/40"
             } rounded-2xl flex flex-col justify-between items-center h-[130px] w-full p-3`}
         >
           <div className={`flex justify-start w-full text-white`} id="1">
@@ -49,13 +52,13 @@ const Expense = ({ expense }) => {
                 className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
               />
             </div>
-            <div className="flex flex-col ml-2 grow ">
+            <div className="flex flex-col ml-2 grow">
               <h2 className="text-lg font-normal">{expense.title}</h2>
               <p className="font-light text-sm">
                 paid by <span className="font-semibold">{getUserDisplayName(user)}</span>
               </p>
             </div>
-            <div className="flex text-2xl font-semibold text-salmon ">
+            <div className="flex text-2xl font-semibold text-salmon">
               {expense.value.toFixed(2)}<span className="font-light">€</span>
             </div>
           </div>
@@ -65,11 +68,13 @@ const Expense = ({ expense }) => {
               <span className={expense.users.length > 1 ? "" : "hidden"}>s</span>
             </p>
             <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit ml-2">
-              type
+              {expense.category}
             </p>
+            {paid == false ? "" : 
             <p className="font-semibold text-sm bg-salmon text-black py-1 px-5 rounded-full w-fit ml-2">
-              status
+              paid
             </p>
+            }
           </div>
         </div>
       </Link>
@@ -78,7 +83,7 @@ const Expense = ({ expense }) => {
 };
 
 Expense.propTypes = {
-  expense: PropTypes.object,
+  expense: PropTypes.object.isRequired,
 };
 
 export default Expense;
