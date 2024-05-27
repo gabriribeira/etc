@@ -1,73 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useGetHouseholdQuery } from "../app/api";
 import TopBar from "../components/common/TopBar";
 import BottomBar from "../components/common/BottomBar";
-import HouseholdsData from "../data/households.json";
 import HouseholdInfo from "../components/household/HouseholdInfo";
 import Members from "../components/household/Members";
-import UsersData from "../data/users.json";
 import SustainableGoal from "../components/household/SustainableGoal";
 import Overlay from "../components/common/Overlay";
 
 const Household = () => {
-  const [household, setHousehold] = useState("");
-  const householdsData = HouseholdsData;
-  const users = UsersData;
-  const [householdUsers, setHouseholdUsers] = useState([]);
+  const { data: household, isLoading: isHouseholdLoading, error } = useGetHouseholdQuery();
   const [openOverlay, setOpenOverlay] = useState(false);
-  // eslint-disable-next-line
-  const [authUser, setAuthUser] = useState(null);
-  const [authHousehold, setAuthHousehold] = useState(null);
   const [openOverlayFromParent, setOpenOverlayFromParent] = useState(false);
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
-    const storedHousehold = getCookieValue("household");
-    if (storedHousehold) {
-      setAuthHousehold(storedHousehold);
-    }
-  }, []);
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
 
-    const storedUser = getCookieValue("user");
-    if (storedUser) {
-      setAuthUser(storedUser);
-    }
-  }, []);
-  useEffect(() => {
-    if (householdsData && authHousehold) {
-      const households = householdsData.find((household) => household.id === authHousehold.id);
-      setHousehold(households);
-    }
-  }, [householdsData, authHousehold]);
-  useEffect(() => {
-    if (users && authHousehold) {
-      const householdUsers = users.filter((user) =>
-        user.households.includes(authHousehold.id)
-      ); //alterar para o household correto
-      setHouseholdUsers(householdUsers);
-    }
-  }, [users, authHousehold]);
+  if (isHouseholdLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    household &&
-    householdUsers && (
+    household && (
       <>
         {openOverlay && (
           <Overlay
@@ -81,9 +35,13 @@ const Household = () => {
           <TopBar />
           <main className="pt-20">
             <div className="flex flex-col gap-y-6">
-              <HouseholdInfo household={household} users={householdUsers} openOverlayFromParent={() => setOpenOverlayFromParent(true)} />
+              <HouseholdInfo
+                household={household.data}
+                users={household.data.Users}
+                openOverlayFromParent={() => setOpenOverlayFromParent(true)}
+              />
               <SustainableGoal />
-              <Members users={householdUsers} admins={household.admins} />
+              <Members users={household.data.Users} />
             </div>
           </main>
           <BottomBar changeHousehold={true} openOverlayFromParent={openOverlayFromParent} />
@@ -92,4 +50,5 @@ const Household = () => {
     )
   );
 };
+
 export default Household;
