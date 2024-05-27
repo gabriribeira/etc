@@ -1,33 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+// RequireAuth.js
+import React from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const RequireAuth = () => {
-  const [user, setUser] = useState(null);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const getCookieValue = (cookieName) => {
-    const cookies = document.cookie.split("; ");
-    for (const cookie of cookies) {
-      const [name, value] = cookie.split("=");
-      if (name === cookieName) {
-        return setUser(JSON.parse(decodeURIComponent(value)));
-      }
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  if (user) {
-    return <Outlet />;
-  } else {
-    if (getCookieValue("user")) {
-      return <Outlet />;
-    } else {
-      return <Navigate to="/login" />;
-    }
+  if (isAuthenticated === null) {
+    return <div>Loading...</div>;
   }
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default RequireAuth;
