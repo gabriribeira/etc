@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import ItemsData from "../../data/items.json";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "../common/Overlay";
@@ -9,8 +8,6 @@ import { FiLock } from "react-icons/fi";
 import { FiUnlock } from "react-icons/fi";
 
 const ShoppingList = ({ list }) => {
-  const itemsData = ItemsData;
-  const [items, setItems] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showReopenConfirmation, setShowReopenConfirmation] = useState(false);
@@ -36,13 +33,6 @@ const ShoppingList = ({ list }) => {
     setShowCloseConfirmation(false);
     setShowEditList(false);
   };
-
-  useEffect(() => {
-    if (list) {
-      setItems(itemsData.filter((item) => item.list_id === list.id));
-      console.log(list);
-    }
-  }, [list]);
   return (
     <>
     <Link
@@ -51,14 +41,14 @@ const ShoppingList = ({ list }) => {
     >
       <div className="flex flex-col h-full text-white justify-between">
         <div className="flex flex-col">
-          <h1 className="text-xl font-medium ">{list.title}</h1>
+          <h1 className="text-xl font-medium ">{list.name}</h1>
           <p className="font-light text-sm">
-            started by <span className="font-medium">Gabriel Ribeira</span>
+            started by <span className="font-medium">{list.User.name}</span>
           </p>
         </div>
         <div className="flex items-center w-full justify-start gap-x-3">
           <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
-            {items.length} products
+            {list.Items.length} products
           </p>
           {list.closed && (
             <p className="text-sm font-semibold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
@@ -69,7 +59,7 @@ const ShoppingList = ({ list }) => {
       </div>
       <div className="text-2xl text-white">
         
-          {list.closed ? <FiLock /> : <FiUnlock />}
+          {list.is_closed ? <FiLock /> : <FiUnlock />}
         
       </div>
     </Link>
