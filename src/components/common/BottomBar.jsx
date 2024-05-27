@@ -57,7 +57,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
           {changeHousehold ? (
             <button
               className={`flex flex-col items-center leading-5 ${
-                location.pathname === `/households/${authHousehold?.id}` &&
+                location.pathname === `/household` &&
                 "text-black"
               }`}
               onClick={() => setOverlay(true)}
@@ -80,9 +80,9 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             </button>
           ) : (
             <Link
-              to={`/households/${authHousehold?.id}`}
+              to={`/household`}
               className={`flex flex-col items-center leading-5 ${
-                location.pathname === `/households/${authHousehold?.id}` &&
+                location.pathname === `/household` &&
                 "text-black"
               }`}
             >

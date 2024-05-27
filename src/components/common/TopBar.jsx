@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
@@ -11,14 +12,20 @@ import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
 
 const TopBar = ({ description, listTitle, listClosed }) => {
-  const [user, setUser] = useState(null);
-  const userProfileRegex = /\/(users)\/\d+/;
+  const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showFilterOverlay, setShowFilterOverlay] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setImage(user.img_url);
+    }
+  }, [user]);
 
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
@@ -48,19 +55,6 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          setUser(JSON.parse(decodeURIComponent(value)));
-        }
-      }
-    };
-    getCookieValue("user");
-  }, []);
-
   const isEditPage = () => {
     const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit)/;
     const balancePageRegex = /\/expenses\/balance/;
@@ -84,7 +78,10 @@ const TopBar = ({ description, listTitle, listClosed }) => {
 
     const listPageRegex = /^\/lists\/\d+$/;
     const expensesPageRegex = /^\/expenses$/;
-    if (listPageRegex.test(location.pathname) || expensesPageRegex.test(location.pathname)) {
+    if (
+      listPageRegex.test(location.pathname) ||
+      expensesPageRegex.test(location.pathname)
+    ) {
       return true;
     }
 
@@ -95,7 +92,12 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     const listPageRegex = /^\/lists\/\d+$/;
     const imagePageRegex = /^\/image\/\d+$/;
     const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
-    if (isEditPage() || listPageRegex.test(location.pathname) || imagePageRegex.test(location.pathname) || editItemPageRegex.test(location.pathname)) {
+    if (
+      isEditPage() ||
+      listPageRegex.test(location.pathname) ||
+      imagePageRegex.test(location.pathname) ||
+      editItemPageRegex.test(location.pathname)
+    ) {
       setShowBackButton(true);
     } else {
       setShowBackButton(false);
@@ -115,16 +117,11 @@ const TopBar = ({ description, listTitle, listClosed }) => {
         } px-5 pt-3 z-[100] bg-white`}
       >
         <div className="flex items-center justify-between gap-x-2 relative">
-          {user &&
-          !userProfileRegex.test(location.pathname) &&
-          location.pathname !== `/users/${user.id}` ? (
-            <Link
-              to={`/users/${user.id}`}
-              className="flex items-center gap-x-3 z-[101]"
-            >
+          {user && location.pathname && location.pathname !== `/profile` ? (
+            <Link to={`/profile`} className="flex items-center gap-x-3 z-[101]">
               <img
                 // eslint-disable-next-line
-                src={require(`../../assets/data/users/${user.img}`)}
+                src={image}
                 alt="User Profile Picture"
                 className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
               />
@@ -194,15 +191,16 @@ const TopBar = ({ description, listTitle, listClosed }) => {
               </>
             )}
 
-            {!location.pathname.startsWith("/expenses") && shouldShowFilterButton() && (
-              <button
-                type="button"
-                onClick={handleShowFilter}
-                className="text-2xl z-[101] text-black"
-              >
-                <IoFilterCircleOutline size={35} />
-              </button>
-            )}
+            {!location.pathname.startsWith("/expenses") &&
+              shouldShowFilterButton() && (
+                <button
+                  type="button"
+                  onClick={handleShowFilter}
+                  className="text-2xl z-[101] text-black"
+                >
+                  <IoFilterCircleOutline size={35} />
+                </button>
+              )}
 
             {shouldShowEditListButton() && (
               <button
@@ -243,7 +241,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
             options={[
               `${listClosed ? "Unlock" : "Lock"} shopping list`,
               "Edit shopping list",
-              "Delete shopping list"
+              "Delete shopping list",
             ]}
             links={["/lists", "/lists", "/lists"]}
             hideOverlay={() => setShowEditList(false)}
@@ -294,7 +292,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
 TopBar.propTypes = {
   description: PropTypes.string,
   listTitle: PropTypes.string,
-  listClosed: PropTypes.bool.isRequired,
+  listClosed: PropTypes.bool,
 };
 
 export default TopBar;
