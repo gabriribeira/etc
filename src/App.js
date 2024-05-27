@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import RequireAuth from "./components/middlewares/RequireAuth";
+import { useCheckAuthQuery } from "./app/api";
+import { useDispatch } from "react-redux";
+import { setAuthState } from "./app/authSlice";
 import Authentication from "./pages/Authentication";
 import Expense from "./pages/Expense";
 import ExpenseDetail from "./components/expenses/ExpenseDetail";
@@ -18,6 +21,7 @@ import Notifications from "./pages/Notifications";
 import Onboarding from "./pages/Onboarding";
 import Register from "./pages/Register";
 import User from "./pages/User";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import EditHousehold from "./pages/EditHousehold";
@@ -26,6 +30,17 @@ import AddMembers from "./pages/AddMembers";
 import NewList from "./components/lists/NewList";
 import Image from "./pages/Image";
 import EditUser from "./pages/EditUser";
+// import io from "socket.io-client";
+import GoogleAuthCallback from "./pages/GoogleAuthCallback";
+// import { useSelector } from "react-redux";
+// import Calendar from "./pages/Calendar";
+// import EditEvent from "./pages/EditEvent";
+// import EditTask from "./pages/EditTask";
+// import Task from "./pages/Task";
+// import TaskManager from "./pages/TaskManager";
+// import Tasks from "./pages/Tasks";
+// import NewTask from "./pages/NewTask";
+// import NewEvent from "./pages/NewEvent";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -33,30 +48,70 @@ function App() {
     document.title = "et.cetera";
   }, []);
 
+  // const userId = useSelector((state) => state.auth.user?.id);
+
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // const socket = io("http://localhost:3001", {
+  //   query: { userId }
+  // });
+  
+  // socket.on("connect", () => {
+  //   console.log("Connected to server");
+  // });
+  
+  // socket.on("notification", (notification) => {
+  //   console.log("Notification received:", notification);
+  // });
+
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     socket.emit("authenticate");
+  //   }
+
+  //   return () => {
+  //     socket.off("notification");
+  //   };
+  // }, [isAuthenticated]);
+
+  const dispatch = useDispatch();
+  const { data, isFetching } = useCheckAuthQuery();
+
+  useEffect(() => {
+    if (data && !isFetching) {
+      dispatch(
+        setAuthState({ isAuthenticated: data.authenticated, user: data.user, currentHouseholdId: data.currentHouseholdId, roleId: data.roleId})
+      );
+    }
+  }, [data, isFetching, dispatch]);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Authentication />} />
+        <Route path="/auth/google/callback" element={GoogleAuthCallback} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/add-members" element={<AddMembers />} />
           <Route path="/households/:household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
-          <Route path="/expenses/expensedetails/:expenseId" element={<ExpenseDetail />} />
+          <Route
+            path="/expense-details/:expenseId"
+            element={<ExpenseDetail />}
+          />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/" element={<Navigate to="/lists" />} />
-          <Route path="/households/:householdId" element={<Household />} />{" "}
-          {/* TODO: Mudar para o id do household correto */}
+          <Route path="/household" element={<Household />} />
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
           <Route path="/lists/:list/item/:id/image" element={<Image />} />
           <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
-          <Route path="/lists/new" element={<NewList />} /> 
-          {/* <Route path="/event/new" element={<NewEvent />} /> */}
+          <Route path="/lists/new" element={<NewList />} />
           <Route path="/expenses/new" element={<NewExpense />} />
           <Route path="/households/new" element={<NewHousehold />} />
           <Route path="/lists/:list" element={<List />} />
@@ -64,6 +119,8 @@ function App() {
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
           <Route path="/users/:user/edit" element={<EditUser />} />
+          <Route path="/profile" element={<Profile />} />
+          {/* <Route path="/event/new" element={<NewEvent />} /> */}
           {/* <Route path="/calendar" element={<Calendar />} /> */}
           {/* <Route path="/event/:event/edit" element={<EditEvent />} /> */}
           {/* <Route path="/tasks/:task/edit" element={<EditTask />} /> */}

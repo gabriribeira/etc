@@ -8,7 +8,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
     <>
       <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20  text-center relative">
         <Link
-          to={"/households/household/edit"}
+          to={"/household/edit"}
           className="text-white font-light text-sm absolute top-3 right-3"
           aria-label="Edit household"
         >
@@ -17,7 +17,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
         <div className="py-16 flex flex-col items-center justify-center">
           <img
             //eslint-disable-next-line
-            src={require(`../../assets/data/households/${household.img}`)}
+            src={household.img_url} // Update to use the URL from the API response
             alt="Household Profile Picture"
             className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
           />
@@ -31,7 +31,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
               <SlArrowDown />
             </button>
           </div>
-          <p className="font-light text-sm text-white">{users.length} Members</p>
+          <p className="font-light text-sm text-white">{users && users.length} {users && (users.length > 1 ? "Members" : "Member")}</p>
         </div>
       </div>
       <div className="flex flex-col px-5 mt-6">
@@ -43,9 +43,9 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
 };
 
 HouseholdInfo.propTypes = {
-  household: PropTypes.object,
-  users: PropTypes.array,
-  openOverlayFromParent: PropTypes.func,
+  household: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired,
+  openOverlayFromParent: PropTypes.func.isRequired,
 };
 
 export default HouseholdInfo;

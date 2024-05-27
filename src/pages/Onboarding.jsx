@@ -207,7 +207,7 @@ const Onboarding = () => {
           }}
         >
           {currentPage === pages.length && (
-            <Link to="/households/1">
+            <Link to="/household">
               <Button
                 label="Go to household"
                 action={() => console.log("clicado")}
@@ -221,7 +221,7 @@ const Onboarding = () => {
             style={{ position: "absolute", top: "20px", right: "20px" }}
           >
             <Link
-              to="/households/1"
+              to="/household"
               style={{
                 textDecoration: "underline",
                 fontSize: "14px",

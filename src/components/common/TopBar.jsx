@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
@@ -13,7 +14,7 @@ import blank_profile from "../../assets/data/users/blank-profile.webp";
 import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
 
 const TopBar = ({ description, listTitle, listClosed }) => {
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.auth.user);
   const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
@@ -21,8 +22,8 @@ const TopBar = ({ description, listTitle, listClosed }) => {
   const [showFilterOverlay, setShowFilterOverlay] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
-  const [showListOptions, setShowListOptions] = useState(false); // State for list options overlay
-
+  const [showListOptions, setShowListOptions] = useState(false);
+  
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
   };
@@ -55,19 +56,6 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          setUser(JSON.parse(decodeURIComponent(value)));
-        }
-      }
-    };
-    getCookieValue("user");
-  }, []);
-
   const isEditPage = () => {
     const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit)/;
     const balancePageRegex = /\/expenses\/balance/;
@@ -91,7 +79,10 @@ const TopBar = ({ description, listTitle, listClosed }) => {
 
     const listPageRegex = /^\/lists\/\d+$/;
     const expensesPageRegex = /^\/expenses$/;
-    if (listPageRegex.test(location.pathname) || expensesPageRegex.test(location.pathname)) {
+    if (
+      listPageRegex.test(location.pathname) ||
+      expensesPageRegex.test(location.pathname)
+    ) {
       return true;
     }
 
@@ -107,10 +98,15 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     const userPageRegex = /^\/users\/\d+$/;
   
     if (
+      
       isEditPage() ||
+     
       listPageRegex.test(location.pathname) ||
+     
       imagePageRegex.test(location.pathname) ||
-      editItemPageRegex.test(location.pathname) ||
+     
+      editItemPageRegex.test(location.pathname)
+     ||
       expenseDetailsPageRegex.test(location.pathname) ||
       editUserPageRegex.test(location.pathname) ||
       userPageRegex.test(location.pathname)
@@ -254,15 +250,16 @@ const TopBar = ({ description, listTitle, listClosed }) => {
               </>
             )}
 
-            {!location.pathname.startsWith("/expenses") && shouldShowFilterButton() && (
-              <button
-                type="button"
-                onClick={handleShowFilter}
-                className="text-2xl z-[101] text-black"
-              >
-                <IoFilterCircleOutline size={35} />
-              </button>
-            )}
+            {!location.pathname.startsWith("/expenses") &&
+              shouldShowFilterButton() && (
+                <button
+                  type="button"
+                  onClick={handleShowFilter}
+                  className="text-2xl z-[101] text-black"
+                >
+                  <IoFilterCircleOutline size={35} />
+                </button>
+              )}
 
             {shouldShowEditListButton() && (
               <button
@@ -303,7 +300,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
             options={[
               `${listClosed ? "Unlock" : "Lock"} shopping list`,
               "Edit shopping list",
-              "Delete shopping list"
+              "Delete shopping list",
             ]}
             links={["/lists", "/lists", "/lists"]}
             hideOverlay={() => setShowEditList(false)}
@@ -354,7 +351,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
 TopBar.propTypes = {
   description: PropTypes.string,
   listTitle: PropTypes.string,
-  listClosed: PropTypes.bool.isRequired,
+  listClosed: PropTypes.bool,
 };
 
 export default TopBar;

@@ -44,9 +44,22 @@ const Item = ({ item, list_id }) => {
             </div>
           )}
         </div>
-        <div className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}>
-          <h1 className={`font-medium text-lg leading-5 ${checked ? 'line-through' : ''}`}>{item.name}</h1>
+        <div
+          className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}
+        >
+          <h1
+            className={`font-medium text-lg leading-5 ${
+              checked ? "line-through" : ""
+            }`}
+          >
+            {item.name}
+          </h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
+          {item.amount && (
+            <p className="font-medium text-sm">
+              {item.amount} {item.unit}
+            </p>
+          )}
           {item.amount && (
             <p className="font-medium text-sm">
               {item.amount} {item.unit}
@@ -56,19 +69,19 @@ const Item = ({ item, list_id }) => {
       </div>
 
       <div className="flex items-center">
-        {item.img_url ? (
+        {item.img_url && (
           <div
             className="rounded-full bg-white w-10 h-10"
             onClick={handleImageClick}
           >
             <img
-            // eslint-disable-next-line
+              //eslint-disable-next-line
               src={require(`../../assets/imgs/products/${item.img_url}`)}
               className="w-full h-full rounded-full object-cover"
               alt={item.name}
             />
           </div>
-        ) : null}
+        )}
 
         <button
           className="text-2xl text-white ml-3"
@@ -88,19 +101,13 @@ const Item = ({ item, list_id }) => {
       >
         <Overlay
           label={item.name}
-          options={[
-            "Edit item details",
-            "Delete item"
-          ]}
+          options={["Edit item details", "Delete item"]}
           links={[
             `/lists/${list_id}/item/${item.id}`,
-            null // Use null since delete action doesn't require a link
+            null, // Use null since delete action doesn't require a link
           ]}
           hideOverlay={() => setShowEditItem(false)}
-          onClicks={[
-            () => {},
-            () => setShowConfirmation(true)
-          ]}
+          onClicks={[() => {}, () => setShowConfirmation(true)]}
         />
       </CSSTransition>
 
