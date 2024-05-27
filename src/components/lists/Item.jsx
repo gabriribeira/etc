@@ -102,12 +102,6 @@ const Item = ({ item, list_id }) => {
             () => setShowConfirmation(true)
           ]}
           options={["Edit item details", "Delete item"]}
-          links={[
-            `/lists/${list_id}/item/${item.id}`,
-            null, // Use null since delete action doesn't require a link
-          ]}
-          hideOverlay={() => setShowEditItem(false)}
-          onClicks={[() => {}, () => setShowConfirmation(true)]}
         />
       </CSSTransition>
 
