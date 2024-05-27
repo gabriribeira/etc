@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import ImageUpload from "../components/common/ImageUpload";
-import UserData from "../data/users.json";
-import Cookies from 'js-cookie';
+import ThirdParty from "../components/auth/ThirParty";
+import { useRegisterMutation } from "../app/api";
+// import Cookies from "js-cookie";
+// import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const users = UserData;
-  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -17,25 +17,21 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  // const navigate = useNavigate();
+  //eslint-disable-next-line
+  const [register, { isLoading, isError }] = useRegisterMutation();
 
   const handleRegister = async () => {
     if (password === confirmPassword) {
-
-      const newUser = {
-        id: users.length + 1,
-        username: username,
-        name: `${firstName} ${lastName}`,
-        email: email,
-        img: "https://picsum.photos/200",
-        password: password,
-        households: [],
-      };
-
       try {
-        users.push(newUser);
-        console.log("User registered successfully!");
-        Cookies.set('user', JSON.stringify(newUser), { path: '/' });
-        navigate("/onboarding");
+        //eslint-disable-next-line
+        const userData = await register({
+          email,
+          password,
+        }).unwrap();
+        console.log(userData);
+        // Cookies.set("user", JSON.stringify(userData), { path: "/" });
+        //navigate("/onboarding");
       } catch (error) {
         console.error("Error registering user:", error);
       }
@@ -45,13 +41,13 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-blue min-h-screen h-full flex flex-col justify-between">
-      <div className="flex justify-center items-center h-full min-h-[30dvh]">
+    <div className="bg-black bg-gradient-to-br from-black to-white/30 min-h-screen h-full flex flex-col justify-between">
+      <div className="flex justify-center items-center h-full min-h-[20dvh]">
         <img src={Logo} alt="Et Cetera Logo" className="w-[60%]" />
       </div>
       {step === 1 && (
-        <form className="bg-white rounded-tl-[5rem] flex flex-col px-6 py-12 gap-y-6 max-h-[70dvh] h-full">
-          <Input label="Username" value={username} onChange={setUsername} />
+        <form className="bg-white rounded-tl-[5rem] flex flex-col px-6 py-12 gap-y-6 max-h-[80dvh] h-full">
+          <ThirdParty authentication={false} />
           <Input label="Email" value={email} onChange={setEmail} />
           <Input label="Password" value={password} onChange={setPassword} />
           <Input
@@ -60,7 +56,7 @@ const Register = () => {
             onChange={setConfirmPassword}
           />
           <div className="flex flex-col items-end">
-            <Button label="Next" action={() => setStep(2)} />
+            <Button label="Next" action={() => handleRegister()} />
             <Link
               to={"/login"}
               className="font-light text-sm text-black70 mt-2"
@@ -82,8 +78,9 @@ const Register = () => {
         </form>
       )}
       {step === 2 && (
-        <form className="bg-white rounded-tl-[5rem] flex flex-col px-6 py-12 gap-y-6 flex flex-col w-full max-h-[70dvh] h-full">
+        <form className="bg-white rounded-tl-[5rem] flex flex-col px-6 py-12 gap-y-6 flex flex-col w-full max-h-[80dvh] h-full">
           <ImageUpload />
+          <Input label="Username" value={username} onChange={setUsername} />
           <Input label="First Name" value={firstName} onChange={setFirstName} />
           <Input label="Last Name" value={lastName} onChange={setLastName} />
           <div className="flex flex-col items-end">
