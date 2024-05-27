@@ -7,7 +7,8 @@
     "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "gabriribeira.webp",
     "password": "gabriel123",
-    "households": [1, 2]
+    "households": [1, 2],
+    "food_restriction": [23, 26]
   },
   {
     "id": 2,
@@ -17,7 +18,8 @@
     "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "carolina.webp",
     "password": "carolina123",
-    "households": [1]
+    "households": [1],
+    "food_restriction": [20]
   },
   {
     "id": 3,
@@ -27,7 +29,8 @@
     "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "ines.webp",
     "password": "ines123",
-    "households": [1]
+    "households": [1],
+    "food_restriction": [20]
   },
   {
     "id": 4,
@@ -37,7 +40,8 @@
     "description": "Estudante de Engenharia Informática na Universidade de Aveiro.",
     "img": "lara.webp",
     "password": "lara123",
-    "households": [1]
+    "households": [1],
+    "food_restriction": [20]
   },
   {
     "id": 5,
@@ -47,7 +51,8 @@
     "description": "Estudante de MCTW na Universidade de Aveiro.",
     "img": "leo.webp",
     "password": "leo123",
-    "households": [1]
+    "households": [1],
+    "food_restriction": [20]
   },
   {
     "id": 6,
@@ -57,6 +62,7 @@
     "description": "Estudante de MCTW na Universidade de Aveiro.",
     "img": "nathalia.webp",
     "password": "nathalia123",
-    "households": [1]
+    "households": [1],
+    "food_restriction": [20]
   }
 ]

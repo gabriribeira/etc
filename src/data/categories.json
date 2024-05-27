@@ -112,5 +112,65 @@
         "title": "Other",
         "color": "#000",
         "type": "Expense"
+    },
+    {
+        "id": 20,
+        "title": "None",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 21,
+        "title": "Dairy",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 22,
+        "title": "Soy",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 23,
+        "title": "Gluten",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 24,
+        "title": "Peanut",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 25,
+        "title": "Shellfish",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 26,
+        "title": "Nuts",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 27,
+        "title": "Sulfites",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 28,
+        "title": "Wheat",
+        "color": "#000",
+        "type": "food"
+    },
+    {
+        "id": 29,
+        "title": "Eggs",
+        "color": "#000",
+        "type": "food"
     }
 ]

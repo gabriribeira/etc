@@ -58,6 +58,7 @@ const NewExpense = () => {
       user_id: authUser.id,
       users: members,
       paid: false,
+      category: category,
       household_id: 1,
     };
     expensesData.push(newExpense);

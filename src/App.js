@@ -25,6 +25,7 @@ import BalanceDetails from "./pages/BalanceDetails";
 import AddMembers from "./pages/AddMembers";
 import NewList from "./components/lists/NewList";
 import Image from "./pages/Image";
+import EditUser from "./pages/EditUser";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -40,12 +41,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/add-members" element={<AddMembers />} />
-          <Route
-            path="/households/:household/edit"
-            element={<EditHousehold />}
-          />
+          <Route path="/households/:household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
-          <Route path="/expense-details/:expenseId" element={<ExpenseDetail />} />
+          <Route path="/expenses/expensedetails/:expenseId" element={<ExpenseDetail />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
@@ -65,6 +63,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
+          <Route path="/users/:user/edit" element={<EditUser />} />
           {/* <Route path="/calendar" element={<Calendar />} /> */}
           {/* <Route path="/event/:event/edit" element={<EditEvent />} /> */}
           {/* <Route path="/tasks/:task/edit" element={<EditTask />} /> */}

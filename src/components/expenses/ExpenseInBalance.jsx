@@ -16,7 +16,7 @@ const ExpenseInBalance = ({ expense, authUser }) => {
 
   const amountPerUser = (expense.value / expense.users.length).toFixed(2);
   const isPaidByAuthUser = authUser.id === expense.user_id;
-  const amountColor = isPaidByAuthUser ? "text-salmon" : "text-blue60";
+  const amountColor = isPaidByAuthUser ? "text-salmon" : "text-white";
 
   const getUserDisplayName = (user) => {
     const nameParts = user.name.split(" ");

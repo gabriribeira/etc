@@ -29,6 +29,8 @@ const ItemDetails = () => {
   const [authUser, setAuthUser] = useState(null);
   const [list_id, setList_id] = useState(null);
   const [suggestions, setSuggestions] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingItemId, setEditingItemId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,22 +68,22 @@ const ItemDetails = () => {
   useEffect(() => {
     if (location && itemsData) {
       setList_id(location.pathname.split("/")[2]);
-      if (itemsData && location.pathname.split("/")[4] !== 0 && location.pathname.split("/")[4] !== '0') {
-        const item = itemsData.filter(
-          (item) => item.id == location.pathname.split("/")[4]
-        );
+      const itemId = location.pathname.split("/")[4];
+      if (itemsData && itemId !== '0') {
+        const item = itemsData.find((item) => item.id == itemId);
         if (item) {
-          console.log(item);
-          setName(item[0].name);
-          setValue(item[0].price);
-          setAmount(item[0].amount);
-          setUnit(item[0].unit);
-          setMembers(item[0].members);
-          setDetails(item[0].details);
-          setBrand(item[0].brand);
-          setStore(item[0].store);
-          setCategory(item[0].category);
-          setPhoto(item[0].photo);
+          setIsEditing(true);
+          setEditingItemId(itemId);
+          setName(item.name);
+          setValue(item.price);
+          setAmount(item.amount);
+          setUnit(item.unit);
+          setMembers(item.members);
+          setDetails(item.details);
+          setBrand(item.brand);
+          setStore(item.store);
+          setCategory(item.category);
+          setPhoto(item.img_url);
         }
       }
     }
@@ -118,18 +120,45 @@ const ItemDetails = () => {
   }, [name]);
   
   const handleAddItem = () => {
+    if (isEditing) {
+      const index = itemsData.findIndex((item) => item.id == editingItemId);
+      if (index !== -1) {
+        itemsData[index] = {
+          id: editingItemId,
+          list_id: Number(list_id),
+          name,
+          price: Number(value),
+          details,
+          brand,
+          store,
+          amount,
+          unit,
+          members,
+          category,
+          img_url: photo,
+          suggestion: false,
+          created_at: itemsData[index].created_at, // Keep original creation date
+          created_by: itemsData[index].created_by, // Keep original creator
+        };
+        console.log(itemsData);
+        navigate("/lists/" + list_id);
+        return;
+      }
+    }
+
+    
     const newItem = {
       id: itemsData.length + 1,
       list_id: Number(list_id),
-      name: name,
+      name,
       price: Number(value),
-      details: details,
-      brand: brand,
-      store: store,
-      amount: amount,
-      unit: unit,
-      members: members,
-      category: category,
+      details,
+      brand,
+      store,
+      amount,
+      unit,
+      members,
+      category,
       img_url: photo,
       suggestion: false,
       created_at: new Date().toISOString().split("T")[0],
@@ -159,19 +188,12 @@ const ItemDetails = () => {
           />
           <p className="font-medium mt-2">Members</p>
           <div className="flex flex-col gap-y-4">
-          <MembersInput label={"Edit Members"} value={members} onChange={setMembers} />
-          <Input label="Brand" value={brand} onChange={setBrand} />
-          <CategoriesInput onChange={setCategory} value={category} label={"Category"} categorySelected={category} type="List"/>
-          
-          <Input label="Store" value={store} onChange={setStore} />
-          <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
-          
-          <Button
-            label="Done"
-            action={() => {
-              handleAddItem();
-            }}
-          />
+            <MembersInput label={"Edit Members"} value={members} onChange={setMembers} />
+            <Input label="Brand" value={brand} onChange={setBrand} />
+            <CategoriesInput onChange={setCategory} value={category} label={"Category"} categorySelected={category} type="List"/>
+            <Input label="Store" value={store} onChange={setStore} />
+            <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
+            <Button label="Done" action={handleAddItem} />
           </div>
         </div>
       </main>
