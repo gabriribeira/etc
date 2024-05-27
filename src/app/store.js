@@ -1,19 +1,15 @@
+// store.js
 import { configureStore } from '@reduxjs/toolkit';
-import { api } from './api';
-import filterReducer from './filtersSlice';
-
-const initialState = {
-  appliedFilters: [], 
-};
+import api from './api';
+import authReducer from './authSlice';
 
 const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    filters: filterReducer, 
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
-  preloadedState: initialState, 
+    getDefaultMiddleware().concat(api.middleware)
 });
 
 export { store };
