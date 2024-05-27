@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Input from "../common/Input";
 import AiStarsImg from "../../assets/imgs/etc/ai-stars.svg";
 import ToggleSwitch from "../common/ToggleSwitch";
 import Button from "../common/Button";
 import MembersInput from "../common/MembersInput";
-import ListsData from "../../data/lists.json";
 import TopBar from "../common/TopBar";
 import BottomBar from "../common/BottomBar";
+import { useCreateListMutation, useCreateListFromRecipeMutation, useCreateListFromEventMutation } from "../../app/api";
+import { useSelector } from "react-redux";
 
 const NewList = () => {
-  const listsData = ListsData;
   const location = useLocation();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const initialAiToggle = location.state && location.state.aiToggle ? location.state.aiToggle : false;
 
   const [name, setName] = useState("");
@@ -20,6 +22,10 @@ const NewList = () => {
   const [recipeSelected, setRecipeSelected] = useState(false);
   const [eventSelected, setEventSelected] = useState(false);
   const [members, setMembers] = useState([]);
+  
+  const [createList, { isLoading: isLoadingCreate }] = useCreateListMutation();
+  const [createListFromRecipe, { isLoading: isLoadingRecipe }] = useCreateListFromRecipeMutation();
+  const [createListFromEvent, { isLoading: isLoadingEvent }] = useCreateListFromEventMutation();
 
   const handleRecipeButton = () => {
     setEventSelected(false);
@@ -33,20 +39,29 @@ const NewList = () => {
     setDescription("");
   };
 
-  const handleNewList = () => {
-    const newListJson = {
-      id: listsData.length + 1,
-      household_id: 1,
-      title: name,
-      description: description,
-      members: members,
-      closed: false,
-      finished: false,
-    };
+  const handleNewList = async () => {
+    try {
+      const newListData = {
+        name: name,
+        description: description,
+        user_id: user.id,
+      };
 
-    console.log(newListJson);
-    setName("");
-    setDescription("");
+      if (aiToggle) {
+        if (recipeSelected) {
+          await createListFromRecipe(newListData).unwrap();
+        } else if (eventSelected) {
+          await createListFromEvent(newListData).unwrap();
+        }
+      } else {
+        await createList(newListData).unwrap();
+      }
+
+      navigate("/lists");
+    } catch (error) {
+      console.error("Error creating list:", error);
+      // Logic to handle errors when creating the list
+    }
   };
 
   useEffect(() => {
@@ -155,6 +170,7 @@ const NewList = () => {
                   label="Done"
                   action={handleNewList}
                   turnDisabled={!name || (name && aiToggle && !description)}
+                  isLoading={isLoadingCreate || isLoadingRecipe || isLoadingEvent}
                 />
               </div>
             </form>
