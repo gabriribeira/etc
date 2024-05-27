@@ -44,8 +44,16 @@ const Item = ({ item, list_id }) => {
             </div>
           )}
         </div>
-        <div className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}>
-          <h1 className={`font-medium text-lg leading-5 ${checked ? 'line-through' : ''}`}>{item.name}</h1>
+        <div
+          className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}
+        >
+          <h1
+            className={`font-medium text-lg leading-5 ${
+              checked ? "line-through" : ""
+            }`}
+          >
+            {item.name}
+          </h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
           {item.amount && (
             <p className="font-medium text-sm">
@@ -61,7 +69,7 @@ const Item = ({ item, list_id }) => {
       </div>
 
       <div className="flex items-center">
-        {item.img_url ? (
+        {item.img_url && (
           <div
             className="rounded-full bg-white w-10 h-10"
             onClick={handleImageClick}
@@ -73,14 +81,8 @@ const Item = ({ item, list_id }) => {
               alt={item.name}
             />
           </div>
-        ) : null}
-        ) : null}
+        )}
 
-        <button
-          className="text-2xl text-white ml-3"
-          aria-label="Edit Item"
-          onClick={() => setShowEditItem(!showEditItem)}
-        >
         <button
           className="text-2xl text-white ml-3"
           aria-label="Edit Item"

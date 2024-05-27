@@ -15,21 +15,15 @@ import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox i
 
 const TopBar = ({ description, listTitle, listClosed }) => {
   const user = useSelector((state) => state.auth.user);
+  const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showFilterOverlay, setShowFilterOverlay] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
-  const [showListOptions, setShowListOptions] = useState(false); // State for list options overlay
-  const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    if (user) {
-      setImage(user.img_url);
-    }
-  }, [user]);
-
+  const [showListOptions, setShowListOptions] = useState(false);
+  
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
   };
