@@ -52,7 +52,7 @@ function App() {
 
   // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // const socket = io("http://localhost:3001", {
+  // const socket = io(process.env.PLATFORM_BACKEND_URL, {
   //   query: { userId }
   // });
   
