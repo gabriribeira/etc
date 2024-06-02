@@ -2,43 +2,31 @@ import React, { useEffect, useState } from "react";
 import TopBar from "../components/common/TopBar";
 import BottomBar from "../components/common/BottomBar";
 import DividerTabs from "../components/common/DividerTabs";
-import ExpensesData from "../data/expenses.json";
 import Expense from "../components/expenses/Expense";
 import Balances from "../components/expenses/Balances";
+import { useGetExpensesQuery } from "../app/api";
+import { useSelector } from "react-redux";
 
 const Expenses = () => {
-  const expensesData = ExpensesData;
+  const { data: expensesData, error, isLoading } = useGetExpensesQuery();
   const [activeTab, setActiveTab] = useState(0);
   const [expenses, setExpenses] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
-    const storedUser = getCookieValue("user");
-    if (storedUser) {
-      setAuthUser(storedUser);
-    }
-  }, []);
+  const authUser = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (expensesData && authUser) {
-      const expensesAux = expensesData
-        .filter((expense) => expense.user_id === authUser.id  || (expense.users && expense.users.includes(authUser.id)))
+      const expensesAux = expensesData.data
+        .filter((expense) => expense.user_id === authUser.id || (expense.users && expense.users.includes(authUser.id)))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
       setExpenses(expensesAux);
     }
   }, [expensesData, authUser]);
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading expenses</div>;
+
   return (
-    
     <div className="relative bg-white min-h-screen">
       <TopBar />
       <main className="pt-20">
@@ -64,7 +52,7 @@ const Expenses = () => {
             </div>
           ) : (
             <div className="flex flex-col py-3 gap-y-3 fade-in">
-              <Balances />
+              <Balances expenses={expenses} />
             </div>
           )}
         </div>
@@ -85,7 +73,6 @@ const formatDate = (expenseDate) => {
   } else if (daysDiff === 1) {
     return "Yesterday";
   } else {
-    // Show the full date for expenses on different days
     return expenseDateObj.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
