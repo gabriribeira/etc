@@ -5,7 +5,7 @@ const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //eslint-disable-next-line
-    baseUrl: "http://etc-app.com/api",
+    baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
