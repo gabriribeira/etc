@@ -5,7 +5,7 @@ const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //eslint-disable-next-line
-    baseUrl: process.env.PLATFORM_BACKEND_URL,
+    baseUrl: "http://localhost:3001/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -125,6 +125,12 @@ const api = createApi({
         body: newExpense,
       }),
     }),
+    getExpenses: builder.query({
+      query: () => "/expenses",
+    }),
+    getExpense: builder.query({
+      query: (id) => `/expenses/${id}`,
+    }),
   }),
 });
 
@@ -150,5 +156,7 @@ export const {
   useCreateListFromRecipeMutation,
   useCreateListFromEventMutation,
   useCreateExpenseMutation,
+  useGetExpensesQuery,
+  useGetExpenseQuery,
 } = api;
 export default api;

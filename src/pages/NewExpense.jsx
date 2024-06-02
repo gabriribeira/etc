@@ -16,9 +16,6 @@ const NewExpense = () => {
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
-
-  //eslint-disable-next-line
-  const [paidBy, setPaidBy] = useState("");
   const [members, setMembers] = useState([]);
   const authUser = useSelector((state) => state.auth.user);
   const [createExpense, { isLoading }] = useCreateExpenseMutation();
@@ -34,15 +31,17 @@ const NewExpense = () => {
   }, [members]);
 
   const handleCreateExpense = async () => {
+    console.log(date);
     try {
       const newExpense = {
         title,
         details,
         value: Number(value),
+        date,
         is_paid: false,
         user_id: authUser.id,
         users: members,
-        // category,
+        category,
       };
       await createExpense(newExpense).unwrap();
       navigate("/expenses");
