@@ -29,8 +29,8 @@ const ExpenseDetail = () => {
         setExpense(expenseData);
         const payer = UsersData.find((user) => user.id === expenseData.user_id);
         setUser(payer);
-        const memberList = expenseData.users.map(userId =>
-          UsersData.find(user => user.id === userId)
+        const memberList = expenseData.users.map((userId) =>
+          UsersData.find((user) => user.id === userId)
         );
         setMembers(memberList);
       }
@@ -60,8 +60,8 @@ const ExpenseDetail = () => {
   }
 
   const handlePaidBalance = () => {
-    console.log("clicou!")
-  }
+    console.log("Clicked!");
+  };
 
   const getUserDisplayName = (user) => {
     const nameParts = user.name.split(" ");
@@ -76,13 +76,11 @@ const ExpenseDetail = () => {
       <main className="mt-32">
         <div className="flex flex-col px-4 mt-6 fade-in">
           <div className="bg-black shadow-lg rounded-2xl p-3 mb-4 text-white flex justify-start items-center">
-
             <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1 mr-3">
               <img
-                //eslint-disable-next-line
                 src={require(`../../assets/data/users/${user.img}`)}
                 alt="User Profile Picture"
-                className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
+                className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
               />
             </div>
             <div className="flex flex-col grow">
@@ -98,10 +96,9 @@ const ExpenseDetail = () => {
             <div key={member.id} className="flex bg-black20 rounded-xl p-2 my-2 font-semibold justify-start items-center">
               <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1 mr-3">
                 <img
-                  //eslint-disable-next-line
                   src={require(`../../assets/data/users/${member.img}`)}
                   alt="User Profile Picture"
-                  className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
+                  className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                 />
               </div>
               <div>{member.name}</div>
@@ -115,13 +112,12 @@ const ExpenseDetail = () => {
             <p className="text-gray-600">Category</p>
             <p>{expense.category}</p>
           </div>
-          
-          {authUser && authUser.id === user.id && (
+
+          {authUser && authUser.id === user.id && !expense.paid && (
             <div className="fixed bottom-[80px] w-full flex justify-center">
               <Button label="Define as paid" action={handlePaidBalance} aria="Button define as paid" />
             </div>
           )}
-          
         </div>
       </main>
       <BottomBar />
