@@ -6,7 +6,7 @@ import { TbUsers } from "react-icons/tb";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
 import { PiShoppingCartSimple, PiShoppingCartSimpleFill } from "react-icons/pi";
 
-const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
+const BottomBar = ({ changeHousehold, openOverlayFromParent, isEnableArchive, setIsEnableArchive, archiveCounter, isArchived, setIsArchived }) => {
   const location = useLocation();
   const [authHousehold, setAuthHousehold] = useState(null);
   const [openOverlay, setOverlay] = useState(false);
@@ -34,6 +34,11 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
     }
   }, [openOverlayFromParent]);
 
+  const toggleArchive = () => {
+    setIsEnableArchive(!isEnableArchive);
+    setIsArchived(isArchived)
+  };
+
   return (
     <>
       {openOverlay && (
@@ -42,19 +47,30 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
       <footer className="z-[89]">
         <div className="h-[80px] z-[90]"></div>
         <div className="fixed bottom-0 pb-5 left-0 w-screen bg-white flex items-center justify-around text-black px-5 pt-1 h-[80px] text-3xl z-[90]">
-          <Link
-            to="/expenses"
-            className={`flex flex-col items-center ${
-              location.pathname === "/expenses" && "text-black"
-            }`}
-          >
-            <div className="relative flex flex-col items-center">
-              <div className="w-9 h-9 flex items-center justify-center">
-                {location.pathname.startsWith("/expenses") ? <IoWallet /> : <IoWalletOutline />}
+          {isEnableArchive ? (
+            <button
+              type="button"
+              onClick={toggleArchive}
+              className={`z-[101] relative ${archiveCounter <= 0 ? 'cursor-default text-black40' : 'cursor-pointer'}`}
+              disabled={archiveCounter <= 0}
+            >
+              <p className="text-[12px] absolute bottom-[-28px]">Archive</p>
+            </button>
+          ) : (
+            <Link
+              to="/expenses"
+              className={`flex flex-col items-center ${
+                location.pathname === "/expenses" && "text-black"
+              }`}
+            >
+              <div className="relative flex flex-col items-center">
+                <div className="w-9 h-9 flex items-center justify-center">
+                  {location.pathname.startsWith("/expenses") ? <IoWallet /> : <IoWalletOutline />}
+                </div>
+                <p className="text-[12px] absolute bottom-[-28px]">Expenses</p>
               </div>
-              <p className="text-[12px] absolute bottom-[-28px]">Expenses</p>
-            </div>
-          </Link>
+            </Link>
+          )}
 
           {changeHousehold ? (
             <button
@@ -131,6 +147,11 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
 BottomBar.propTypes = {
   changeHousehold: PropTypes.bool,
   openOverlayFromParent: PropTypes.bool,
+  isEnableArchive: PropTypes.bool,
+  setIsEnableArchive: PropTypes.func,
+  isArchived: PropTypes.arrayOf(PropTypes.object),
+  archiveCounter: PropTypes.number,
+  setIsArchived: PropTypes.func,
 };
 
 export default BottomBar;

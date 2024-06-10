@@ -10,9 +10,9 @@ import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
 import blank_profile from "../../assets/data/users/blank-profile.webp";
-import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
+import { IoIosCheckboxOutline, IoIosCheckbox } from "react-icons/io";  // Import the checkbox icon
 
-const TopBar = ({ description, listTitle, listClosed }) => {
+const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnableArchive }) => {
   const [user, setUser] = useState(null);
   const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
@@ -41,6 +41,12 @@ const TopBar = ({ description, listTitle, listClosed }) => {
 
   const setFilter = (newFilters) => {
     setAppliedFilters(newFilters);
+  };
+
+  const toggleCheck = () => {
+    setIsEnableArchive(!isEnableArchive);
+    //setIsArchived(isArchived);
+    setShowListOptions(false);
   };
 
   const [filters, setFilters] = useState([]);
@@ -74,12 +80,14 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     const newExpensePageRegex = /\/expenses\/new/;
     const newListPageRegex = /\/lists\/new/;
     const newHouseholdPageRegex = /\/households\/new/;
+    const newArchivePageRegex = /\/lists\/archive/;
     return (
       editPageRegex.test(location.pathname) ||
       balancePageRegex.test(location.pathname) ||
       newExpensePageRegex.test(location.pathname) ||
       newListPageRegex.test(location.pathname) ||
-      newHouseholdPageRegex.test(location.pathname)
+      newHouseholdPageRegex.test(location.pathname) ||
+      newArchivePageRegex.test(location.pathname)
     );
   };
 
@@ -102,6 +110,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     const listPageRegex = /^\/lists\/\d+$/;
     const imagePageRegex = /^\/image\/\d+$/;
     const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
+    const editArchivePageRegex = /\/lists\/\d+\/archive\/\d+/;
     const expenseDetailsPageRegex = /^\/expenses\/expensedetails\/\d+$/;
     const editUserPageRegex = /^\/users\/\d+\/edit$/;
     const userPageRegex = /^\/users\/\d+$/;
@@ -113,7 +122,8 @@ const TopBar = ({ description, listTitle, listClosed }) => {
       editItemPageRegex.test(location.pathname) ||
       expenseDetailsPageRegex.test(location.pathname) ||
       editUserPageRegex.test(location.pathname) ||
-      userPageRegex.test(location.pathname)
+      userPageRegex.test(location.pathname) ||
+      editArchivePageRegex.test(location.pathname)
     ) {
       setShowBackButton(true);
     } else {
@@ -127,6 +137,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
     return listPageRegex.test(location.pathname);
   };
 
+
   return (
     <header className="fixed top-0 left-0 w-screen z-[101] bg-white">
       <div
@@ -134,9 +145,18 @@ const TopBar = ({ description, listTitle, listClosed }) => {
           !showBackButton && "pb-2"
         } px-5 pt-3 z-[100] bg-white`}
       >
-        <div className="flex items-center justify-between gap-x-2 relative">
+        <div className={`flex items-center justify-between gap-x-2 relative ${isEnableArchive ? 'cursor-pointer' : ''}`}>
           {location.pathname === "/lists" ? (
             <>
+            {isEnableArchive ? (
+              <button
+                type="button"
+                onClick={toggleCheck}
+                className="z-[101]"
+              >
+                <strong>Done</strong>
+              </button>
+            ) : (
               <button
                 type="button"
                 onClick={handleShowListOptions}
@@ -145,6 +165,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
               >
                 <RxDotsHorizontal />
               </button>
+            )}
               <CSSTransition
                 in={showListOptions}
                 timeout={500}
@@ -155,8 +176,16 @@ const TopBar = ({ description, listTitle, listClosed }) => {
                 <Overlay
                   label=" "
                   options={[
-                    <div key="select-lists" className="flex items-center gap-x-2">
-                      <IoIosCheckboxOutline />
+                    <div
+                      key="select-lists"
+                      className="flex items-center gap-x-2"
+                      onClick={toggleCheck}
+                    >
+                      {isEnableArchive ? (
+                        <IoIosCheckbox />
+                      ) : (
+                        <IoIosCheckboxOutline />
+                      )}
                       <span>Select lists</span>
                     </div>
                   ]}
@@ -351,10 +380,20 @@ const TopBar = ({ description, listTitle, listClosed }) => {
   );
 };
 
+TopBar.defaultProps = {
+  isArchived: function(props) {
+    return props.isArchived ? props.isArchived : [];
+  },
+};
+
 TopBar.propTypes = {
   description: PropTypes.string,
   listTitle: PropTypes.string,
   listClosed: PropTypes.bool.isRequired,
+  isEnableArchive: PropTypes.bool,
+  setIsEnableArchive: PropTypes.func,
+  setIsArchived: PropTypes.func,
+  isArchived: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default TopBar;

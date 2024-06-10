@@ -26,6 +26,18 @@ import AddMembers from "./pages/AddMembers";
 import NewList from "./components/lists/NewList";
 import Image from "./pages/Image";
 import EditUser from "./pages/EditUser";
+// import io from "socket.io-client";
+//import GoogleAuthCallback from "./pages/GoogleAuthCallback";
+// import { useSelector } from "react-redux";
+// import Calendar from "./pages/Calendar";
+// import EditEvent from "./pages/EditEvent";
+// import EditTask from "./pages/EditTask";
+// import Task from "./pages/Task";
+// import TaskManager from "./pages/TaskManager";
+// import Tasks from "./pages/Tasks";
+// import NewTask from "./pages/NewTask";
+// import NewEvent from "./pages/NewEvent";
+//import ListArchive from "./pages/ListArchive";
 
 function App() {
   // Altera o título da página na aba do browser
@@ -64,6 +76,9 @@ function App() {
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
           <Route path="/users/:user/edit" element={<EditUser />} />
+          {/*<Route path="/profile" element={<Profile />} /> */}
+          {/* <Route path="/event/new" element={<NewEvent />} /> */}
+          <Route path="/lists/archive" element={<Lists/>} />
           {/* <Route path="/calendar" element={<Calendar />} /> */}
           {/* <Route path="/event/:event/edit" element={<EditEvent />} /> */}
           {/* <Route path="/tasks/:task/edit" element={<EditTask />} /> */}

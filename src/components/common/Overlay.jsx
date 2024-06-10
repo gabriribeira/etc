@@ -22,21 +22,21 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
   };
   
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        !document
-          .getElementById('overlay')
-          .contains(event.target)
-      ) {
-        hideOverlay();
-      }
-    };
+    // const handleClickOutside = (event) => {
+    //   if (
+    //     !document
+    //       .getElementById('overlay')
+    //       .contains(event.target)
+    //   ) {
+    //     hideOverlay();
+    //   }
+    // };
 
-    window.addEventListener('mousedown', handleClickOutside);
+    // window.addEventListener('mousedown', handleClickOutside);
 
-    return () => {
-      window.removeEventListener('mousedown', handleClickOutside);
-    };
+    // return () => {
+    //   window.removeEventListener('mousedown', handleClickOutside);
+    // };
   }, []);
 
   return (

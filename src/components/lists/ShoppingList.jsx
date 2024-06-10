@@ -8,7 +8,7 @@ import ConfirmationDialog from "../common/ConfirmationDialog";
 import { FiLock } from "react-icons/fi";
 import { FiUnlock } from "react-icons/fi";
 
-const ShoppingList = ({ list }) => {
+const ShoppingList = ({ list, isEnableArchive, isArchived, handleCheckboxChange }) => {
   const itemsData = ItemsData;
   const [items, setItems] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
@@ -45,34 +45,44 @@ const ShoppingList = ({ list }) => {
   }, [list]);
   return (
     <>
-    <Link
-      to={`/lists/${list.id}`}
-      className="flex items-start w-full bg-black shadow-xl justify-between p-3 h-[130px] rounded-2xl relative"
-    >
-      <div className="flex flex-col h-full text-white justify-between">
-        <div className="flex flex-col">
-          <h1 className="text-xl font-medium ">{list.title}</h1>
-          <p className="font-light text-sm">
-            started by <span className="font-medium">Gabriel Ribeira</span>
-          </p>
-        </div>
-        <div className="flex items-center w-full justify-start gap-x-3">
-          <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
-            {items.length} products
-          </p>
-          {list.closed && (
-            <p className="text-sm font-semibold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
-              locked
+    <div className={`flex`}>
+      {isEnableArchive && (
+        <input
+          type="checkbox"
+          checked={isArchived?.some(item => item?.id === list?.id) || false}
+          onChange={(e) => handleCheckboxChange(list?.id, e?.target?.checked, list)}
+          className="me-4 cursor-pointer"
+        />
+      )}
+      <Link
+        to={`/lists/${list.id}`}
+        className="flex items-start w-full bg-black shadow-xl justify-between p-3 h-[130px] rounded-2xl relative"
+      >
+        <div className="flex flex-col h-full text-white justify-between">
+          <div className="flex flex-col">
+            <h1 className="text-xl font-medium ">{list.title}</h1>
+            <p className="font-light text-sm">
+              started by <span className="font-medium">Gabriel Ribeira</span>
             </p>
-          )}
+          </div>
+          <div className="flex items-center w-full justify-start gap-x-3">
+            <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
+              {items.length} products
+            </p>
+            {list.closed && (
+              <p className="text-sm font-semibold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
+                locked
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="text-2xl text-white">
-        
-          {list.closed ? <FiLock /> : <FiUnlock />}
-        
-      </div>
-    </Link>
+        <div className="text-2xl text-white">
+          
+            {list.closed ? <FiLock /> : <FiUnlock />}
+          
+        </div>
+      </Link>
+    </div>
     <CSSTransition
       in={showEditList}
       timeout={500}
@@ -138,6 +148,11 @@ const ShoppingList = ({ list }) => {
 
 ShoppingList.propTypes = {
   list: PropTypes.object.isRequired,
+  isEnableArchive: PropTypes.bool,
+  setArchiveCounter: PropTypes.func,
+  archiveCounter: PropTypes.number,
+  isArchived: PropTypes.arrayOf(PropTypes.object),
+  handleCheckboxChange: PropTypes.func
 };
 
 export default ShoppingList;
