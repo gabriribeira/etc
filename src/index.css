@@ -127,24 +127,20 @@ body {
 .menu-primary-enter {
   position: absolute;
   transform: translateY(110%);
-  margin-left: -1.25rem;
 }
 
 .menu-primary-enter-active {
   transform: translateY(0%);
   transition: all 500ms ease;
-  margin-left: -1.25rem;
 }
 
 .menu-primary-exit {
   position: absolute;
-  margin-left: -1.25rem;
 }
 
 .menu-primary-exit-active {
   transform: translateY(100%);
   transition: all 500ms ease;
-  margin-left: -1.25rem;
 }
 
 .ai-linear-text-gradient {
