@@ -5,22 +5,27 @@ import Input from "../components/common/Input";
 import AmountInput from "../components/lists/AmountInput";
 import MembersInput from "../components/common/MembersInput";
 import Button from "../components/common/Button";
-import { useNavigate, useLocation } from "react-router-dom";
 import CategoriesInput from "../components/common/CategoriesInput";
 import PhotoInput from "../components/common/PhotoInput";
-import { useGetItemQuery, useAddItemMutation, useUpdateItemMutation } from '../app/api';
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  useGetItemQuery,
+  useAddItemMutation,
+  useUpdateItemMutation,
+  useSearchProductsQuery,
+  useGetListItemsQuery
+} from "../app/api";
+import { useDebounce } from "../hooks/useDebounce";
 
 const ItemDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const itemId = location.pathname.split("/")[4];
   const listId = location.pathname.split("/")[2];
-  const { data: item, isLoading, isError } = useGetItemQuery(itemId, {
-    skip: itemId === '0',
-  });
+  const { refetch: refetchListItems } = useGetListItemsQuery(listId);
   const [addItem] = useAddItemMutation();
   const [updateItem] = useUpdateItemMutation();
-  
+  const [showRecommendations, setShowRecommendations] = useState(false);
   const [name, setName] = useState("");
   const [value, setValue] = useState(null);
   const [amount, setAmount] = useState(1);
@@ -31,6 +36,12 @@ const ItemDetails = () => {
   const [store, setStore] = useState("");
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [isSuggestions, setIsSuggestions] = useState(false);
+  const { data: item, isLoading, isError } = useGetItemQuery(itemId, { skip: itemId === "0" });
+  const debouncedName = useDebounce(name, 500);
+  const { data: recommendations } = useSearchProductsQuery(debouncedName, {
+    skip: !debouncedName || debouncedName.length < 3 || !showRecommendations,
+  });
 
   useEffect(() => {
     if (item) {
@@ -43,7 +54,8 @@ const ItemDetails = () => {
       setBrand(item.brand);
       setStore(item.store);
       setCategory(item.category);
-      setPhoto(item.photo);
+      setPhoto(item.img_url);
+      setIsSuggestions(item.is_suggestion);
     }
   }, [item]);
 
@@ -51,7 +63,7 @@ const ItemDetails = () => {
     const itemData = {
       list_id: Number(listId),
       category_id: 1,
-      name: name,
+      name,
       price: Number(value),
       details,
       brand,
@@ -61,20 +73,38 @@ const ItemDetails = () => {
       members,
       category,
       img_url: photo,
-      is_suggestion: false,
+      is_suggestion: isSuggestions,
       is_expense: false,
     };
 
     try {
-      if (itemId === '0') {
+      if (itemId === "0") {
         await addItem(itemData).unwrap();
       } else {
         await updateItem({ id: itemId, ...itemData }).unwrap();
       }
+      await refetchListItems();
       navigate(`/lists/${listId}`);
     } catch (error) {
       console.error("Error saving item:", error);
     }
+  };
+
+  const selectProduct = (product) => {
+    setName(product.name);
+    setValue(product.value);
+    setUnit(product.unit);
+    setBrand(product.brand);
+    setStore(product.store);
+    setCategory(product.category);
+    setPhoto(product.img_url);
+    setShowRecommendations(false);
+    setIsSuggestions(false);
+  };
+
+  const handleNameChange = (value) => {
+    setName(value);
+    setShowRecommendations(true);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -82,13 +112,20 @@ const ItemDetails = () => {
 
   return (
     <div className="bg-white">
-      <TopBar />
+      <TopBar onBack={handleSaveItem} listTitle="Edit Item" />
       <main className="pt-32 mb-16 gap-x-5">
         <div className="flex justify-start px-5 gap-3 mb-5">
           <PhotoInput onChange={setPhoto} value={photo} />
-          <Input label="Name *" value={name} placeholder="Name" onChange={setName} required />
+          <Input
+            label="Name *"
+            value={name}
+            placeholder="Name"
+            onChange={handleNameChange}
+            required
+            recommendations={showRecommendations ? recommendations : null}
+            recommendationsAction={selectProduct}
+          />
         </div>
-
         <div className="flex flex-col px-5 gap-y-3">
           <AmountInput
             label="Amount"
@@ -99,15 +136,27 @@ const ItemDetails = () => {
           />
           <p className="font-medium mt-2">Members</p>
           <div className="flex flex-col gap-y-4">
-            <MembersInput label={"Edit Members"} value={members} onChange={setMembers} />
-            <Input label="Brand" value={brand} onChange={setBrand} />
-            <CategoriesInput onChange={setCategory} value={category} label={"Category"} categorySelected={category} type="List"/>
-            <Input label="Store" value={store} onChange={setStore} />
-            <Input label="Details" value={details} onChange={setDetails} placeholder="Details" />
-            <Button
-              label="Done"
-              action={handleSaveItem}
+            <MembersInput
+              label="Edit Members"
+              value={members}
+              onChange={setMembers}
             />
+            <Input label="Brand" value={brand} onChange={setBrand} />
+            <CategoriesInput
+              onChange={setCategory}
+              value={category}
+              label="Category"
+              categorySelected={category}
+              type="List"
+            />
+            <Input label="Store" value={store} onChange={setStore} />
+            <Input
+              label="Details"
+              value={details}
+              onChange={setDetails}
+              placeholder="Details"
+            />
+            <Button label="Done" action={handleSaveItem} />
           </div>
         </div>
       </main>

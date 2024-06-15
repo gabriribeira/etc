@@ -6,20 +6,30 @@ import Overlay from "../common/Overlay";
 import ConfirmationDialog from "../common/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineCheck } from "react-icons/hi";
+import { useDeleteItemMutation } from "../../app/api";
 
-const Item = ({ item, list_id }) => {
+const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
   const [showEditItem, setShowEditItem] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
+  const [deleteItem] = useDeleteItemMutation();
 
   const handleCheck = () => {
-    setChecked(!checked);
+    if (!isListLocked || isListLockedByUser) {
+      setChecked(!checked);
+    }
   };
 
-  const handleDelete = () => {
-    // lógica para excluir o item
-    console.log("Item deletado:", item.id);
+  const handleDelete = async () => {
+    try {
+      await deleteItem(item.id).unwrap();
+      setShowConfirmation(false);
+      setShowEditItem(false);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
     setShowConfirmation(false);
     setShowEditItem(false);
   };
@@ -36,6 +46,7 @@ const Item = ({ item, list_id }) => {
             type="checkbox"
             checked={checked}
             onChange={handleCheck}
+            disabled={isListLocked && !isListLockedByUser}
             className="appearance-none h-full w-full border-2 border-white rounded bg-black checked:bg-black checked:border-white checked:shadow-none"
           />
           {checked && (
@@ -55,16 +66,12 @@ const Item = ({ item, list_id }) => {
             {item.name}
           </h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
-          {item.amount && (
+          {item.amount && item.unit && (
             <p className="font-medium text-sm">
               {item.amount} {item.unit}
             </p>
           )}
-          {item.amount && (
-            <p className="font-medium text-sm">
-              {item.amount} {item.unit}
-            </p>
-          )}
+          {item.store && <p className="font-medium text-sm">{item.store}</p>}
         </div>
       </div>
 
@@ -76,7 +83,7 @@ const Item = ({ item, list_id }) => {
           >
             <img
               //eslint-disable-next-line
-              src={require(`../../assets/imgs/products/${item.img_url}`)}
+              src={item.img_url}
               className="w-full h-full rounded-full object-cover"
               alt={item.name}
             />
@@ -127,6 +134,9 @@ const Item = ({ item, list_id }) => {
 Item.propTypes = {
   item: PropTypes.object.isRequired,
   list_id: PropTypes.number.isRequired,
+  refetch: PropTypes.func.isRequired,
+  isListLocked: PropTypes.bool.isRequired,
+  isListLockedByUser: PropTypes.bool.isRequired,
 };
 
 export default Item;
