@@ -5,7 +5,8 @@ const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //eslint-disable-next-line
-    baseUrl: "https://etc-app.com/api",
+    baseUrl: "http://localhost:3001/api",
+    //baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -24,12 +25,12 @@ const api = createApi({
       }),
     }),
     checkAuth: builder.query({
-      query: () => ({
+      query: (credentials) => ({
         url: "/auth/checkAuth",
         method: "GET",
+        body: credentials,
       }),
     }),
-    // Google authentication
     googleAuth: builder.query({
       query: () => ({
         url: "/auth/google",
@@ -42,7 +43,6 @@ const api = createApi({
         method: "GET",
       }),
     }),
-    // Facebook authentication
     facebookAuth: builder.query({
       query: () => ({
         url: "/auth/facebook",
@@ -71,6 +71,24 @@ const api = createApi({
     getListItems: builder.query({
       query: (listId) => `/lists/${listId}/items`,
     }),
+    lockList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}/lock`,
+        method: "PATCH",
+      }),
+    }),
+    unlockList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}/unlock`,
+        method: "PATCH",
+      }),
+    }),
+    estimateListValue: builder.mutation({
+      query: (listId) => ({
+        url: `/lists/${listId}/estimate-value`,
+        method: 'POST',
+      }),
+    }),
     getItem: builder.query({
       query: (id) => `/items/${id}`,
     }),
@@ -84,8 +102,14 @@ const api = createApi({
     updateItem: builder.mutation({
       query: ({ id, ...patch }) => ({
         url: `/items/${id}`,
-        method: "PATCH",
+        method: "PUT",
         body: patch,
+      }),
+    }),
+    deleteItem: builder.mutation({
+      query: (id) => ({
+        url: `/items/${id}`,
+        method: "DELETE",
       }),
     }),
     getHousehold: builder.query({
@@ -131,6 +155,9 @@ const api = createApi({
     getExpense: builder.query({
       query: (id) => `/expenses/${id}`,
     }),
+    searchProducts: builder.query({
+      query: (name) => `/products/search?name=${name}`,
+    }),
   }),
 });
 
@@ -146,9 +173,13 @@ export const {
   useCreateListMutation,
   useGetListQuery,
   useGetListItemsQuery,
+  useLockListMutation,
+  useUnlockListMutation,
+  useEstimateListValueMutation,
   useGetItemQuery,
   useAddItemMutation,
   useUpdateItemMutation,
+  useDeleteItemMutation,
   useGetHouseholdQuery,
   useGetUserQuery,
   useGetUserHouseholdsQuery,
@@ -158,5 +189,6 @@ export const {
   useCreateExpenseMutation,
   useGetExpensesQuery,
   useGetExpenseQuery,
+  useSearchProductsQuery,
 } = api;
 export default api;
