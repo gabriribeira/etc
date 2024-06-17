@@ -4,9 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    //eslint-disable-next-line
-    baseUrl: "http://localhost:3001/api",
-    //baseUrl: "https://etc-app.com/api",
+    //baseUrl: "http://localhost:3001/api",
+    baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -22,6 +21,13 @@ const api = createApi({
         url: "/auth/register",
         method: "POST",
         body: user,
+      }),
+    }),
+    updateUser: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: data,
       }),
     }),
     checkAuth: builder.query({
@@ -86,7 +92,7 @@ const api = createApi({
     estimateListValue: builder.mutation({
       query: (listId) => ({
         url: `/lists/${listId}/estimate-value`,
-        method: 'POST',
+        method: "POST",
       }),
     }),
     getItem: builder.query({
@@ -112,6 +118,34 @@ const api = createApi({
         method: "DELETE",
       }),
     }),
+    createHousehold: builder.mutation({
+      query: (household) => ({
+        url: "/households",
+        method: "POST",
+        body: household,
+      }),
+    }),
+    addMembers: builder.mutation({
+      query: ({ householdId, userIds }) => ({
+        url: "/households/addMembers",
+        method: "POST",
+        body: { householdId, userIds },
+      }),
+    }),
+    createRequest: builder.mutation({
+      query: (request) => ({
+        url: "/households/createRequest",
+        method: "POST",
+        body: request,
+      }),
+    }),
+    updateRequestStatus: builder.mutation({
+      query: (requestStatus) => ({
+        url: "/households/updateRequestStatus",
+        method: "POST",
+        body: requestStatus,
+      }),
+    }),
     getHousehold: builder.query({
       query: () => "/households/auth/household",
     }),
@@ -120,6 +154,9 @@ const api = createApi({
     }),
     getUserHouseholds: builder.query({
       query: (userId) => `/users/households/${userId}`,
+    }),
+    searchUsers: builder.query({
+      query: (query) => `/users/search?query=${query}`,
     }),
     switchHousehold: builder.mutation({
       query: (householdId) => ({
@@ -158,12 +195,23 @@ const api = createApi({
     searchProducts: builder.query({
       query: (name) => `/products/search?name=${name}`,
     }),
+    getTags: builder.query({
+      query: () => `/tags`,
+    }),
+    addHouseholdTags: builder.mutation({
+      query: ({ householdId, tags }) => ({
+        url: `/households/${householdId}/tags`,
+        method: "POST",
+        body: { tags },
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useUpdateUserMutation,
   useCheckAuthQuery,
   useGoogleAuthQuery,
   useGoogleAuthCallbackMutation,
@@ -180,9 +228,14 @@ export const {
   useAddItemMutation,
   useUpdateItemMutation,
   useDeleteItemMutation,
+  useCreateHouseholdMutation,
+  useAddMembersMutation,
+  useCreateRequestMutation,
+  useUpdateRequestStatusMutation,
   useGetHouseholdQuery,
   useGetUserQuery,
   useGetUserHouseholdsQuery,
+  useSearchUsersQuery,
   useSwitchHouseholdMutation,
   useCreateListFromRecipeMutation,
   useCreateListFromEventMutation,
@@ -190,5 +243,7 @@ export const {
   useGetExpensesQuery,
   useGetExpenseQuery,
   useSearchProductsQuery,
+  useGetTagsQuery,
+  useAddHouseholdTagsMutation,
 } = api;
 export default api;
