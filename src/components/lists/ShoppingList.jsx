@@ -50,7 +50,7 @@ const ShoppingList = ({ list }) => {
           <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
             {list.Items.length} products
           </p>
-          {list.closed && (
+          {list.is_closed && (
             <p className="text-sm font-semibold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
               locked
             </p>

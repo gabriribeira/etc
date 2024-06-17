@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
@@ -13,7 +13,8 @@ import { RiNotification4Line } from "react-icons/ri";
 import blank_profile from "../../assets/data/users/blank-profile.webp";
 import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
 
-const TopBar = ({ description, listTitle, listClosed }) => {
+const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList }) => {
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
@@ -23,6 +24,14 @@ const TopBar = ({ description, listTitle, listClosed }) => {
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
   const [showListOptions, setShowListOptions] = useState(false);
+
+  const handleBackClick = () => {
+    if (onBack) {
+      onBack();  // Call the onBack function if provided
+    } else {
+      navigate(-1);  // Default back behavior
+    }
+  };
   
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
@@ -37,7 +46,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
   };
 
   const handleShowListOptions = () => {
-    setShowListOptions(!showListOptions); // Toggle list options overlay
+    setShowListOptions(!showListOptions);
   };
 
   const setFilter = (newFilters) => {
@@ -277,7 +286,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
           in={showSettings}
           timeout={500}
           classNames="menu-primary"
-          className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
+          className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl"
           unmountOnExit
         >
           <Overlay
@@ -302,9 +311,9 @@ const TopBar = ({ description, listTitle, listClosed }) => {
               "Edit shopping list",
               "Delete shopping list",
             ]}
-            links={["/lists", "/lists", "/lists"]}
+            links={[null, null, null]}
             hideOverlay={() => setShowEditList(false)}
-            onClicks={[() => {}, () => {}, () => {}]}
+            onClicks={[() => {listClosed ? unlockList() : lockList()}, () => {}, () => {}]}
           />
         </CSSTransition>
 
@@ -331,7 +340,7 @@ const TopBar = ({ description, listTitle, listClosed }) => {
             listTitle && "w-full flex items-center relative"
           }`}
         >
-          <BackButton />
+          <BackButton onClick={handleBackClick} />
           {listTitle && (
             <div className="absolute left-0 top-0 flex items-center w-full h-full justify-center">
               <p className="text-black text-base font-semibold text-xl">
@@ -352,6 +361,9 @@ TopBar.propTypes = {
   description: PropTypes.string,
   listTitle: PropTypes.string,
   listClosed: PropTypes.bool,
+  onBack: PropTypes.func,
+  lockList: PropTypes.func,
+  unlockList: PropTypes.func,
 };
 
 export default TopBar;

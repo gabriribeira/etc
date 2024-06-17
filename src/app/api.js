@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    //eslint-disable-next-line
+    //baseUrl: "http://localhost:3001/api",
     baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
@@ -23,13 +23,20 @@ const api = createApi({
         body: user,
       }),
     }),
-    checkAuth: builder.query({
-      query: () => ({
-        url: "/auth/checkAuth",
-        method: "GET",
+    updateUser: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: data,
       }),
     }),
-    // Google authentication
+    checkAuth: builder.query({
+      query: (credentials) => ({
+        url: "/auth/checkAuth",
+        method: "GET",
+        body: credentials,
+      }),
+    }),
     googleAuth: builder.query({
       query: () => ({
         url: "/auth/google",
@@ -42,7 +49,6 @@ const api = createApi({
         method: "GET",
       }),
     }),
-    // Facebook authentication
     facebookAuth: builder.query({
       query: () => ({
         url: "/auth/facebook",
@@ -71,6 +77,24 @@ const api = createApi({
     getListItems: builder.query({
       query: (listId) => `/lists/${listId}/items`,
     }),
+    lockList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}/lock`,
+        method: "PATCH",
+      }),
+    }),
+    unlockList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}/unlock`,
+        method: "PATCH",
+      }),
+    }),
+    estimateListValue: builder.mutation({
+      query: (listId) => ({
+        url: `/lists/${listId}/estimate-value`,
+        method: "POST",
+      }),
+    }),
     getItem: builder.query({
       query: (id) => `/items/${id}`,
     }),
@@ -84,8 +108,42 @@ const api = createApi({
     updateItem: builder.mutation({
       query: ({ id, ...patch }) => ({
         url: `/items/${id}`,
-        method: "PATCH",
+        method: "PUT",
         body: patch,
+      }),
+    }),
+    deleteItem: builder.mutation({
+      query: (id) => ({
+        url: `/items/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    createHousehold: builder.mutation({
+      query: (household) => ({
+        url: "/households",
+        method: "POST",
+        body: household,
+      }),
+    }),
+    addMembers: builder.mutation({
+      query: ({ householdId, userIds }) => ({
+        url: "/households/addMembers",
+        method: "POST",
+        body: { householdId, userIds },
+      }),
+    }),
+    createRequest: builder.mutation({
+      query: (request) => ({
+        url: "/households/createRequest",
+        method: "POST",
+        body: request,
+      }),
+    }),
+    updateRequestStatus: builder.mutation({
+      query: (requestStatus) => ({
+        url: "/households/updateRequestStatus",
+        method: "POST",
+        body: requestStatus,
       }),
     }),
     getHousehold: builder.query({
@@ -96,6 +154,9 @@ const api = createApi({
     }),
     getUserHouseholds: builder.query({
       query: (userId) => `/users/households/${userId}`,
+    }),
+    searchUsers: builder.query({
+      query: (query) => `/users/search?query=${query}`,
     }),
     switchHousehold: builder.mutation({
       query: (householdId) => ({
@@ -131,12 +192,26 @@ const api = createApi({
     getExpense: builder.query({
       query: (id) => `/expenses/${id}`,
     }),
+    searchProducts: builder.query({
+      query: (name) => `/products/search?name=${name}`,
+    }),
+    getTags: builder.query({
+      query: () => `/tags`,
+    }),
+    addHouseholdTags: builder.mutation({
+      query: ({ householdId, tags }) => ({
+        url: `/households/${householdId}/tags`,
+        method: "POST",
+        body: { tags },
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useUpdateUserMutation,
   useCheckAuthQuery,
   useGoogleAuthQuery,
   useGoogleAuthCallbackMutation,
@@ -146,17 +221,29 @@ export const {
   useCreateListMutation,
   useGetListQuery,
   useGetListItemsQuery,
+  useLockListMutation,
+  useUnlockListMutation,
+  useEstimateListValueMutation,
   useGetItemQuery,
   useAddItemMutation,
   useUpdateItemMutation,
+  useDeleteItemMutation,
+  useCreateHouseholdMutation,
+  useAddMembersMutation,
+  useCreateRequestMutation,
+  useUpdateRequestStatusMutation,
   useGetHouseholdQuery,
   useGetUserQuery,
   useGetUserHouseholdsQuery,
+  useSearchUsersQuery,
   useSwitchHouseholdMutation,
   useCreateListFromRecipeMutation,
   useCreateListFromEventMutation,
   useCreateExpenseMutation,
   useGetExpensesQuery,
   useGetExpenseQuery,
+  useSearchProductsQuery,
+  useGetTagsQuery,
+  useAddHouseholdTagsMutation,
 } = api;
 export default api;

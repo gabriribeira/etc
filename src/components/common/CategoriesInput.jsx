@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Category from "./Category";
-import CategoriesData from "../../data/categories.json";
+import { useGetTagsQuery } from "../../app/api";
 
-const CategoriesInput = ({ label, categorySelected, onChange, filter, type }) => {
-  // Filter categories based on the type prop
-  const categories = CategoriesData.filter(category => category.type === type);
+const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
+  const { data: categories } = useGetTagsQuery();
 
   const handleChange = (category) => {
-    onChange(category);
+    if (categorySelected.includes(category)) {
+      const newCategory = categorySelected.filter((item) => item !== category);
+      return onChange(newCategory);
+    } else {
+      return onChange([...categorySelected, category]);
+    }
   };
+
+  useEffect(() => {
+    console.log(categorySelected);
+  }, [categorySelected]);
 
   return (
     categories && (
@@ -37,17 +45,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, type }) =>
               category={category}
               onChange={handleChange}
               filter={filter}
-              value={
-                filter
-                  ? categorySelected.includes(category.title)
-                    ? true
-                    : false
-                  : categorySelected
-                  ? categorySelected.id === category.id
-                    ? true
-                    : false
-                  : false
-              }
+              value={categorySelected.includes(category) ? true : false}
             />
           ))}
         </div>
@@ -59,12 +57,8 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, type }) =>
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object
-  ]),
+  categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   filter: PropTypes.bool,
-  type: PropTypes.string.isRequired,  // Ensure type is a required string
 };
 
 export default CategoriesInput;

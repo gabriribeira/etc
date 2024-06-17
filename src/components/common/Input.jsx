@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const Input = ({ label, placeholder, value, onChange, error }) => {
+const Input = ({ label, placeholder, value, onChange, error, recommendations, recommendationsAction }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -44,6 +44,21 @@ const Input = ({ label, placeholder, value, onChange, error }) => {
             placeholder={placeholder ? placeholder : label}
           />
         )}
+        {recommendations && (
+              <div className="absolute z-10 w-full rounded-b-xl bg-white shadow-lg max-h-60 overflow-auto top-[100%] left-0 top-0 border-[1px] border-black border-t-0 -mt-3">
+              {recommendations.map((product) => (
+                <div
+                  key={product.id}
+                  onClick={() => recommendationsAction(product)}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  {product.name}
+                </div>
+              ))}
+            </div>
+        )
+
+        }
         {(label === "Password" || label === "Confirm Password") && (
           <button
             type="button"
@@ -66,6 +81,8 @@ Input.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
+  recommendations: PropTypes.array,
+  recommendationsAction: PropTypes.func
 };
 
 export default Input;

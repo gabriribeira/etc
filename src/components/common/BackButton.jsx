@@ -1,14 +1,17 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { SlArrowLeft } from "react-icons/sl";
+import PropTypes from "prop-types";
 
-const BackButton = () => {
-    const navigate = useNavigate();
+const BackButton = ({onClick}) => {
   return (
-    <button onClick={() => navigate(-1)} className="text-xl pr-2 flex flex-shrink-0 z-[102]" aria-label="Back Button">
+    <button onClick={onClick} className="text-xl pr-2 flex flex-shrink-0 z-[102]" aria-label="Back Button">
       <SlArrowLeft />
     </button>
   );
+};
+
+BackButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
 };
 
 export default BackButton;
