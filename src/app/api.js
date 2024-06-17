@@ -205,6 +205,16 @@ const api = createApi({
         body: { tags },
       }),
     }),
+    searchHouseholds: builder.query({
+      query: (query) => `/households/search?query=${query}`,
+    }),
+    createJoinRequest: builder.mutation({
+      query: (request) => ({
+        url: "/households/join",
+        method: "POST",
+        body: request,
+      }),
+    }),
   }),
 });
 
@@ -245,5 +255,7 @@ export const {
   useSearchProductsQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
+  useSearchHouseholdsQuery,
+  useCreateJoinRequestMutation,
 } = api;
 export default api;
