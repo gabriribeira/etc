@@ -5,6 +5,7 @@ import { RxDotsVertical } from "react-icons/rx";
 import { useGetUserHouseholdsQuery } from "../app/api";
 import { useSelector } from "react-redux";
 import DefaultProfilePicture from "../assets/data/users/leo.webp";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
@@ -38,6 +39,12 @@ const Profile = () => {
           <div className="flex flex-col">
             <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
               <div className="py-16 flex flex-col items-center justify-center">
+                <Link
+                  to={`/profile/edit`}
+                  className="font-medium text-sm absolute top-3 right-3"
+                >
+                  edit
+                </Link>
                 <img
                   src={imageUrl}
                   alt="Profile Picture"
