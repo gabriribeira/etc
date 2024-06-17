@@ -57,8 +57,8 @@ const ChangeHouseholdOverlay = ({ closeOverlay }) => {
                 key={household.id}
                 className={`flex items-center justify-between rounded-2xl p-3 ${
                   currentHousehold === household.id
-                    ? "bg-blue/60 text-white"
-                    : "border-2 border-blue text-black"
+                    ? "bg-black90 text-white"
+                    : "border-2 border-black text-black"
                 }`}
                 onClick={() => {
                   currentHousehold !== household.id &&
