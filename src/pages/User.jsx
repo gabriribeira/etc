@@ -42,7 +42,7 @@ const User = () => {
     households && (
       <div>
         <TopBar />
-        <main className="mt-32">
+        <main className="mt-32 bg-white">
           <div className="flex flex-col">
             <div className="flex flex-col bg-black20 text-center relative">
               <Link

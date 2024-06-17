@@ -34,6 +34,8 @@ const EditUser = () => {
     }
   }, []);
 
+  console.log(category)
+
   const handleSaveChanges = () => {
     console.log({
       name,
@@ -47,8 +49,8 @@ const EditUser = () => {
     user && (
       <div>
         <TopBar />
-        <main className="mt-32">
-          <div className="flex flex-col">
+        <main className="mt-32 bg-white">
+          <div className="flex flex-col ">
             <div className="flex flex-col text-center relative justify-center m-4 items-center">
               <img
                 // eslint-disable-next-line
