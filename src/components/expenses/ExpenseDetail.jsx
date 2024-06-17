@@ -78,6 +78,7 @@ const ExpenseDetail = () => {
           <div className="bg-black shadow-lg rounded-2xl p-3 mb-4 text-white flex justify-start items-center">
             <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1 mr-3">
               <img
+              //eslint-disable-next-line
                 src={require(`../../assets/data/users/${user.img}`)}
                 alt="User Profile Picture"
                 className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
@@ -96,6 +97,7 @@ const ExpenseDetail = () => {
             <div key={member.id} className="flex bg-black20 rounded-xl p-2 my-2 font-semibold justify-start items-center">
               <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1 mr-3">
                 <img
+                //eslint-disable-next-line
                   src={require(`../../assets/data/users/${member.img}`)}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
