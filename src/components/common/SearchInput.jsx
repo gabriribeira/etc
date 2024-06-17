@@ -16,15 +16,15 @@ const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
           className={`border-2 rounded-xl p-2 border-black40 bg-white focus:border-black focus:outline-none text-lg placeholder:text-black40 text-black w-full`}
           placeholder={label}
         />
-        {results && (
-          <div className="w-full absolute bg-white rounded-xl shadow-xl mt-2 border-2 border-black border-t-0 rounded-t-none top-[100%] -mt-4 pt-2">
+        {results && value.length > 0 && (
+          <div className="w-full absolute bg-white rounded-xl shadow-xl -mt-4 border-2 border-black border-t-0 rounded-t-none top-[100%] -mt-4 pt-2">
             {results &&
               results.map(
                 (result, index) =>
                   index < 3 && (
                     <button
                       key={index}
-                      className="flex flex-col p-2 border-b border-black40"
+                      className="flex flex-col p-2 w-full"
                       onClick={() => {
                         onSelect(result);
                         onChange("");
@@ -33,17 +33,17 @@ const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
                       <div className="flex items-center gap-x-2">
                         <img
                           //eslint-disable-next-line
-                          src={require(
-                            `../../assets/data/households/${result.img}`
-                          )}
+                          src={result.img_url}
                           alt="Household Profile Picture"
                           className="w-[20px] h-[20px] rounded-full"
                         />
                         <p className="text-lg">{result.name}</p>
                       </div>
-                      <p className="text-black40 text-sm line-clamp-2">
-                        {result.description}
-                      </p>
+                      {result.description && (
+                        <p className="text-black40 text-sm line-clamp-2">
+                          {result.description}
+                        </p>
+                      )}
                     </button>
                   )
               )}

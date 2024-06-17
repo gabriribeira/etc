@@ -26,24 +26,15 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import EditHousehold from "./pages/EditHousehold";
 import BalanceDetails from "./pages/BalanceDetails";
-import AddMembers from "./pages/AddMembers";
 import NewList from "./components/lists/NewList";
 import Image from "./pages/Image";
 import EditUser from "./pages/EditUser";
-// import io from "socket.io-client";
 import GoogleAuthCallback from "./pages/GoogleAuthCallback";
-// import { useSelector } from "react-redux";
-// import Calendar from "./pages/Calendar";
-// import EditEvent from "./pages/EditEvent";
-// import EditTask from "./pages/EditTask";
-// import Task from "./pages/Task";
-// import TaskManager from "./pages/TaskManager";
-// import Tasks from "./pages/Tasks";
-// import NewTask from "./pages/NewTask";
-// import NewEvent from "./pages/NewEvent";
+import RegisterStep2 from "./pages/RegisterStep2";
+import HouseholdOnboarding from "./pages/HouseholdOnboarding";
+// import io from "socket.io-client";
 
 function App() {
-  // Altera o título da página na aba do browser
   useEffect(() => {
     document.title = "et.cetera";
   }, []);
@@ -55,15 +46,14 @@ function App() {
   // const socket = io(process.env.PLATFORM_BACKEND_URL, {
   //   query: { userId }
   // });
-  
+
   // socket.on("connect", () => {
   //   console.log("Connected to server");
   // });
-  
+
   // socket.on("notification", (notification) => {
   //   console.log("Notification received:", notification);
   // });
-
 
   // useEffect(() => {
   //   if (isAuthenticated) {
@@ -80,8 +70,14 @@ function App() {
 
   useEffect(() => {
     if (data && !isFetching) {
+      console.log(data);
       dispatch(
-        setAuthState({ isAuthenticated: data.authenticated, user: data.user, currentHouseholdId: data.currentHouseholdId, roleId: data.roleId})
+        setAuthState({
+          isAuthenticated: data.authenticated,
+          user: data.user,
+          currentHouseholdId: data.currentHouseholdId,
+          roleId: data.roleId,
+        })
       );
     }
   }, [data, isFetching, dispatch]);
@@ -94,8 +90,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
-          <Route path="/add-members" element={<AddMembers />} />
-          <Route path="/households/:household/edit" element={<EditHousehold />} />
+          <Route path="/register/step2" element={<RegisterStep2 />} />
+          <Route
+            path="/households/:household/edit"
+            element={<EditHousehold />}
+          />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route
             path="/expense-details/:expenseId"
@@ -109,10 +108,11 @@ function App() {
           <Route path="/invite" element={<InviteMembers />} />
           <Route path="/lists/:list/item/:item" element={<ItemDetails />} />
           <Route path="/lists/:list/item/:id/image" element={<Image />} />
-          <Route path="/join" element={<JoinHousehold />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/lists/new" element={<NewList />} />
           <Route path="/expenses/new" element={<NewExpense />} />
+          <Route path="/households/onboarding" element={<HouseholdOnboarding />} />
+          <Route path="/households/join" element={<JoinHousehold />} />
           <Route path="/households/new" element={<NewHousehold />} />
           <Route path="/lists/:list" element={<List />} />
           <Route path="/notifications" element={<Notifications />} />
@@ -120,14 +120,6 @@ function App() {
           <Route path="/users/:user" element={<User />} />
           <Route path="/users/:user/edit" element={<EditUser />} />
           <Route path="/profile" element={<Profile />} />
-          {/* <Route path="/event/new" element={<NewEvent />} /> */}
-          {/* <Route path="/calendar" element={<Calendar />} /> */}
-          {/* <Route path="/event/:event/edit" element={<EditEvent />} /> */}
-          {/* <Route path="/tasks/:task/edit" element={<EditTask />} /> */}
-          {/* <Route path="/tasks/new" element={<NewTask />} /> */}
-          {/* <Route path="/tasks/:task" element={<Task />} /> */}
-          {/* <Route path="/task-manager" element={<TaskManager />} /> */}
-          {/* <Route path="/tasks" element={<Tasks />} /> */}
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

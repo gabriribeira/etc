@@ -79,8 +79,8 @@ const ChangeHouseholdOverlay = ({ closeOverlay }) => {
             ))}
           </div>
           <Button
-            label={"Add New"}
-            to="/households/new"
+            label={"Join or Create Household"}
+            to="/households/onboarding"
             action={closeOverlay}
             stroke={true}
           />
