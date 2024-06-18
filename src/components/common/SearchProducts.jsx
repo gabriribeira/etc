@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { useGetProductsByCategoryQuery } from "../../app/api";
-import { CSSTransition } from "react-transition-group";
-import Overlay from "./Overlay";
+import { useSearchProductsQuery } from "../../app/api";
 
-const ScrollProducts = ({ label, type }) => {
-  const { data: response, error, isLoading } = useGetProductsByCategoryQuery(type);
-  const [showOverlay, setShowOverlay] = useState(false);
-  
+const SearchProducts = ({ label, name }) => {
+  const { data: response, error, isLoading } = useSearchProductsQuery(name, { skip: !name });
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    if (response) {
+      setProducts(response);  
+    }
+  }, [response]);
+
   if (isLoading) return <div>Carregando...</div>;
-  if (error) return <div>Erro ao carregar os produtos</div>;
-
-  const products = response?.data || [];
+  if (error) return <div>Produto não encontrado</div>;
 
   const truncateName = (name) => {
     if (name.length > 22) {
@@ -20,10 +22,6 @@ const ScrollProducts = ({ label, type }) => {
     }
     return name;
   };
-
-  const handleOverlay = () => {
-    setShowOverlay(!showOverlay);
-  }
 
   return (
     <div className="flex flex-col bg-white m-auto p-auto">
@@ -45,27 +43,7 @@ const ScrollProducts = ({ label, type }) => {
                       <p className="text-lg text-red-600 font-bold">{product.value}€</p>
                     </div>
                     <div>
-                      <BsPlusCircleFill size={45} onClick={handleOverlay} />
-
-                      <CSSTransition
-                        in={showOverlay}
-                        timeout={500}
-                        classNames="menu-primary"
-                        className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
-                        unmountOnExit
-                      >
-                        <Overlay
-                          label="Add to List"
-                          options={[
-                            "New List",
-                            "Search",
-                            "Lists",
-                          ]}
-                          links={[null, null, null]}
-                          hideOverlay={() => setShowOverlay(false)}
-                          onClicks={[() => {}, () => {}, () => {}]}
-                        />
-                      </CSSTransition>
+                      <BsPlusCircleFill size={45} />
                     </div>
                   </div>
                 </div>
@@ -78,9 +56,9 @@ const ScrollProducts = ({ label, type }) => {
   );
 };
 
-ScrollProducts.propTypes = {
+SearchProducts.propTypes = {
   label: PropTypes.string.isRequired,
-  type: PropTypes.string,
+  name: PropTypes.string,
 };
 
-export default ScrollProducts;
+export default SearchProducts;
