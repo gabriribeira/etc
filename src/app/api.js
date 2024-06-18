@@ -205,6 +205,11 @@ const api = createApi({
         body: { tags },
       }),
     }),
+
+    getProductsByCategory: builder.query({
+      query: (categoryId) => `/products/category/${categoryId}`,
+    }),
+
     searchHouseholds: builder.query({
       query: (query) => `/households/search?query=${query}`,
     }),
@@ -253,6 +258,7 @@ export const {
   useGetExpensesQuery,
   useGetExpenseQuery,
   useSearchProductsQuery,
+  useGetProductsByCategoryQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
   useSearchHouseholdsQuery,

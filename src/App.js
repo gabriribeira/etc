@@ -32,6 +32,7 @@ import EditUser from "./pages/EditUser";
 import GoogleAuthCallback from "./pages/GoogleAuthCallback";
 import RegisterStep2 from "./pages/RegisterStep2";
 import HouseholdOnboarding from "./pages/HouseholdOnboarding";
+import Products from "./components/products/Products";
 // import io from "socket.io-client";
 
 function App() {
@@ -120,6 +121,7 @@ function App() {
           <Route path="/users/:user" element={<User />} />
           <Route path="/users/:user/edit" element={<EditUser />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/products" element={<Products />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

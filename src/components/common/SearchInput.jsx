@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
+const SearchInput = ({ label, value, onChange, error, results, onSelect, placeholder }) => {
   return (
     <div className="w-full flex flex-col">
       <label htmlFor={label} className="mb-2 text-lg font-semibold">
@@ -14,7 +14,7 @@ const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`border-2 rounded-xl p-2 border-black40 bg-white focus:border-black focus:outline-none text-lg placeholder:text-black40 text-black w-full`}
-          placeholder={label}
+          placeholder={placeholder}
         />
         {results && value.length > 0 && (
           <div className="w-full absolute bg-white rounded-xl shadow-xl -mt-4 border-2 border-black border-t-0 rounded-t-none top-[100%] -mt-4 pt-2">
@@ -62,6 +62,7 @@ SearchInput.propTypes = {
   error: PropTypes.string,
   results: PropTypes.array,
   onSelect: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 
 export default SearchInput;
