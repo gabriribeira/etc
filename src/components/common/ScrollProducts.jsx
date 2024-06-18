@@ -4,10 +4,12 @@ import { BsPlusCircleFill } from "react-icons/bs";
 import { useGetProductsByCategoryQuery } from "../../app/api";
 
 const ScrollProducts = ({ label, type }) => {
-  const { data: products, error, isLoading } = useGetProductsByCategoryQuery(type);
+  const { data: response, error, isLoading } = useGetProductsByCategoryQuery(type);
+  
+  if (isLoading) return <div>Carregando...</div>;
+  if (error) return <div>Erro ao carregar os produtos</div>;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading products</div>;
+  const products = response?.data || [];
 
   return (
     <div className="flex flex-col bg-white m-auto p-auto">
@@ -16,7 +18,7 @@ const ScrollProducts = ({ label, type }) => {
       </label>
       <div className="flex overflow-x-scroll pb-10 hide-scroll-bar">
         <div className="flex flex-nowrap">
-          {products?.map((product, index) => (
+          {products.map((product, index) => (
             <div key={index} className="inline-block px-3">
               <div className="w-48 h-80 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out p-4">
                 <img src={product.img_url} alt={product.name} className="w-full h-32 object-cover mb-4" />
