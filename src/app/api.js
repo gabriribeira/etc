@@ -24,10 +24,10 @@ const api = createApi({
       }),
     }),
     updateUser: builder.mutation({
-      query: ({ id, ...data }) => ({
+      query: ({ id, formData }) => ({
         url: `/users/${id}`,
         method: "PUT",
-        body: data,
+        body: formData,
       }),
     }),
     checkAuth: builder.query({
@@ -215,6 +215,36 @@ const api = createApi({
         body: request,
       }),
     }),
+    addUserSpecifications: builder.mutation({
+      query: ({ userId, specifications }) => ({
+        url: `/users/${userId}/specifications`,
+        method: "POST",
+        body: { specifications },
+      }),
+    }),
+    getSpecifications: builder.query({
+      query: () => `/specifications`,
+    }),
+    getUserSpecifications: builder.query({
+      query: (userId) => `/users/${userId}/specifications`,
+    }),
+    updateHousehold: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/households/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+    }),
+    getHouseholdTags: builder.query({
+      query: (householdId) => `/households/${householdId}/tags`,
+    }),
+    updateHouseholdTags: builder.mutation({
+      query: ({ householdId, tags }) => ({
+        url: `/households/${householdId}/tags`,
+        method: "PUT",
+        body: { tags },
+      }),
+    }),
   }),
 });
 
@@ -257,5 +287,11 @@ export const {
   useAddHouseholdTagsMutation,
   useSearchHouseholdsQuery,
   useCreateJoinRequestMutation,
+  useAddUserSpecificationsMutation,
+  useGetSpecificationsQuery,
+  useGetUserSpecificationsQuery,
+  useUpdateHouseholdMutation,
+  useGetHouseholdTagsQuery,
+  useUpdateHouseholdTagsMutation,
 } = api;
 export default api;
