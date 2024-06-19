@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { SlArrowDown } from "react-icons/sl";
+import Image from "../../assets/imgs/etc/logo_dots.png";
 
 const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
   return (
@@ -17,7 +18,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
         <div className="py-16 flex flex-col items-center justify-center">
           <img
             //eslint-disable-next-line
-            src={household.img_url} // Update to use the URL from the API response
+            src={household.img_url ? household.img_url : Image}
             alt="Household Profile Picture"
             className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
             referrerPolicy="no-referrer"

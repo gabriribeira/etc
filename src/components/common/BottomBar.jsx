@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import { IoWalletOutline, IoWallet } from "react-icons/io5";
-import { TbUsers } from "react-icons/tb";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
 import { PiShoppingCartSimple, PiShoppingCartSimpleFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useGetHouseholdQuery } from "../../app/api";
+import Image from "../../assets/imgs/etc/logo_dots.png";
 
 const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
   const location = useLocation();
@@ -59,17 +59,13 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             >
               <div className="relative flex flex-col items-center">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  {authHousehold && authHousehold.img_url ? (
-                    <img
-                      //eslint-disable-next-line
-                      src={authHousehold.img_url}
-                      alt="Menu Household"
-                      className="w-9 h-9 rounded-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <TbUsers />
-                  )}
+                  <img
+                    //eslint-disable-next-line
+                    src={authHousehold?.img_url ? authHousehold?.img_url : Image}
+                    alt="Menu Household"
+                    className="w-9 h-9 rounded-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <p className="text-[12px] absolute bottom-[-28px]">Household</p>
               </div>
@@ -83,17 +79,13 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
             >
               <div className="relative flex flex-col items-center">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  {authHousehold ? (
-                    <img
-                      //eslint-disable-next-line
-                      src={authHousehold.img_url}
-                      alt="Menu Household"
-                      className="w-9 h-9 rounded-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <TbUsers />
-                  )}
+                  <img
+                    //eslint-disable-next-line
+                    src={authHousehold?.img_url ? authHousehold?.img_url : Image}
+                    alt="Menu Household"
+                    className="w-9 h-9 rounded-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <p className="text-[12px] absolute bottom-[-28px]">Household</p>
               </div>
