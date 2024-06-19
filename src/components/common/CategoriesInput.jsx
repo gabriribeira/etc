@@ -17,21 +17,28 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
   };
 
   const handleTags = (category) => {
-    if (categorySelected.find((item) => item.id === category.id)) {
-      const newCategory = categorySelected.filter((item) => item.id !== category.id);
+    const selectedCategories = Array.isArray(categorySelected) ? categorySelected : [];
+    if (selectedCategories.find((item) => item.id === category.id)) {
+      const newCategory = selectedCategories.filter((item) => item.id !== category.id);
       onChange(newCategory);
     } else {
-      onChange([...categorySelected, category]);
+      onChange([...selectedCategories, category]);
     }
   };
 
   const handleSpecifications = (spec) => {
-    if (categorySelected.find((item) => item.id === spec.id)) {
-      const newSpecifications = categorySelected.filter((item) => item.id !== spec.id);
+    const selectedSpecifications = Array.isArray(categorySelected) ? categorySelected : [];
+    if (selectedSpecifications.find((item) => item.id === spec.id)) {
+      const newSpecifications = selectedSpecifications.filter((item) => item.id !== spec.id);
       onChange(newSpecifications);
     } else {
-      onChange([...categorySelected, spec]);
+      onChange([...selectedSpecifications, spec]);
     }
+  };
+
+  const isCategorySelected = (id) => {
+    const selectedCategories = Array.isArray(categorySelected) ? categorySelected : [];
+    return selectedCategories.some((selected) => selected.id === id);
   };
 
   return (
@@ -43,7 +50,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
               {label}
             </label>
             <button
-              className="text-blue-500 "
+              className="text-blue-500"
               onClick={() => setShowAll(!showAll)}
             >
               {showAll ? "View Less" : "View All"}
@@ -68,7 +75,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
               category={spec}
               onChange={handleChange}
               filter={filter}
-              value={categorySelected.some((selected) => selected.id === spec.id)}
+              value={isCategorySelected(spec.id)}
               specificationsProps={specificationsProps}
             />
           )) :
@@ -78,7 +85,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
                 category={category}
                 onChange={handleChange}
                 filter={filter}
-                value={categorySelected.some((selected) => selected.id === category.id)}
+                value={isCategorySelected(category.id)}
               />
             ))}
         </div>
