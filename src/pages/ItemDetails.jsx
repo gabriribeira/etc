@@ -40,7 +40,7 @@ const ItemDetails = () => {
   const { data: item, isLoading, isError } = useGetItemQuery(itemId, { skip: itemId === "0" });
   const debouncedName = useDebounce(name, 500);
   const { data: recommendations } = useSearchProductsQuery(debouncedName, {
-    skip: !debouncedName || debouncedName.length < 3 || !showRecommendations,
+    skip: !debouncedName || debouncedName.length < 2 || !showRecommendations,
   });
 
   useEffect(() => {
@@ -116,15 +116,35 @@ const ItemDetails = () => {
       <main className="pt-32 mb-16 gap-x-5">
         <div className="flex justify-start px-5 gap-3 mb-5">
           <PhotoInput onChange={setPhoto} value={photo} />
-          <Input
-            label="Name *"
-            value={name}
-            placeholder="Name"
-            onChange={handleNameChange}
-            required
-            recommendations={showRecommendations ? recommendations : null}
-            recommendationsAction={selectProduct}
-          />
+          <div className="relative">
+            <Input
+              label="Name *"
+              value={name}
+              placeholder="Name"
+              onChange={handleNameChange}
+              required
+            />
+            {showRecommendations && recommendations && (
+              <div className="absolute bg-white border border-gray-200 shadow-lg w-full mt-1 z-10">
+                {recommendations.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex items-center justify-between p-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => selectProduct(product)}
+                  >
+                    <div className="flex items-center">
+                      <img src={product.img_url} alt={product.name} className="w-12 h-12 object-cover mr-2" />
+                      <div>
+                        <p className="font-medium">{product.name}</p>
+                        <p className="text-sm text-gray-500">{product.brand}</p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-col px-5 gap-y-3">
           <AmountInput
