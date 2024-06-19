@@ -301,7 +301,7 @@ const Widgets = () => {
       </div>
       {householdGoal && authHousehold ? (
         <Link
-          to={`/households/${authHousehold.id}`}
+          to={`/household`}
           className="flex flex-col bg-green bg-gradient-to-l shadow-lg from-green to-black90/40 rounded-2xl p-3 text-white relative"
         >
           <WidgetIcon icon={"goal"} />

@@ -1,37 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import UsersData from "../../data/users.json";
+import { useSelector } from "react-redux";
 
 const Expense = ({ expense }) => {
-  const user = UsersData.find((user) => user.id === expense.user_id);
-  const [authUser, setAuthUser] = useState(null);
+  const authUser = useSelector((state) => state.auth.user);
   const paid = expense.paid;
 
-  const getUserDisplayName = (user) => {
-    const nameParts = user.name.split(" ");
-    const firstName = nameParts[0];
-    const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
-    return `${firstName} ${lastNameInitial}.`;
-  };
-
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
-
-    const storedUser = getCookieValue("user");
-    if (storedUser) {
-      setAuthUser(storedUser);
-    }
-  }, []);
+  // const getUserDisplayName = (user) => {
+  //   const nameParts = user.name.split(" ");
+  //   const firstName = nameParts[0];
+  //   const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
+  //   return `${firstName} ${lastNameInitial}.`;
+  // };
 
   return (
     authUser && expense && (
@@ -45,17 +26,17 @@ const Expense = ({ expense }) => {
         >
           <div className={`flex justify-start w-full text-white`} id="1">
             <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1">
-              <img
+              {/* <img
                 //eslint-disable-next-line
                 src={require(`../../assets/data/users/${user.img}`)}
                 alt="User Profile Picture"
                 className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
-              />
+              /> */}
             </div>
             <div className="flex flex-col ml-2 grow">
               <h2 className="text-lg font-normal">{expense.title}</h2>
               <p className="font-light text-sm">
-                paid by <span className="font-semibold">{getUserDisplayName(user)}</span>
+                {/* paid by <span className="font-semibold">{getUserDisplayName(user)}</span> */}
               </p>
             </div>
             <div className="flex text-2xl font-semibold text-salmon">
@@ -64,17 +45,17 @@ const Expense = ({ expense }) => {
           </div>
           <div className="flex justify-start w-full" id="2">
             <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
-              {expense.users.length} member
-              <span className={expense.users.length > 1 ? "" : "hidden"}>s</span>
+              {expense.users?.length} member
+              <span className={expense.users?.length > 1 ? "" : "hidden"}>s</span>
             </p>
             <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit ml-2">
               {expense.category}
             </p>
-            {paid == false ? "" : 
-            <p className="font-semibold text-sm bg-salmon text-black py-1 px-5 rounded-full w-fit ml-2">
-              paid
-            </p>
-            }
+            {paid && (
+              <p className="font-semibold text-sm bg-salmon text-black py-1 px-5 rounded-full w-fit ml-2">
+                paid
+              </p>
+            )}
           </div>
         </div>
       </Link>

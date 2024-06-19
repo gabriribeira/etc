@@ -127,24 +127,20 @@ body {
 .menu-primary-enter {
   position: absolute;
   transform: translateY(110%);
-  margin-left: -1.25rem;
 }
 
 .menu-primary-enter-active {
   transform: translateY(0%);
   transition: all 500ms ease;
-  margin-left: -1.25rem;
 }
 
 .menu-primary-exit {
   position: absolute;
-  margin-left: -1.25rem;
 }
 
 .menu-primary-exit-active {
   transform: translateY(100%);
   transition: all 500ms ease;
-  margin-left: -1.25rem;
 }
 
 .ai-linear-text-gradient {
@@ -159,4 +155,13 @@ body {
     linear-gradient(to right, #1F4F80, #FF6F61) border-box;
     border: 4px solid transparent;
     opacity: var(--tw-bg-opacity);
+}
+
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
 }

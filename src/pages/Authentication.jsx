@@ -3,46 +3,43 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
-import UserData from "../data/users.json";
-import HouseholdsData from "../data/households.json";
 import Cookies from "js-cookie";
+import ThirdParty from "../components/auth/ThirParty";
+import { useLoginMutation } from "../app/api";
 
 const Authentication = () => {
-  const users = UserData;
-  const householdsData = HouseholdsData;
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememeberMe, setRememberMe] = useState(false);
+  //eslint-disable-next-line
+  const [login, { isLoading, isError, error }] = useLoginMutation();
 
-  const handleLogin = () => {
-    const user = users.find((user) => user.username === username);
-    if (user && user.password === password) {
-      const household = householdsData.find(
-        (household) => household.id === user.households[0]
-      );
-      console.log(household);
-      if (household) {
-        console.log(household);
-        console.log("Login successful");
-        Cookies.set("user", JSON.stringify(user), { path: "/" });
-        Cookies.set("household", JSON.stringify(household), { path: "/" });
-        setTimeout(() => {
-          navigate("/lists");
-        }, 1000);
-      }
-    } else {
-      console.log("Login failed");
+  const handleLogin = async () => {
+    try {
+      const userData = await login({
+        email,
+        password,
+      }).unwrap();
+
+      // Handle successful login
+      console.log('Login successful:', userData);
+      Cookies.set('user', JSON.stringify(userData), { path: '/' });
+      navigate('/lists');
+    } catch (error) {
+      // Handle login error
+      console.error('Login failed:', error);
     }
   };
 
   return (
     <div className="bg-black bg-gradient-to-br from-black to-white/30 flex flex-col min-h-screen justify-between">
-      <div className="flex justify-center items-center h-full min-h-[50dvh] shadow-[0px_-10px_30px_-20px_rgba(0,0,0,0.5)]">
+      <div className="flex justify-center items-center h-full min-h-[30dvh] shadow-[0px_-10px_30px_-20px_rgba(0,0,0,0.5)]">
         <img src={Logo} alt="Et Cetera Logo" className="w-[60%] shadow-2xl" />
       </div>
-      <form className="h-auto bg-white rounded-tl-[5rem] flex flex-col px-6 pt-6 gap-y-3 max-h-[50dvh]" aria-label="Enter Form">
-        <Input label="Username" value={username} onChange={setUsername} className="w-[200px] lg:w-[150px]" />
+      <form className="h-auto bg-white rounded-tl-[5rem] flex flex-col px-6 pt-6 gap-y-3 min-h-[60dvh]" aria-label="Enter Form">
+        <ThirdParty authentication={true} />
+        <Input label="Email" value={email} onChange={setEmail} className="w-[200px] lg:w-[150px]" />
         <div className="flex flex-col">
           <Input label="Password" value={password} onChange={setPassword} />
           <div className="flex items-center justify-between mt-2 text-sm font-light">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import BackButton from "./BackButton";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
@@ -12,8 +13,9 @@ import { RiNotification4Line } from "react-icons/ri";
 import blank_profile from "../../assets/data/users/blank-profile.webp";
 import { IoIosCheckboxOutline, IoIosCheckbox } from "react-icons/io";  // Import the checkbox icon
 
-const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnableArchive }) => {
-  const [user, setUser] = useState(null);
+const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList, isEnableArchive, setIsEnableArchive }) => {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const userProfileRegex = /\/(users)\/\d+/;
   const location = useLocation();
   const [showBackButton, setShowBackButton] = useState(false);
@@ -21,8 +23,16 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
   const [showFilterOverlay, setShowFilterOverlay] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
-  const [showListOptions, setShowListOptions] = useState(false); // State for list options overlay
+  const [showListOptions, setShowListOptions] = useState(false);
 
+  const handleBackClick = () => {
+    if (onBack) {
+      onBack();  // Call the onBack function if provided
+    } else {
+      navigate(-1);  // Default back behavior
+    }
+  };
+  
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
   };
@@ -36,7 +46,7 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
   };
 
   const handleShowListOptions = () => {
-    setShowListOptions(!showListOptions); // Toggle list options overlay
+    setShowListOptions(!showListOptions);
   };
 
   const setFilter = (newFilters) => {
@@ -56,23 +66,14 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
       setFilters(["Lists"]);
     } else if (/^\/lists\/\d+$/.test(location.pathname)) {
       setFilters(["State", "Products For", "Include", "Category"]);
+
     } else if (location.pathname === "/expenses") {
       setFilters(["Paid by", "Category"]);
     }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          setUser(JSON.parse(decodeURIComponent(value)));
-        }
+      else if (location.pathname === "/products"){
+        setFilters(["Order by", "Supermarket", "Category"]);
       }
-    };
-    getCookieValue("user");
-  }, []);
+  }, [location.pathname]);
 
   const isEditPage = () => {
     const editPageRegex = /\/(tasks|lists)\/\d+\/(new|edit)/;
@@ -99,7 +100,10 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
 
     const listPageRegex = /^\/lists\/\d+$/;
     const expensesPageRegex = /^\/expenses$/;
-    if (listPageRegex.test(location.pathname) || expensesPageRegex.test(location.pathname)) {
+    if (
+      listPageRegex.test(location.pathname) ||
+      expensesPageRegex.test(location.pathname)
+    ) {
       return true;
     }
 
@@ -116,10 +120,15 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
     const userPageRegex = /^\/users\/\d+$/;
   
     if (
+      
       isEditPage() ||
+     
       listPageRegex.test(location.pathname) ||
+     
       imagePageRegex.test(location.pathname) ||
-      editItemPageRegex.test(location.pathname) ||
+     
+      editItemPageRegex.test(location.pathname)
+     ||
       expenseDetailsPageRegex.test(location.pathname) ||
       editUserPageRegex.test(location.pathname) ||
       userPageRegex.test(location.pathname) ||
@@ -197,9 +206,9 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
           ) : (
             user &&
             !userProfileRegex.test(location.pathname) &&
-            location.pathname !== `/users/${user.id}` ? (
+            location.pathname !== `/profile` ? (
               <Link
-                to={`/users/${user.id}`}
+                to={`/profile`}
                 className="flex items-center gap-x-3 z-[101]"
               >
                 <img
@@ -283,15 +292,28 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
               </>
             )}
 
-            {!location.pathname.startsWith("/expenses") && shouldShowFilterButton() && (
-              <button
-                type="button"
-                onClick={handleShowFilter}
-                className="text-2xl z-[101] text-black"
-              >
-                <IoFilterCircleOutline size={35} />
-              </button>
+            {location.pathname === "/products" && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleShowFilter}
+                  className="text-3xl z-[101] text-black"
+                >
+                  <IoFilterCircleOutline size={35} />
+                </button>
+              </>
             )}
+
+            {!location.pathname.startsWith("/expenses") &&
+              shouldShowFilterButton() && (
+                <button
+                  type="button"
+                  onClick={handleShowFilter}
+                  className="text-2xl z-[101] text-black"
+                >
+                  <IoFilterCircleOutline size={35} />
+                </button>
+              )}
 
             {shouldShowEditListButton() && (
               <button
@@ -309,7 +331,7 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
           in={showSettings}
           timeout={500}
           classNames="menu-primary"
-          className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
+          className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl"
           unmountOnExit
         >
           <Overlay
@@ -332,11 +354,11 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
             options={[
               `${listClosed ? "Unlock" : "Lock"} shopping list`,
               "Edit shopping list",
-              "Delete shopping list"
+              "Delete shopping list",
             ]}
-            links={["/lists", "/lists", "/lists"]}
+            links={[null, null, null]}
             hideOverlay={() => setShowEditList(false)}
-            onClicks={[() => {}, () => {}, () => {}]}
+            onClicks={[() => {listClosed ? unlockList() : lockList()}, () => {}, () => {}]}
           />
         </CSSTransition>
 
@@ -363,7 +385,7 @@ const TopBar = ({ description, listTitle, listClosed, isEnableArchive, setIsEnab
             listTitle && "w-full flex items-center relative"
           }`}
         >
-          <BackButton />
+          <BackButton onClick={handleBackClick} />
           {listTitle && (
             <div className="absolute left-0 top-0 flex items-center w-full h-full justify-center">
               <p className="text-black text-base font-semibold text-xl">
@@ -389,11 +411,14 @@ TopBar.defaultProps = {
 TopBar.propTypes = {
   description: PropTypes.string,
   listTitle: PropTypes.string,
-  listClosed: PropTypes.bool.isRequired,
   isEnableArchive: PropTypes.bool,
   setIsEnableArchive: PropTypes.func,
   setIsArchived: PropTypes.func,
   isArchived: PropTypes.arrayOf(PropTypes.object),
+  listClosed: PropTypes.bool,
+  onBack: PropTypes.func,
+  lockList: PropTypes.func,
+  unlockList: PropTypes.func,
 };
 
 export default TopBar;

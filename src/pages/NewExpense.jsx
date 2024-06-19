@@ -4,66 +4,52 @@ import TopBar from "../components/common/TopBar";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import MembersInput from "../components/common/MembersInput";
-import UsersData from "../data/users.json";
-import ExpensesData from "../data/expenses.json";
-import { useNavigate } from "react-router-dom";
 import CategoriesInput from "../components/common/CategoriesInput";
+import { useNavigate } from "react-router-dom";
+import { useCreateExpenseMutation } from "../app/api";
+import { useSelector } from "react-redux";
 
 const NewExpense = () => {
-  const usersData = UsersData;
-  const expensesData = ExpensesData;
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
+  const [details, setDetails] = useState("");
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
-
-  //eslint-disable-next-line
-  const [paidBy, setPaidBy] = useState("");
   const [members, setMembers] = useState([]);
-  const [authUser, setAuthUser] = useState(null);
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
+  const authUser = useSelector((state) => state.auth.user);
+  const [createExpense, { isLoading }] = useCreateExpenseMutation();
 
-    const storedUser = getCookieValue("user");
-    if (storedUser) {
-      setAuthUser(storedUser);
-      setPaidBy(storedUser.id);
-    }
-  }, []);
   useEffect(() => {
-    if (usersData) {
-      setMembers(
-        usersData
-          .filter((user) => user.households.includes(1))
-          .map((user) => user.id)
-      );
+    if (authUser) {
+      setMembers([authUser.id]);
     }
-  }, [usersData]);
-  const handleCreateExpense = () => {
-    const newExpense = {
-      id: expensesData.length + 1,
-      title,
-      value: Number(value),
-      date,
-      user_id: authUser.id,
-      users: members,
-      paid: false,
-      category: category,
-      household_id: 1,
-    };
-    expensesData.push(newExpense);
-    navigate("/expenses");
+  }, [authUser]);
+
+  useEffect(() => {
+    console.log(members);
+  }, [members]);
+
+  const handleCreateExpense = async () => {
+    console.log(date);
+    try {
+      const newExpense = {
+        title,
+        details,
+        value: Number(value),
+        date,
+        is_paid: false,
+        user_id: authUser.id,
+        users: members,
+        category,
+      };
+      await createExpense(newExpense).unwrap();
+      navigate("/expenses");
+    } catch (error) {
+      console.error("Error creating expense:", error);
+    }
   };
+
   return (
     authUser && (
       <div className="bg-white">
@@ -72,11 +58,10 @@ const NewExpense = () => {
           <form className="flex flex-col px-5 gap-y-4">
             <div className="flex flex-col w-full">
               <h2 className="mb-2 text-lg font-semibold">Paid By</h2>
-              <div className="border border-black80 rounded-2xl p-2 flex flex items-center">
+              <div className="border border-black80 rounded-2xl p-2 flex items-center">
                 <div className="w-[35px] h-[35px] rounded-full flex items-center justify-center relative shrink-0">
                   <img
-                    //eslint-disable-next-line
-                    src={require(`../assets/data/users/${authUser.img}`)}
+                    src={authUser.img_url}
                     alt="User Profile Picture"
                     className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                   />
@@ -86,8 +71,9 @@ const NewExpense = () => {
             </div>
 
             <Input label="Title" value={title} onChange={setTitle} />
+            <Input label="Details" value={details} onChange={setDetails} />
 
-            <div className="flex w-full gap-x-2 ">
+            <div className="flex w-full gap-x-2">
               <div className="w-50">
                 <Input label="Value" value={value} onChange={setValue} />
               </div>
@@ -100,6 +86,7 @@ const NewExpense = () => {
               onChange={setMembers}
               label={"Edit members"}
             />
+
             <CategoriesInput
               label={"Category"}
               onChange={setCategory}
@@ -112,6 +99,7 @@ const NewExpense = () => {
               label="Create Expense"
               action={handleCreateExpense}
               className="btn btn-primary"
+              isLoading={isLoading}
             />
           </form>
         </main>
@@ -120,4 +108,5 @@ const NewExpense = () => {
     )
   );
 };
+
 export default NewExpense;

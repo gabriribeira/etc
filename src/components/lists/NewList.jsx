@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Input from "../common/Input";
 import AiStarsImg from "../../assets/imgs/etc/ai-stars.svg";
 import ToggleSwitch from "../common/ToggleSwitch";
 import Button from "../common/Button";
 import MembersInput from "../common/MembersInput";
-import ListsData from "../../data/lists.json";
 import TopBar from "../common/TopBar";
 import BottomBar from "../common/BottomBar";
+import {
+  useCreateListMutation,
+  useCreateListFromRecipeMutation,
+  useCreateListFromEventMutation,
+} from "../../app/api";
+import { useSelector } from "react-redux";
+import Loader from "../common/Loader";
 
 const NewList = () => {
-  const listsData = ListsData;
   const location = useLocation();
-  const initialAiToggle = location.state && location.state.aiToggle ? location.state.aiToggle : false;
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const initialAiToggle =
+    location.state && location.state.aiToggle ? location.state.aiToggle : false;
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -20,6 +28,12 @@ const NewList = () => {
   const [recipeSelected, setRecipeSelected] = useState(false);
   const [eventSelected, setEventSelected] = useState(false);
   const [members, setMembers] = useState([]);
+
+  const [createList, { isLoading: isLoadingCreate }] = useCreateListMutation();
+  const [createListFromRecipe, { isLoading: isLoadingRecipe }] =
+    useCreateListFromRecipeMutation();
+  const [createListFromEvent, { isLoading: isLoadingEvent }] =
+    useCreateListFromEventMutation();
 
   const handleRecipeButton = () => {
     setEventSelected(false);
@@ -33,20 +47,29 @@ const NewList = () => {
     setDescription("");
   };
 
-  const handleNewList = () => {
-    const newListJson = {
-      id: listsData.length + 1,
-      household_id: 1,
-      title: name,
-      description: description,
-      members: members,
-      closed: false,
-      finished: false,
-    };
+  const handleNewList = async () => {
+    try {
+      const newListData = {
+        name: name,
+        description: description,
+        user_id: user.id,
+      };
 
-    console.log(newListJson);
-    setName("");
-    setDescription("");
+      if (aiToggle) {
+        if (recipeSelected) {
+          await createListFromRecipe(newListData).unwrap();
+        } else if (eventSelected) {
+          await createListFromEvent(newListData).unwrap();
+        }
+      } else {
+        await createList(newListData).unwrap();
+      }
+
+      navigate("/lists");
+    } catch (error) {
+      console.error("Error creating list:", error);
+      // Logic to handle errors when creating the list
+    }
   };
 
   useEffect(() => {
@@ -58,6 +81,7 @@ const NewList = () => {
   return (
     <div className="bg-white min-h-screen">
       <TopBar />
+      {isLoadingRecipe  && <Loader />}
       <main className="pt-32">
         <div className="flex flex-col px-5 fade-in">
           <div className="flex flex-col w-full gap-y-3">
@@ -93,7 +117,10 @@ const NewList = () => {
                     Generate List With AI
                   </p>
                 </div>
-                <ToggleSwitch checked={aiToggle} onChange={() => setAiToggle(!aiToggle)} />
+                <ToggleSwitch
+                  checked={aiToggle}
+                  onChange={() => setAiToggle(!aiToggle)}
+                />
               </div>
 
               {aiToggle && (
@@ -126,14 +153,22 @@ const NewList = () => {
                   <br />
                   {recipeSelected && (
                     <>
-                      <p className="text-[16px]">What recipe do you want to generate?</p>
-                      <p className="text-[14px] my-2">Your recipe can be found in the list&apos;s description.</p>
+                      <p className="text-[16px]">
+                        What recipe do you want to generate?
+                      </p>
+                      <p className="text-[14px] my-2">
+                        Your recipe can be found in the list&apos;s description.
+                      </p>
                     </>
                   )}
                   {eventSelected && (
                     <>
-                      <p className="text-[16px]">What event do you need help with?</p>
-                      <p className="text-[14px] my-2">I will help you create a list for the event you need.</p>
+                      <p className="text-[16px]">
+                        What event do you need help with?
+                      </p>
+                      <p className="text-[14px] my-2">
+                        I will help you create a list for the event you need.
+                      </p>
                     </>
                   )}
                   {(recipeSelected || eventSelected) && (
@@ -155,6 +190,9 @@ const NewList = () => {
                   label="Done"
                   action={handleNewList}
                   turnDisabled={!name || (name && aiToggle && !description)}
+                  isLoading={
+                    isLoadingCreate || isLoadingRecipe || isLoadingEvent
+                  }
                 />
               </div>
             </form>

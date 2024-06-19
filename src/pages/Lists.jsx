@@ -8,11 +8,13 @@ import { BsStars } from 'react-icons/bs';
 import { PiArchive } from 'react-icons/pi';
 import { useLocation } from 'react-router-dom';
 import ListArchive from './ListArchive';
+import { useGetHouseholdListsQuery } from '../app/api';
 //import Filter from "../components/common/Filter";
 
 const Lists = () => {
+  const { data: lists, error, isLoading } = useGetHouseholdListsQuery();
   const listsData = ListsData;
-  const [lists, setLists] = useState(null);
+  //const [lists, setLists] = useState(null);
   const [authHousehold, setAuthHousehold] = useState(null);
   const [isEnableArchive, setIsEnableArchive] = useState(false);
   const [archiveCounter, setArchiveCounter] = useState(0);
@@ -37,19 +39,19 @@ const Lists = () => {
     }
   }, []);
   useEffect(() => {
-    if (listsData && authHousehold) {
-      const householdLists = listsData.filter(
-        (list) => list.household_id === authHousehold.id,
-      );
-      setLists(householdLists);
-    }
+    // if (listsData && authHousehold) {
+    //   const householdLists = listsData.filter(
+    //     (list) => list.household_id === authHousehold.id,
+    //   );
+    //   setLists(householdLists);
+    // }
   }, [listsData, authHousehold]);
 
   useEffect(() => {
     if (!isEnableArchive && !location.pathname.includes('lists')) {
       setArchiveCounter(0);
-      setIsArchived(prevState => ({
-       ...Object.keys(prevState).reduce((acc, key) => {
+      setIsArchived((prevState) => ({
+        ...Object.keys(prevState).reduce((acc, key) => {
           acc[key] = false;
           return acc;
         }, {}),
@@ -58,16 +60,16 @@ const Lists = () => {
   }, [location.pathname, isEnableArchive]);
 
   const handleCheckboxChange = (itemId, newCheckedStatus, item) => {
-    const itemIndex = isArchived?.findIndex(i => i?.id === itemId);
-  
+    const itemIndex = isArchived?.findIndex((i) => i?.id === itemId);
+
     if (newCheckedStatus) {
       if (itemIndex === -1) {
-        setArchiveCounter(prevCounter => prevCounter + 1);
-        setIsArchived(prevState => [...prevState, item]);
+        setArchiveCounter((prevCounter) => prevCounter + 1);
+        setIsArchived((prevState) => [...prevState, item]);
       }
     } else {
-      if (itemIndex!== -1) {
-        setArchiveCounter(prevCounter => prevCounter - 1);
+      if (itemIndex !== -1) {
+        setArchiveCounter((prevCounter) => prevCounter - 1);
         const updatedArchived = [...isArchived];
         updatedArchived.splice(itemIndex, 1);
         setIsArchived(updatedArchived);
@@ -142,18 +144,36 @@ const Lists = () => {
               <ListArchive isArchived={isArchived} />
             )}
 
-            {lists && location.pathname == '/lists' &&
-              lists.length > 0 &&
+            {isLoading && <p>Loading lists...</p>}
+            {error && <p>Error fetching lists: {error.message}</p>}
+            {lists && lists.length > 0 && location.pathname == '/lists' ? (
               lists.map((list, index) => (
-                <ShoppingList list={list} key={index} archiveCounter={archiveCounter} setArchiveCounter={setArchiveCounter} isEnableArchive={isEnableArchive} isArchived={isArchived} handleCheckboxChange={handleCheckboxChange} />
-              ))}
-
+                <ShoppingList
+                  list={list}
+                  key={index}
+                  archiveCounter={archiveCounter}
+                  setArchiveCounter={setArchiveCounter}
+                  isEnableArchive={isEnableArchive}
+                  isArchived={isArchived}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
+              ))
+            ) : (
+              <p>No lists found for this household.</p>
+            )}
           </div>
         </div>
       </main>
 
-      <BottomBar isEnableArchive={isEnableArchive} setIsEnableArchive={setIsEnableArchive} isArchived={isArchived} archiveCounter={archiveCounter} setIsArchived={setIsArchived} />
+      <BottomBar
+        isEnableArchive={isEnableArchive}
+        setIsEnableArchive={setIsEnableArchive}
+        isArchived={isArchived}
+        archiveCounter={archiveCounter}
+        setIsArchived={setIsArchived}
+      />
     </div>
   );
 };
+
 export default Lists;

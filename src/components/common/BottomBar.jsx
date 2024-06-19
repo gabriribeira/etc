@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
-import { IoWalletOutline, IoWallet } from "react-icons/io5";
+import { IoWalletOutline, IoWallet, IoList } from "react-icons/io5";
+import { BiSolidShoppingBag, BiShoppingBag } from "react-icons/bi";
 import { TbUsers } from "react-icons/tb";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
-import { PiShoppingCartSimple, PiShoppingCartSimpleFill } from "react-icons/pi";
+import { PiListBulletsBold } from "react-icons/pi";
 
 const BottomBar = ({ changeHousehold, openOverlayFromParent, isEnableArchive, setIsEnableArchive, archiveCounter, isArchived, setIsArchived }) => {
   const location = useLocation();
@@ -74,8 +75,8 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent, isEnableArchive, se
 
           {changeHousehold ? (
             <button
-              className={`flex flex-col items-center ${
-                location.pathname === `/households/${authHousehold?.id}` &&
+              className={`flex flex-col items-center leading-5 ${
+                location.pathname === `/household` &&
                 "text-black"
               }`}
               onClick={() => setOverlay(true)}
@@ -100,14 +101,14 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent, isEnableArchive, se
             </button>
           ) : (
             <Link
-              to={`/households/${authHousehold?.id}`}
-              className={`flex flex-col items-center ${
-                location.pathname === `/households/${authHousehold?.id}` &&
+              to={`/household`}
+              className={`flex flex-col items-center leading-5 ${
+                location.pathname === `/household` &&
                 "text-black"
               }`}
             >
               <div className="relative flex flex-col items-center">
-                <div className="w-9 h-9 flex items-center justify-center">
+                <div className="w-8 h-8 flex items-center justify-center">
                   {authHousehold ? (
                     <img
                       //eslint-disable-next-line
@@ -115,7 +116,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent, isEnableArchive, se
                         `../../assets/data/households/${authHousehold.img}`
                       )}
                       alt="Menu Household"
-                      className="w-9 h-9 rounded-full object-cover"
+                      className="w-8 h-8 rounded-full object-cover"
                     />
                   ) : (
                     <TbUsers />
@@ -133,9 +134,22 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent, isEnableArchive, se
           >
             <div className="relative flex flex-col items-center">
               <div className="w-9 h-9 flex items-center justify-center">
-                {location.pathname.startsWith("/lists") ? <PiShoppingCartSimpleFill /> : <PiShoppingCartSimple />}
+                {location.pathname.startsWith("/lists") ? <PiListBulletsBold /> : <IoList />}
               </div>
               <p className="text-[12px] absolute bottom-[-28px]">Lists</p>
+            </div>
+          </Link>
+          <Link
+            to="/products"
+            className={`flex flex-col items-center ${
+              location.pathname === "/products" && "text-black"
+            }`}
+          >
+            <div className="relative flex flex-col items-center">
+              <div className="w-9 h-9 flex items-center justify-center">
+                {location.pathname.startsWith("/products") ? <BiSolidShoppingBag /> : <BiShoppingBag />}
+              </div>
+              <p className="text-[12px] absolute bottom-[-28px]">Products</p>
             </div>
           </Link>
         </div>

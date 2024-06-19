@@ -7,7 +7,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.6.5",
+    "axios": "^1.6.8",
+    "connect-mongo": "^5.1.0",
     "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
@@ -20,6 +21,7 @@
     "react-scripts": "5.0.1",
     "react-swipeable": "^7.0.1",
     "react-transition-group": "^4.4.5",
+    "socket.io-client": "^4.7.5",
     "sort-by": "^1.2.0",
     "web-vitals": "^2.1.4"
   },

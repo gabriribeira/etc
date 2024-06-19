@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import ItemsData from "../../data/items.json";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import Overlay from "../common/Overlay";
@@ -9,8 +8,8 @@ import { FiLock } from "react-icons/fi";
 import { FiUnlock } from "react-icons/fi";
 
 const ShoppingList = ({ list, isEnableArchive, isArchived, handleCheckboxChange }) => {
-  const itemsData = ItemsData;
-  const [items, setItems] = useState([]);
+  //const itemsData = ItemsData;
+  //const [items, setItems] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showReopenConfirmation, setShowReopenConfirmation] = useState(false);
@@ -38,10 +37,10 @@ const ShoppingList = ({ list, isEnableArchive, isArchived, handleCheckboxChange 
   };
 
   useEffect(() => {
-    if (list) {
-      setItems(itemsData.filter((item) => item.list_id === list.id));
-      console.log(list);
-    }
+    // if (list) {
+    //   setItems(itemsData.filter((item) => item.list_id === list.id));
+    //   console.log(list);
+    // }
   }, [list]);
   return (
     <>
@@ -67,7 +66,7 @@ const ShoppingList = ({ list, isEnableArchive, isArchived, handleCheckboxChange 
           </div>
           <div className="flex items-center w-full justify-start gap-x-3">
             <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit">
-              {items.length} products
+              {/* {items.length} products */}
             </p>
             {list.closed && (
               <p className="text-sm font-semibold bg-salmon text-black border-salmon border-2 py-1 px-5 rounded-full w-fit">
