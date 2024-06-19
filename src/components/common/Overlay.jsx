@@ -88,11 +88,13 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
                   {option === "Delete shopping list" && <HiOutlineTrash />}
                   {option === "Delete item" && <HiOutlineTrash />}
                   {option === "Reopen shopping list" && <FiUnlock />}
+                  
                 </div>
                 {option}
                 <div className="absolute right-3">
                   <SlArrowRight />
                 </div>
+                
               </Link>
             ) : option !== "Logout" ? (
               <button

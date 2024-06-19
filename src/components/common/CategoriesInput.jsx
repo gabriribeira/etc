@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Category from "./Category";
 import { useGetTagsQuery } from "../../app/api";
 
 const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
   const { data: categories } = useGetTagsQuery();
+  const [showAll, setShowAll] = useState(false);
 
   const handleChange = (category) => {
     if (categorySelected.includes(category)) {
@@ -23,9 +24,17 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
     categories && (
       <div className="w-full flex flex-col">
         {label && (
-          <label htmlFor={label} className="mb-2 text-lg font-medium">
-            {label}
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label htmlFor={label} className="text-lg font-medium">
+              {label}
+            </label>
+            <button
+              className="text-blue-500 "
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? "View Less" : "View All"}
+            </button>
+          </div>
         )}
         <div className="flex flex-wrap gap-2 w-full">
           {filter && (
@@ -39,7 +48,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
               </button>
             </>
           )}
-          {categories.map((category, index) => (
+          {categories.slice(0, showAll ? categories.length : 3).map((category, index) => (
             <Category
               key={index}
               category={category}
@@ -57,7 +66,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   filter: PropTypes.bool,
 };
 
