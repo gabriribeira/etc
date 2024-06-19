@@ -156,3 +156,12 @@ body {
     border: 4px solid transparent;
     opacity: var(--tw-bg-opacity);
 }
+
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}

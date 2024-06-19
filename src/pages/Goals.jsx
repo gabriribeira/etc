@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import React, { useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import GoalsData from "../data/goals.json";
 import Button from "../components/common/Button";
+import ProgressBar from "../components/common/ProgressBar";
+import { useNavigate } from 'react-router-dom';
 import ProgressBar from "../components/common/ProgressBar";
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +49,7 @@ const Goals = () => {
   const progress = (selectedTags.length / totalTags) * 100;
 
   return (
+    <div className="relative bg-white min-h-screen flex flex-col">
     <div className="relative bg-white min-h-screen flex flex-col">
       <TopBar />
 
@@ -153,5 +157,6 @@ const Goals = () => {
     </div>
   );
 };
+
 
 export default Goals;

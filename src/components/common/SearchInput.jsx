@@ -1,23 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { CiSearch } from "react-icons/ci";
 
-const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
+const SearchInput = ({ label, value, onChange, error, results, onSelect, placeholder }) => {
   return (
     <div className="w-full flex flex-col">
       <label htmlFor={label} className="mb-2 text-lg font-semibold">
         {label}
       </label>
-      <div className="flex relative w-full items-center relative">
+      <div className="flex relative w-full items-center">
         <input
           name={label}
           id={label}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`border-2 rounded-xl p-2 border-black40 bg-white focus:border-black focus:outline-none text-lg placeholder:text-black40 text-black w-full`}
-          placeholder={label}
+          className={`border-2 rounded-xl p-2 border-black40 bg-white focus:border-black focus:outline-none text-lg placeholder:text-black40 text-black w-full pr-10`}
+          placeholder={placeholder}
         />
+        <CiSearch className="absolute right-3 text-2xl text-black40" />
         {results && value.length > 0 && (
-          <div className="w-full absolute bg-white rounded-xl shadow-xl -mt-4 border-2 border-black border-t-0 rounded-t-none top-[100%] -mt-4 pt-2">
+          <div className="w-full absolute bg-white rounded-xl shadow-xl mt-2 border-2 border-black border-t-0 rounded-t-none top-[100%] pt-2 z-10">
             {results &&
               results.map(
                 (result, index) =>
@@ -34,7 +36,7 @@ const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
                         <img
                           //eslint-disable-next-line
                           src={result.img_url}
-                          alt="Household Profile Picture"
+                          alt="Result"
                           className="w-[20px] h-[20px] rounded-full"
                           referrerPolicy="no-referrer"
                         />
@@ -63,6 +65,7 @@ SearchInput.propTypes = {
   error: PropTypes.string,
   results: PropTypes.array,
   onSelect: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 
 export default SearchInput;

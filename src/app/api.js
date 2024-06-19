@@ -195,9 +195,11 @@ const api = createApi({
     searchProducts: builder.query({
       query: (name) => `/products/search?name=${name}`,
     }),
+
     getTags: builder.query({
       query: () => `/tags`,
     }),
+
     addHouseholdTags: builder.mutation({
       query: ({ householdId, tags }) => ({
         url: `/households/${householdId}/tags`,
@@ -205,6 +207,11 @@ const api = createApi({
         body: { tags },
       }),
     }),
+
+    getProductsByCategory: builder.query({
+      query: (categoryId) => `/products/category/${categoryId}`,
+    }),
+
     searchHouseholds: builder.query({
       query: (query) => `/households/search?query=${query}`,
     }),
@@ -283,6 +290,7 @@ export const {
   useGetExpensesQuery,
   useGetExpenseQuery,
   useSearchProductsQuery,
+  useGetProductsByCategoryQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
   useSearchHouseholdsQuery,

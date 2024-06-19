@@ -60,9 +60,13 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       setFilters(["Lists"]);
     } else if (/^\/lists\/\d+$/.test(location.pathname)) {
       setFilters(["State", "Products For", "Include", "Category"]);
+
     } else if (location.pathname === "/expenses") {
       setFilters(["Paid by", "Category"]);
     }
+      else if (location.pathname === "/products"){
+        setFilters(["Order by", "Supermarket", "Category"]);
+      }
   }, [location.pathname]);
 
   const isEditPage = () => {
@@ -259,6 +263,18 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
                   <NewButton path={`/lists/new`} aria="New List" />
                 </button>
 
+                <button
+                  type="button"
+                  onClick={handleShowFilter}
+                  className="text-3xl z-[101] text-black"
+                >
+                  <IoFilterCircleOutline size={35} />
+                </button>
+              </>
+            )}
+
+            {location.pathname === "/products" && (
+              <>
                 <button
                   type="button"
                   onClick={handleShowFilter}

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Category from "./Category";
 import { useGetTagsQuery, useGetSpecificationsQuery } from "../../app/api";
 
 const CategoriesInput = ({ label, categorySelected, onChange, filter, specificationsProps }) => {
   const { data: categories } = useGetTagsQuery();
+  const [showAll, setShowAll] = useState(false);
   const { data: specifications } = useGetSpecificationsQuery();
 
   const handleChange = (category) => {
@@ -37,9 +38,17 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
     categories && specifications && (
       <div className="w-full flex flex-col">
         {label && (
-          <label htmlFor={label} className="mb-2 text-lg font-medium">
-            {label}
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label htmlFor={label} className="text-lg font-medium">
+              {label}
+            </label>
+            <button
+              className="text-blue-500 "
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? "View Less" : "View All"}
+            </button>
+          </div>
         )}
         <div className="flex flex-wrap gap-2 w-full">
           {filter && (
@@ -53,7 +62,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
               </button>
             </>
           )}
-          {specificationsProps ? specifications.map((spec) => (
+          {specificationsProps ? specifications.slice(0, showAll ? categories.length : 3).map((spec) => (
             <Category
               key={spec.id}
               category={spec}
@@ -81,7 +90,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.array,
+  categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   filter: PropTypes.bool,
   specificationsProps: PropTypes.bool,
 };
