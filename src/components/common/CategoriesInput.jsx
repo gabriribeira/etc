@@ -62,7 +62,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
               </button>
             </>
           )}
-          {specificationsProps ? specifications.slice(0, showAll ? categories.length : 3).map((spec) => (
+          {specificationsProps ? specifications.map((spec) => (
             <Category
               key={spec.id}
               category={spec}
@@ -72,7 +72,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
               specificationsProps={specificationsProps}
             />
           )) :
-            categories.map((category) => (
+            categories.slice(0, showAll ? categories.length : 3).map((category) => (
               <Category
                 key={category.id}
                 category={category}
