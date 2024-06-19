@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api",
-    //baseUrl: "https://etc-app.com/api",
+    //baseUrl: "http://localhost:3001/api",
+    baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -195,7 +195,7 @@ const api = createApi({
     searchProducts: builder.query({
       query: (name) => `/products/search?name=${name}`,
     }),
-    
+
     getTags: builder.query({
       query: () => `/tags`,
     }),
