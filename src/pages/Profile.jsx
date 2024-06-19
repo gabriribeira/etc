@@ -4,14 +4,12 @@ import TopBar from "../components/common/TopBar";
 import { RxDotsVertical } from "react-icons/rx";
 import { useGetUserHouseholdsQuery } from "../app/api";
 import { useSelector } from "react-redux";
-import DefaultProfilePicture from "../assets/data/users/leo.webp";
+import Image from "../assets/imgs/etc/logo_dots.png";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
-  console.log("User:",user);
   const [imageUrl, setImageUrl] = useState(user.img_url);
-  console.log(user);
   const {
     data: households,
     isLoading,
@@ -19,7 +17,6 @@ const Profile = () => {
   } = useGetUserHouseholdsQuery(user.id);
 
   useEffect(() => {
-    console.log("Image:", user.img_url);
     if (user.img_url) {
       setImageUrl(user.img_url);
     }
@@ -76,11 +73,8 @@ const Profile = () => {
                     >
                       <div className="flex items-center gap-x-3">
                         <img
-                          src={household.img_url}
+                          src={household.img_url ? household.img_url : Image}
                           alt="Household Profile Picture"
-                          onError={(e) =>
-                            (e.currentTarget.src = DefaultProfilePicture)
-                          }
                           className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
                           referrerPolicy="no-referrer"
                         />
