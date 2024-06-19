@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import React, { useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import GoalsData from "../data/goals.json";
 import Button from "../components/common/Button";
-import ProgressBar from "../components/common/ProgressBar";
-import { useNavigate } from 'react-router-dom';
 import ProgressBar from "../components/common/ProgressBar";
 import { useNavigate } from 'react-router-dom';
 
@@ -139,11 +136,7 @@ const Goals = () => {
                       </div>
                     </button>
                   ))}
-
               </div>
-
-
-
               <div className="w-full flex flex-col items-end gap-y-3">
                 <Button label="Select Goal" action={handleSelectGoal} />
                 <a href="/" className="text-base text-black60 font-medium">

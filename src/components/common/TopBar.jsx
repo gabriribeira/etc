@@ -10,7 +10,6 @@ import FilterOverlay from "./FilterOverlay";
 import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
-import blank_profile from "../../assets/data/users/blank-profile.webp";
 import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
 
 const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList }) => {
