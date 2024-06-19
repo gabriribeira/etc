@@ -33,6 +33,7 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
             src={authHousehold.img_url}
             alt="Authenticated User Profile Picture"
             className="w-[60px] h-[60px] rounded-full object-cover object-center left-0 top-0"
+            referrerPolicy="no-referrer"
           />
           <h1 className="text-xl font-semibold text-black">
             {authHousehold.name}
@@ -57,6 +58,7 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
                 src={member.img_url}
                 alt="Authenticated User Profile Picture"
                 className="w-[50px] h-[50px] rounded-full object-cover object-center left-0 top-0"
+                referrerPolicy="no-referrer"
               />
               <h2 className="font-medium text-base">
                 {member.name.split(" ")[0]}

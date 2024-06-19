@@ -101,6 +101,7 @@ const SustainableGoal = () => {
             src={require(`../../assets/data/goals/${goal.goal.img}`)}
             alt="Goal Preview Picture"
             className="w-full object-cover"
+            referrerPolicy="no-referrer"
           />
           <div className="flex flex-col">
             <h1 className="font-medium text-2xl text-black">

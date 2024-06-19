@@ -3,37 +3,32 @@ import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import { IoWalletOutline, IoWallet, IoList } from "react-icons/io5";
 import { BiSolidShoppingBag, BiShoppingBag } from "react-icons/bi";
-import { TbUsers } from "react-icons/tb";
 import ChangeHouseholdOverlay from "./ChangeHouseholdOverlay";
 import { PiListBulletsBold } from "react-icons/pi";
+import { useSelector } from "react-redux";
+import { useGetHouseholdQuery } from "../../app/api";
+import Image from "../../assets/imgs/etc/logo_dots.png";
 
 const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
   const location = useLocation();
+  const householdId = useSelector((state) => state.auth.currentHousehold);
   const [authHousehold, setAuthHousehold] = useState(null);
   const [openOverlay, setOverlay] = useState(false);
 
-  useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
-    const storedHousehold = getCookieValue("household");
-    if (storedHousehold) {
-      setAuthHousehold(storedHousehold);
-    }
-  }, []);
+  const { data: household } = useGetHouseholdQuery(householdId);
 
   useEffect(() => {
     if (openOverlayFromParent) {
       setOverlay(true);
     }
   }, [openOverlayFromParent]);
+
+  useEffect(() => {
+    if (household) {
+      setAuthHousehold(household.data);
+    }
+  }
+    , [household]);
 
   return (
     <>
@@ -45,9 +40,8 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
         <div className="fixed bottom-0 pb-5 left-0 w-screen bg-white flex items-center justify-around text-black px-5 pt-1 h-[80px] text-3xl z-[90]">
           <Link
             to="/expenses"
-            className={`flex flex-col items-center ${
-              location.pathname === "/expenses" && "text-black"
-            }`}
+            className={`flex flex-col items-center ${location.pathname === "/expenses" && "text-black"
+              }`}
           >
             <div className="relative flex flex-col items-center">
               <div className="w-9 h-9 flex items-center justify-center">
@@ -59,26 +53,20 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
 
           {changeHousehold ? (
             <button
-              className={`flex flex-col items-center leading-5 ${
-                location.pathname === `/household` &&
+              className={`flex flex-col items-center leading-5 ${location.pathname === `/household` &&
                 "text-black"
-              }`}
+                }`}
               onClick={() => setOverlay(true)}
             >
               <div className="relative flex flex-col items-center">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  {authHousehold && authHousehold.img ? (
-                    <img
-                      //eslint-disable-next-line
-                      src={require(
-                        `../../assets/data/households/${authHousehold.img}`
-                      )}
-                      alt="Menu Household"
-                      className="w-9 h-9 rounded-full object-cover"
-                    />
-                  ) : (
-                    <TbUsers />
-                  )}
+                  <img
+                    //eslint-disable-next-line
+                    src={authHousehold?.img_url ? authHousehold?.img_url : Image}
+                    alt="Menu Household"
+                    className="w-9 h-9 rounded-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <p className="text-[12px] absolute bottom-[-28px]">Household</p>
               </div>
@@ -86,25 +74,19 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
           ) : (
             <Link
               to={`/household`}
-              className={`flex flex-col items-center leading-5 ${
-                location.pathname === `/household` &&
+              className={`flex flex-col items-center leading-5 ${location.pathname === `/household` &&
                 "text-black"
-              }`}
+                }`}
             >
               <div className="relative flex flex-col items-center">
                 <div className="w-8 h-8 flex items-center justify-center">
-                  {authHousehold ? (
-                    <img
-                      //eslint-disable-next-line
-                      src={require(
-                        `../../assets/data/households/${authHousehold.img}`
-                      )}
-                      alt="Menu Household"
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <TbUsers />
-                  )}
+                  <img
+                    //eslint-disable-next-line
+                    src={authHousehold?.img_url ? authHousehold?.img_url : Image}
+                    alt="Menu Household"
+                    className="w-8 h-8 rounded-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <p className="text-[12px] absolute bottom-[-28px]">Household</p>
               </div>
@@ -112,9 +94,8 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
           )}
           <Link
             to="/lists"
-            className={`flex flex-col items-center ${
-              location.pathname === "/lists" && "text-black"
-            }`}
+            className={`flex flex-col items-center ${location.pathname === "/lists" && "text-black"
+              }`}
           >
             <div className="relative flex flex-col items-center">
               <div className="w-9 h-9 flex items-center justify-center">

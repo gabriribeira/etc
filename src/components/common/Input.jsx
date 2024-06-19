@@ -27,7 +27,7 @@ const Input = ({ label, placeholder, value, onChange, error, recommendations, re
           <input
             name={label}
             id={label}
-            value={value}
+            value={value ? value : ""}
             aria-label= {label}
             type={
               (label === "Password" || label === "Confirm Password") && !showPassword

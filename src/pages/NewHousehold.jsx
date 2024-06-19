@@ -10,8 +10,10 @@ import { useSelector } from "react-redux";
 import AddMembers from "./AddMembers";
 import CategoriesInput from "../components/common/CategoriesInput";
 import { useNavigate } from "react-router-dom";
+import GoalsData from "../data/goals.json";
 
 const NewHousehold = () => {
+  const goalsData = GoalsData;
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [household, setHousehold] = useState(null);
@@ -22,8 +24,17 @@ const NewHousehold = () => {
   const [createRequest] = useCreateRequestMutation();
   const [addHouseholdTags] = useAddHouseholdTagsMutation();
   const [tags, setTags] = useState([]);
+  const [selectedGoals, setSelectedGoals] = useState([]);
 
   const user = useSelector((state) => state.auth.user);
+
+  const toggleGoal = (goal) => {
+    setSelectedGoals((prevGoals) =>
+      prevGoals.includes(goal)
+        ? prevGoals.filter((g) => g !== goal)
+        : [...prevGoals, goal]
+    );
+  };
 
   const handleNewHousehold = async () => {
     if (!user) {
@@ -135,9 +146,68 @@ const NewHousehold = () => {
       {step === 3 && (
         <main className="pt-32">
           <form className="flex flex-1 flex-col w-full h-auto justify-between px-5">
+            <div className="flex flex-col gap-y-3">
+              <h2 className="text-lg font-semibold text-black">
+                Sustainable Tags
+              </h2>
+              <p className="text-base text-black50 font-medium">
+                Select some tags that you want to define your household in terms of sustainable practices.
+              </p>
+            </div>
             <ProgressBar progress={9} />
             <div className="flex flex-col w-full gap-y-6 h-auto">
               <CategoriesInput label={"Sustainable Tags"} categorySelected={tags} onChange={setTags} filter={false} />
+            </div>
+          </form>
+          <div className="h-full my-6 px-5">
+            <Button
+              label="Next"
+              action={handleTags}
+              isLoading={isLoading}
+            />
+          </div>
+        </main>
+      )}
+      {step === 4 && (
+        <main className="pt-32">
+          <form className="flex flex-1 flex-col w-full h-auto justify-between px-5">
+            <div className="flex flex-col gap-y-3">
+              <h2 className="text-lg font-semibold text-black">
+                Sustainable Tags
+              </h2>
+              <p className="text-base text-black50 font-medium">
+                Select some tags that you want to define your household in terms of sustainable practices.
+              </p>
+            </div>
+            <ProgressBar progress={9} />
+            <div className="flex flex-col w-full gap-y-6 h-auto">
+              {goalsData &&
+                goalsData.map((goal, slide, index) => (
+                  <button
+                    key={index}
+                    className={`flex flex-col rounded-2xl border-2 border-green p-5 text-left gap-y-3 m-y-2 ${selectedGoals.includes(goal.goal)
+                      ? "bg-green text-white"
+                      : "text-green"
+                      }`}
+                    onClick={() => toggleGoal(goal.goal)}
+                  >
+                    <p>tags</p>
+
+                    <div className="flex flex-col">
+                      <h2 className="text-xs font-normal text-black">{goal.goal.slug}</h2>
+                      <h1 className="font-semibold text-2xl text-black">
+                        {goal.goal.title}
+                      </h1>
+                      <p className="font-normal text-sm text-black">{goal.goal.details}</p>
+                    </div>
+                    <div className="flex flex-col mb-3">
+                      <p className="text-black font-normal text-xs mb-1">
+                        métrica
+                      </p>
+                      <ProgressBar />
+                    </div>
+                  </button>
+                ))}
             </div>
           </form>
           <div className="h-full my-6 px-5">

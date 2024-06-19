@@ -6,7 +6,7 @@ import {
   useSwitchHouseholdMutation,
 } from "../../app/api";
 import { useSelector } from "react-redux";
-import DefaultHouseholdImage from "../../assets/data/households/household_amizade.webp";
+import DefaultHouseholdImage from "../../assets/imgs/etc/logo_dots.png";
 
 const ChangeHouseholdOverlay = ({ closeOverlay }) => {
   const user = useSelector((state) => state.auth.user);
@@ -71,6 +71,7 @@ const ChangeHouseholdOverlay = ({ closeOverlay }) => {
                       src={household.img_url ? household.img_url : DefaultHouseholdImage}
                       alt="Household Profile Picture"
                       className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                      referrerPolicy="no-referrer"
                     />
                   </div>
                   <h2 className="text-lg font-normal">{household.name}</h2>

@@ -36,6 +36,7 @@ const OnboardingPage = ({ image, title, text }) => {
           src={image}
           alt="Onboarding"
           style={{ maxWidth: "100%", maxHeight: "100%" }}
+          referrerPolicy="no-referrer"
         />
       </div>
       <div
@@ -176,9 +177,9 @@ const Onboarding = () => {
                     : null),
                   ...(currentPage === 5 && index === currentPage - 1
                     ? {
-                        background:
-                          "-webkit-linear-gradient(left, #1F4F80, #FF6F61)",
-                      }
+                      background:
+                        "-webkit-linear-gradient(left, #1F4F80, #FF6F61)",
+                    }
                     : null),
                 }}
               />

@@ -71,6 +71,7 @@ const MembersInput = ({ value, onChange, label }) => {
                         src={require(`../../assets/data/users/${user.img}`)}
                         alt="User Profile Picture"
                         className="w-full h-full rounded-full object-cover object-center ml-2 absolute "
+                        referrerPolicy="no-referrer"
                       />
                     </div>
                     <p
@@ -128,6 +129,7 @@ const MembersInput = ({ value, onChange, label }) => {
                         src={require(`../../assets/data/users/${user.img}`)}
                         alt="User Profile Picture"
                         className="w-full h-full rounded-full object-cover object-center absolute top-0 left-0"
+                        referrerPolicy="no-referrer"
                       />
                     </div>
                   )

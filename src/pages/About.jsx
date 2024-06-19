@@ -17,7 +17,7 @@ const About = () => {
       <TopBar />
       <div className="flex flex-col">
         <div className="h-[600px] w-full bg-blue flex flex-col items-end justify-end px-12 py-20">
-          <img src={Logo} alt="Et.Cetera Logo" className="w-full" />
+          <img src={Logo} alt="Et.Cetera Logo" className="w-full" referrerPolicy="no-referrer" />
           <p className="text-blue20 leading-none mt-3">
             The household management app that revolutionizes shared-home living{" "}
           </p>
@@ -63,7 +63,7 @@ const About = () => {
           </p>
         </div>
         <div className="bg-salmon80 flex flex-col justify-center items-end px-6 py-20">
-          <img src={LogoBreak} alt="Et.Cetera Logo Break" className="w-full" />
+          <img src={LogoBreak} alt="Et.Cetera Logo Break" className="w-full" referrerPolicy="no-referrer" />
           <p className="text-white font-ligth text-lg text-end">
             no more et ceteras at the end of your lists
           </p>
@@ -117,6 +117,7 @@ const About = () => {
             src={SocialMedia}
             alt="Et.Cetera Social Media Post"
             className="w-full"
+            referrerPolicy="no-referrer"
           />
         </div>
         <div className="bg-white flex flex-col justify-center text-black px-6 py-12 gap-y-6 font-light">
@@ -142,6 +143,7 @@ const About = () => {
                 src={Carolina}
                 alt="Carolina"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="border-b-2 border-white/50 flex items-center justify-between py-6">
@@ -153,6 +155,7 @@ const About = () => {
                 src={Gabriel}
                 alt="Gabriel"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="border-b-2 border-white/50 flex items-center justify-between py-6">
@@ -164,6 +167,7 @@ const About = () => {
                 src={Ines}
                 alt="Ines"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="border-b-2 border-white/50 flex items-center justify-between py-6">
@@ -175,6 +179,7 @@ const About = () => {
                 src={Lara}
                 alt="Lara"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="border-b-2 border-white/50 flex items-center justify-between py-6">
@@ -186,6 +191,7 @@ const About = () => {
                 src={Leo}
                 alt="Leo"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="flex items-center justify-between py-6">
@@ -197,15 +203,16 @@ const About = () => {
                 src={Nathalia}
                 alt="Nathalia"
                 className="w-[80px] h-[80px] rounded-full shrink-0 object-cover grayscale"
+                referrerPolicy="no-referrer"
               />
             </div>
           </div>
         </div>
         <div className="bg-white flex items-center justify-center py-20">
-            <img src={Logo} alt="Et.Cetera Logo" className="w-[50%]" />
+            <img src={Logo} alt="Et.Cetera Logo" className="w-[50%]" referrerPolicy="no-referrer" />
         </div>
         <div className="bg-black py-20 flex items-center justify-center">
-          <img src={Deca} alt="Deca" className="w-[50%]" />
+          <img src={Deca} alt="Deca" className="w-[50%]" referrerPolicy="no-referrer" />
         </div>
       </div>
     </div>

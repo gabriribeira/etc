@@ -64,6 +64,7 @@ const NewExpense = () => {
                     src={authUser.img_url}
                     alt="User Profile Picture"
                     className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <p className="font-semibold text-lg ml-3">{authUser.name}</p>

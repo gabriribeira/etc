@@ -19,6 +19,7 @@ const AddMembers = ({ user }) => {
             src={ProfilePicture}
             alt="Authenticated User Profile Picture"
             className="w-full h-full rounded-full absolute object-cover object-center left-0 top-0"
+            referrerPolicy="no-referrer"
           />
         </button>
         <button

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { RxPlus } from "react-icons/rx";
+import PropTypes from "prop-types";
 
-const ImageUpload = () => {
+const ImageUpload = ({ onImageUpload }) => {
   const [image, setImage] = useState(null);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setImage(URL.createObjectURL(file));
+      onImageUpload(file);
     }
   };
+
   return (
     <>
       <label
@@ -26,6 +26,7 @@ const ImageUpload = () => {
             src={image}
             className="w-full h-full object-cover object-center absolute rounded-full top-0 left-0"
             alt="User Profile"
+            referrerPolicy="no-referrer"
           />
         )}
       </label>
@@ -34,9 +35,14 @@ const ImageUpload = () => {
         id="file"
         accept="image/*"
         className="hidden"
-        onChange={(e) => handleImageChange(e)}
+        onChange={handleImageChange}
       />
     </>
   );
 };
+
+ImageUpload.propTypes = {
+  onImageUpload: PropTypes.func.isRequired,
+};
+
 export default ImageUpload;

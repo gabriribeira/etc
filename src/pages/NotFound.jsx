@@ -8,7 +8,7 @@ const NotFound = () => {
       <h1 className="font-bold text-6xl">404</h1>
       <p className="font-light text-xl">Page not found</p>
       <Link to="/" className="font-light text-xl underline text-blue">
-        <img src={Logo} alt="Etc Logo" className="w-full" />
+        <img src={Logo} alt="Etc Logo" className="w-full" referrerPolicy="no-referrer" />
       </Link>
     </div>
   );

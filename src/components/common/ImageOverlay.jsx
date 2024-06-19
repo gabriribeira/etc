@@ -23,7 +23,7 @@ function ImageOverlay({ img_url, name, onClose }) {
         </button>
         <div className="flex flex-col items-center bg-white">
           <p className="text-black font-semibold py-3">{name}</p>
-          <img src={require(`../../assets/imgs/products/${img_url}`)} alt="Product" className="max-w-full max-h-full mb-4" />
+          <img src={require(`../../assets/imgs/products/${img_url}`)} alt="Product" className="max-w-full max-h-full mb-4" referrerPolicy="no-referrer" />
         </div>
       </div>
     </div>

@@ -3,38 +3,60 @@ import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
+import CategoriesInput from "../components/common/CategoriesInput";
+import ImageUpload from "../components/common/ImageUpload";
+import { useGetHouseholdQuery, useUpdateHouseholdMutation, useGetHouseholdTagsQuery, useUpdateHouseholdTagsMutation } from "../app/api";
+import { useSelector } from "react-redux";
 
 const EditHouseHold = () => {
-  const [household, setHousehold] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [tags, setTags] = useState([]);
+  const householdId = useSelector((state) => state.auth.currentHouseholdId);
+
+  const { data: household, isLoading: isHouseholdLoading } = useGetHouseholdQuery(householdId, {
+    skip: !householdId,
+  });
+
+  const { data: householdTags, isLoading: isTagsLoading } = useGetHouseholdTagsQuery(householdId, {
+    skip: !householdId,
+  });
+
+  const [updateHousehold] = useUpdateHouseholdMutation();
+  const [updateHouseholdTags] = useUpdateHouseholdTagsMutation();
 
   useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
-
-    const storedHousehold = getCookieValue("household");
-    if (storedHousehold) {
-      setHousehold(storedHousehold);
-      setName(storedHousehold.name);
-      setDescription(storedHousehold.description);
+    if (household) {
+      setName(household.data.name);
+      setDescription(household.data.description ? household.data.description : "");
     }
-  }, []);
+  }, [household]);
 
-  const handleSaveChanges = () => {
-    console.log({
-      name,
-      description,
-    });
+  useEffect(() => {
+    if (householdTags) {
+      setTags(householdTags.data);
+    }
+  }, [householdTags]);
+
+  const handleSaveChanges = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("description", description);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+      await updateHousehold({ id: householdId, formData }).unwrap();
+      await updateHouseholdTags({ householdId, tags: tags.map(tag => tag.id) }).unwrap();
+      alert("Household updated successfully");
+    } catch (error) {
+      console.error("Failed to update household:", error);
+      alert("Failed to update household");
+    }
   };
+
+  if (isHouseholdLoading || isTagsLoading) return <div>Loading...</div>;
 
   return (
     household && (
@@ -43,17 +65,26 @@ const EditHouseHold = () => {
         <main className="mt-32 bg-white">
           <div className="flex flex-col">
             <div className="flex flex-col text-center relative justify-center m-4 items-center">
-              <img
-                // eslint-disable-next-line
-                src={require(`../assets/data/households/${household.img}`)}
-                alt="Household Profile Picture"
-                className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
-              />
+              {household.data.img_url ? (
+                <img
+                  src={household.data.img_url}
+                  alt="Household Profile Picture"
+                  className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <ImageUpload onImageUpload={setImageFile} />
+              )}
             </div>
             <div className="p-4 flex flex-col gap-y-4">
               <Input label="Household Name" value={name} onChange={(e) => setName(e.target.value)} />
               <Input label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-              
+              <CategoriesInput
+                label="Tags"
+                onChange={setTags}
+                categorySelected={tags}
+                specificationsProps={false}
+              />
               <Button label="Save Changes" action={handleSaveChanges} aria="Button Save Changes" />
             </div>
           </div>

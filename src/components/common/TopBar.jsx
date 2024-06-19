@@ -10,7 +10,6 @@ import FilterOverlay from "./FilterOverlay";
 import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
-import blank_profile from "../../assets/data/users/blank-profile.webp";
 import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
 
 const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList }) => {
@@ -32,7 +31,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       navigate(-1);  // Default back behavior
     }
   };
-  
+
   const toggleFilterOverlay = () => {
     setShowFilterOverlay(!showFilterOverlay);
   };
@@ -75,12 +74,16 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     const newExpensePageRegex = /\/expenses\/new/;
     const newListPageRegex = /\/lists\/new/;
     const newHouseholdPageRegex = /\/households\/new/;
+    const editProfilePageRegex = /\/profile\/edit/;
+    const editHouseholdPageRegex = /\/household\/edit/;
     return (
       editPageRegex.test(location.pathname) ||
       balancePageRegex.test(location.pathname) ||
       newExpensePageRegex.test(location.pathname) ||
       newListPageRegex.test(location.pathname) ||
-      newHouseholdPageRegex.test(location.pathname)
+      newHouseholdPageRegex.test(location.pathname) ||
+      editProfilePageRegex.test(location.pathname) ||
+      editHouseholdPageRegex.test(location.pathname)
     );
   };
 
@@ -109,27 +112,31 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     const expenseDetailsPageRegex = /^\/expenses\/expensedetails\/\d+$/;
     const editUserPageRegex = /^\/users\/\d+\/edit$/;
     const userPageRegex = /^\/users\/\d+$/;
-  
+    const editProfilePageRegex = /\/profile\/edit/;
+    const editHouseholdPageRegex = /\/household\/edit/;
+
     if (
-      
+
       isEditPage() ||
-     
+
       listPageRegex.test(location.pathname) ||
-     
+
       imagePageRegex.test(location.pathname) ||
-     
+
       editItemPageRegex.test(location.pathname)
-     ||
+      ||
       expenseDetailsPageRegex.test(location.pathname) ||
       editUserPageRegex.test(location.pathname) ||
-      userPageRegex.test(location.pathname)
+      userPageRegex.test(location.pathname) ||
+      editProfilePageRegex.test(location.pathname) ||
+      editHouseholdPageRegex.test(location.pathname)
     ) {
       setShowBackButton(true);
     } else {
       setShowBackButton(false);
     }
   }, [location]);
-  
+
 
   const shouldShowEditListButton = () => {
     const listPageRegex = /^\/lists\/\d+$/;
@@ -139,9 +146,8 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
   return (
     <header className="fixed top-0 left-0 w-screen z-[101] bg-white">
       <div
-        className={`flex flex-col sticky top-0 w-screen ${
-          !showBackButton && "pb-2"
-        } px-5 pt-3 z-[100] bg-white`}
+        className={`flex flex-col sticky top-0 w-screen ${!showBackButton && "pb-2"
+          } px-5 pt-3 z-[100] bg-white`}
       >
         <div className="flex items-center justify-between gap-x-2 relative">
           {location.pathname === "/lists" ? (
@@ -176,17 +182,18 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
             </>
           ) : (
             user &&
-            !userProfileRegex.test(location.pathname) &&
-            location.pathname !== `/profile` ? (
+              !userProfileRegex.test(location.pathname) &&
+              location.pathname !== `/profile` ? (
               <Link
                 to={`/profile`}
                 className="flex items-center gap-x-3 z-[101]"
               >
                 <img
                   // eslint-disable-next-line
-                  src={user.img ? require(`../../assets/data/users/${user.img}`) : blank_profile}
+                  src={user.img_url ? user.img_url : Image}
                   alt="User Profile Picture"
                   className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                  referrerPolicy="no-referrer"
                 />
               </Link>
             ) : (
@@ -196,9 +203,10 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               >
                 <img
                   // eslint-disable-next-line
-                  src={blank_profile}
+                  src={user.img_url ? user.img_url : Image}
                   alt="User Profile Picture"
                   className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                  referrerPolicy="no-referrer"
                 />
               </Link>
             )
@@ -209,6 +217,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               src={require(`../../assets/imgs/etc/short_logo_salmon.webp`)}
               alt="Logo"
               className="h-[25px]"
+              referrerPolicy="no-referrer"
             />
           </div>
           <div className="flex items-center gap-x-3">
@@ -329,7 +338,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
             ]}
             links={[null, null, null]}
             hideOverlay={() => setShowEditList(false)}
-            onClicks={[() => {listClosed ? unlockList() : lockList()}, () => {}, () => {}]}
+            onClicks={[() => { listClosed ? unlockList() : lockList() }, () => { }, () => { }]}
           />
         </CSSTransition>
 
@@ -352,9 +361,8 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
 
       {showBackButton && (
         <div
-          className={`mt-8 mb-5 px-5 ${
-            listTitle && "w-full flex items-center relative"
-          }`}
+          className={`mt-8 mb-5 px-5 ${listTitle && "w-full flex items-center relative"
+            }`}
         >
           <BackButton onClick={handleBackClick} />
           {listTitle && (

@@ -1,27 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Category from "./Category";
-import { useGetTagsQuery } from "../../app/api";
+import { useGetTagsQuery, useGetSpecificationsQuery } from "../../app/api";
 
-const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
+const CategoriesInput = ({ label, categorySelected, onChange, filter, specificationsProps }) => {
   const { data: categories } = useGetTagsQuery();
   const [showAll, setShowAll] = useState(false);
+  const { data: specifications } = useGetSpecificationsQuery();
 
   const handleChange = (category) => {
-    if (categorySelected.includes(category)) {
-      const newCategory = categorySelected.filter((item) => item !== category);
-      return onChange(newCategory);
+    if (specificationsProps) {
+      handleSpecifications(category);
     } else {
-      return onChange([...categorySelected, category]);
+      handleTags(category);
     }
   };
 
-  useEffect(() => {
-    console.log(categorySelected);
-  }, [categorySelected]);
+  const handleTags = (category) => {
+    if (categorySelected.find((item) => item.id === category.id)) {
+      const newCategory = categorySelected.filter((item) => item.id !== category.id);
+      onChange(newCategory);
+    } else {
+      onChange([...categorySelected, category]);
+    }
+  };
+
+  const handleSpecifications = (spec) => {
+    if (categorySelected.find((item) => item.id === spec.id)) {
+      const newSpecifications = categorySelected.filter((item) => item.id !== spec.id);
+      onChange(newSpecifications);
+    } else {
+      onChange([...categorySelected, spec]);
+    }
+  };
 
   return (
-    categories && (
+    categories && specifications && (
       <div className="w-full flex flex-col">
         {label && (
           <div className="flex justify-between items-center mb-2">
@@ -48,15 +62,25 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
               </button>
             </>
           )}
-          {categories.slice(0, showAll ? categories.length : 3).map((category, index) => (
+          {specificationsProps ? specifications.map((spec) => (
             <Category
-              key={index}
-              category={category}
+              key={spec.id}
+              category={spec}
               onChange={handleChange}
               filter={filter}
-              value={categorySelected.includes(category) ? true : false}
+              value={categorySelected.some((selected) => selected.id === spec.id)}
+              specificationsProps={specificationsProps}
             />
-          ))}
+          )) :
+            categories.slice(0, showAll ? categories.length : 3).map((category) => (
+              <Category
+                key={category.id}
+                category={category}
+                onChange={handleChange}
+                filter={filter}
+                value={categorySelected.some((selected) => selected.id === category.id)}
+              />
+            ))}
         </div>
       </div>
     )
@@ -68,6 +92,7 @@ CategoriesInput.propTypes = {
   label: PropTypes.string,
   categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   filter: PropTypes.bool,
+  specificationsProps: PropTypes.bool,
 };
 
 export default CategoriesInput;

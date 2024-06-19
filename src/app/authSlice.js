@@ -23,29 +23,32 @@ const authSlice = createSlice({
       state.currentHouseholdId = null;
       state.role = null;
     },
+    updateUserState: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder
       .addMatcher(api.endpoints.login.matchFulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.currentHouseholdId = action.payload.currentHouseholdId;
         state.role = action.payload.roleId;
       })
       .addMatcher(api.endpoints.googleAuthCallback.matchFulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.currentHouseholdId = action.payload.currentHouseholdId;
         state.role = action.payload.roleId;
       })
       .addMatcher(api.endpoints.facebookAuthCallback.matchFulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.currentHouseholdId = action.payload.currentHouseholdId;
         state.role = action.payload.roleId;
       });
   },
 });
 
-export const { setAuthState, clearAuthState } = authSlice.actions;
+export const { setAuthState, clearAuthState, updateUserState } = authSlice.actions;
 export default authSlice.reducer;

@@ -6,7 +6,7 @@ const HouseholdOnboarding = () => {
   return (
     <div className="bg-black bg-gradient-to-br from-black to-white/30 min-h-screen h-full flex flex-col justify-between">
       <div className="flex justify-center items-center h-full min-h-[70dvh]">
-        <img src={Logo} alt="Et Cetera Logo" className="w-[60%]" />
+        <img src={Logo} alt="Et Cetera Logo" className="w-[60%]" referrerPolicy="no-referrer" />
       </div>
       <div className="h-[30dvh] bg-white rounded-tl-[5rem] flex flex-col px-6 py-12 gap-y-6">
         <Button label="Create a Household" to={"/households/new"} lg={true} />
