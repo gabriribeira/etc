@@ -36,6 +36,7 @@ const SearchInput = ({ label, value, onChange, error, results, onSelect }) => {
                           src={result.img_url}
                           alt="Household Profile Picture"
                           className="w-[20px] h-[20px] rounded-full"
+                          referrerPolicy="no-referrer"
                         />
                         <p className="text-lg">{result.name}</p>
                       </div>

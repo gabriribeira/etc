@@ -51,6 +51,7 @@ const JoinHousehold = () => {
                   src={household.img_url} // Update this line to use the proper image URL field
                   alt="Household"
                   className="w-[150px] h-[150px] rounded-full m-auto"
+                  referrerPolicy="no-referrer"
                 />
                 <h1 className="text-2xl m-auto">{household.name}</h1>
               </div>
@@ -67,6 +68,7 @@ const JoinHousehold = () => {
                   src={household.img_url} // Update this line to use the proper image URL field
                   alt="Household"
                   className="w-[150px] h-[150px] rounded-full m-auto"
+                  referrerPolicy="no-referrer"
                 />
                 <h1 className="text-2xl m-auto">{household.name}</h1>
               </div>

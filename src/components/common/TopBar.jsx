@@ -180,9 +180,10 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               >
                 <img
                   // eslint-disable-next-line
-                  src={user.img ? require(`../../assets/data/users/${user.img}`) : blank_profile}
+                  src={user.img_url ? user.img_url : blank_profile}
                   alt="User Profile Picture"
                   className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                  referrerPolicy="no-referrer"
                 />
               </Link>
             ) : (
@@ -195,6 +196,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
                   src={blank_profile}
                   alt="User Profile Picture"
                   className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                  referrerPolicy="no-referrer"
                 />
               </Link>
             )
@@ -205,6 +207,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               src={require(`../../assets/imgs/etc/short_logo_salmon.webp`)}
               alt="Logo"
               className="h-[25px]"
+              referrerPolicy="no-referrer"
             />
           </div>
           <div className="flex items-center gap-x-3">

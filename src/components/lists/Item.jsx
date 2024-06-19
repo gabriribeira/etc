@@ -86,6 +86,7 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
               src={item.img_url}
               className="w-full h-full rounded-full object-cover"
               alt={item.name}
+              referrerPolicy="no-referrer"
             />
           </div>
         )}

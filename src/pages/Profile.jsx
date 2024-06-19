@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
+  console.log("User:",user);
   const [imageUrl, setImageUrl] = useState(user.img_url);
   console.log(user);
   const {
@@ -18,6 +19,7 @@ const Profile = () => {
   } = useGetUserHouseholdsQuery(user.id);
 
   useEffect(() => {
+    console.log("Image:", user.img_url);
     if (user.img_url) {
       setImageUrl(user.img_url);
     }
@@ -48,8 +50,8 @@ const Profile = () => {
                 <img
                   src={imageUrl}
                   alt="Profile Picture"
-                  onError={(e) => (e.currentTarget.src = DefaultProfilePicture)}
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                  referrerPolicy="no-referrer"
                 />
                 <h1 className="font-normal text-xl text-white mt-2">
                   {user.name}
@@ -80,6 +82,7 @@ const Profile = () => {
                             (e.currentTarget.src = DefaultProfilePicture)
                           }
                           className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                          referrerPolicy="no-referrer"
                         />
                         <p className="text-white text-lg font-base">
                           {household.name}

@@ -19,6 +19,7 @@ const Activity = ({ activity }) => {
           src={require(`../../assets/data/users/${member.img}`)}
           className="w-full h-full object-center top-0 left-0 absolute object-cover rounded-full"
           alt="User Profile Picture"
+           referrerPolicy="no-referrer"
         />
       </div>
       <div className="w-full flex flex-col">

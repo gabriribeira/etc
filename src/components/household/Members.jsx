@@ -23,6 +23,7 @@ const Members = ({ users }) => {
                   src={user.img_url} // Update to use the URL from the API response
                   alt="User Profile Picture"
                   className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                  referrerPolicy="no-referrer"
                 />
                 <p className="text-white text-lg font-light">{user.name}</p>
               </Link>

@@ -20,6 +20,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
             src={household.img_url} // Update to use the URL from the API response
             alt="Household Profile Picture"
             className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+            referrerPolicy="no-referrer"
           />
           <div className="flex items-center gap-x-2 text-white">
             <h1 className="font-normal text-xl mt-2">{household.name}</h1>
@@ -34,7 +35,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
           <p className="font-light text-sm text-white">{users && users.length} {users && (users.length > 1 ? "Members" : "Member")}</p>
         </div>
       </div>
-      <div className="flex flex-col px-5 mt-6">
+      <div className="flex flex-col px-5">
         <h1 className="font-semibold text-lg mb-2">Description</h1>
         <p className="text-black text-base">{household.description}</p>
       </div>

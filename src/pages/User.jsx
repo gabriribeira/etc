@@ -57,6 +57,7 @@ const User = () => {
                   alt="Profile Picture"
                   onError={(e) => (e.currentTarget.src = DefaultProfilePicture)}
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                  referrerPolicy="no-referrer"
                 />
                 <h1 className="font-normal text-xl text-white mt-2">
                   {user.data.name}
@@ -104,6 +105,7 @@ const User = () => {
                             (e.currentTarget.src = DefaultProfilePicture)
                           }
                           className="w-[40px] h-[40px] rounded-full object-cover object-center shrink-0"
+                          referrerPolicy="no-referrer"
                         />
                         <p className="text-white text-lg font-medium">
                           {household.name}

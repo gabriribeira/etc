@@ -112,7 +112,7 @@ const NewList = () => {
               />
               <div className="mt-6 flex flex-row justify-between align-middle items-center">
                 <div className="flex align-middle items-center">
-                  <img src={AiStarsImg} alt="AI Stars" />
+                  <img src={AiStarsImg} alt="AI Stars" referrerPolicy="no-referrer" />
                   <p className="ms-4 font-bold ai-linear-text-gradient">
                     Generate List With AI
                   </p>

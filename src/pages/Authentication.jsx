@@ -35,7 +35,7 @@ const Authentication = () => {
   return (
     <div className="bg-black bg-gradient-to-br from-black to-white/30 flex flex-col min-h-screen justify-between">
       <div className="flex justify-center items-center h-full min-h-[30dvh] shadow-[0px_-10px_30px_-20px_rgba(0,0,0,0.5)]">
-        <img src={Logo} alt="Et Cetera Logo" className="w-[60%] shadow-2xl" />
+        <img src={Logo} alt="Et Cetera Logo" className="w-[60%] shadow-2xl" referrerPolicy="no-referrer" />
       </div>
       <form className="h-auto bg-white rounded-tl-[5rem] flex flex-col px-6 pt-6 gap-y-3 min-h-[60dvh]" aria-label="Enter Form">
         <ThirdParty authentication={true} />
