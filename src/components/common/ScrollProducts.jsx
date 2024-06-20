@@ -50,30 +50,30 @@ const ScrollProducts = ({ label, type }) => {
                   </div>
                 </div>
               </div>
-
-              <CSSTransition
-                in={showOverlay}
-                timeout={500}
-                classNames="menu-primary"
-                className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
-                unmountOnExit
-              >
-                <Overlay
-                  label="Add to List"
-                  options={[
-                    "New List",
-                    "Search",
-                    "Lists",
-                  ]}
-                  links={[null, null, null]}
-                  hideOverlay={() => setShowOverlay(false)}
-                  onClicks={[() => {}, () => {}, () => {}]}
-                />
-              </CSSTransition>
             </div>
           ))}
+          
         </div>
       </div>
+      <CSSTransition
+        in={showOverlay}
+        timeout={500}
+        classNames="menu-primary"
+        className="fixed bottom-0 left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-t-2xl p-5"
+        unmountOnExit
+      >
+        <Overlay
+          label="Add to List"
+          options={[
+            "New List",
+            "Search",
+            "Lists",
+          ]}
+          links={[null, null, null]}
+          hideOverlay={() => setShowOverlay(false)}
+          onClicks={[() => {}, () => {}, () => {}]}
+        />
+      </CSSTransition>
     </div>
   );
 };

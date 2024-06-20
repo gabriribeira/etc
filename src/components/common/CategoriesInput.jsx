@@ -46,7 +46,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
       <div className="w-full flex flex-col">
         {label && (
           <div className="flex justify-between items-center mb-2">
-            <label htmlFor={label} className="text-lg font-medium">
+            <label htmlFor={label} className="text-lg font-semibold">
               {label}
             </label>
             <button
