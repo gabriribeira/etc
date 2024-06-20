@@ -23,10 +23,10 @@ const Products = () => {
           <div className="flex flex-col w-full gap-y-3 my-2">
             <form>
               <SearchInput
-                label="Buscar"
+                label="Search"
                 value={search}
                 onChange={setSearch}
-                placeholder="Encontrar Produto"
+                placeholder="Find Products"
               />
             </form>
           </div>
@@ -35,7 +35,7 @@ const Products = () => {
             <CategoriesInput
               onChange={handleCategoryChange}
               value={category}
-              label="Categorias"
+              label="Categories"
               categorySelected={category}
               type="List"
             />
@@ -43,18 +43,18 @@ const Products = () => {
 
           {search ? (
             <div>
-              <SearchProducts label="Resultados" name={search} />
+              <SearchProducts label="Results" name={search} />
             </div>
           ) : (
             <>
               <div className="my-3">
-                <ScrollProducts label="Promoções" type={category ? category.id : "1"} />
+                <ScrollProducts label="Promotions" type={category ? category.id : "1"} />
               </div>
               <div className="mb-3">
-                <ScrollProducts label="Recomendados para você" type={category ? category.id : "5"} />
+                <ScrollProducts label="Recommended for you" type={category ? category.id : "5"} />
               </div>
               <div className="mb-3">
-                <ScrollProducts label="Laticínios" type={category ? category.id : "2"} />
+                <ScrollProducts label="Dairy" type={category ? category.id : "2"} />
               </div>
             </>
           )}
