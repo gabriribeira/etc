@@ -11,10 +11,10 @@ import { FiLock, FiUnlock } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi";
 import { BiPencil } from "react-icons/bi";
 import Cookies from "js-cookie";
-import { useGetHouseholdListsQuery } from "../../app/api"; // Import your API hook
+import { useGetHouseholdListsQuery, useAddItemMutation, useGetItemQuery } from "../../app/api"; // Import your API hooks
 import SearchInput from "./SearchInput";
 
-const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
+const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     Cookies.remove("user");
@@ -24,8 +24,11 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
   };
 
   const { data: lists, error, isLoading } = useGetHouseholdListsQuery(); // Fetch lists data
+  const { data: product, error: productError, isLoading: productLoading } = useGetItemQuery(productId); // Fetch product data
+  const [addItem] = useAddItemMutation(); // Use the addItem mutation
   const [search, setSearch] = useState("");
   const [selectedLists, setSelectedLists] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     // Setup an event listener to handle clicks outside the overlay content
@@ -42,6 +45,12 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
     };
   }, [hideOverlay, label]);
 
+  useEffect(() => {
+    if (product) {
+      setSelectedProduct(product);
+    }
+  }, [product]);
+
   const filteredLists = lists?.filter(list => list.name.toLowerCase().includes(search.toLowerCase()));
 
   const handleCheckboxChange = (listId) => {
@@ -54,17 +63,42 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
     });
   };
 
-  const handleDone = () => {
-    selectedLists.forEach((listId) => {
-      //Lógica
-      console.log(`Add product to list with ID: ${listId}`);
-    });
-    hideOverlay();
-  };
+  const handleDone = async () => {
+    if (!selectedProduct) {
+      console.error("Product data not available.");
+      return;
+    }
 
-  const handleNewList = () => {
-    console.log("New List")
-  }
+    try {
+      for (const listId of selectedLists) {
+        const newItem = {
+          list_id: Number(listId),
+          category_id: 1, // Certifique-se de ajustar conforme necessário
+          name: selectedProduct.name,
+          price: Number(selectedProduct.value),
+          details: selectedProduct.details || "",
+          brand: selectedProduct.brand || "",
+          store: selectedProduct.store || "",
+          amount: selectedProduct.amount,
+          unit: selectedProduct.unit,
+          members: [],
+          category: selectedProduct.category || "",
+          img_url: selectedProduct.img_url || "",
+          is_suggestion: false,
+          is_expense: false,
+        };
+
+        console.log("Payload to be sent:", newItem); // Log the payload
+        await addItem(newItem).unwrap();
+        console.log(`Added product with ID: ${productId} to list with ID: ${listId}`);
+      }
+      hideOverlay();
+    } catch (error) {
+      console.error("Error adding product to lists:", error);
+      console.error(`Error details: ${JSON.stringify(error.data)}`);
+      // Handle error accordingly
+    }
+  };
 
   return (
     <div className="fixed h-screen w-screen top-0 left-0 z-[102]">
@@ -80,7 +114,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
           {label === "Add to List" ? (
             <React.Fragment>
               <Button
-                onClick={handleNewList}
+                to={`/lists/new?product_id=${productId}`}
                 stroke={true}
                 label="New shopping list"
               />
@@ -89,6 +123,8 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks }) => {
               </div>
               {isLoading && <div>Loading...</div>}
               {error && <div>Error loading lists</div>}
+              {productLoading && <div>Loading product...</div>}
+              {productError && <div>Error loading product</div>}
 
               {filteredLists && filteredLists.map((list, idx) => (
                 <div key={idx} className="flex items-center gap-x-2 mb-2">
@@ -188,6 +224,7 @@ Overlay.propTypes = {
   links: PropTypes.array.isRequired,
   hideOverlay: PropTypes.func.isRequired,
   onClicks: PropTypes.array,
+  productId: PropTypes.string.isRequired, // Add this line to prop types
 };
 
 export default Overlay;

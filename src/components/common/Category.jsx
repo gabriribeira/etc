@@ -16,7 +16,7 @@ const Category = ({ category, value, onChange, filter, specificationsProps }) =>
 };
 
 Category.propTypes = {
-  category: PropTypes.string,
+  category: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   value: PropTypes.bool,
   onChange: PropTypes.func,
   filter: PropTypes.bool,

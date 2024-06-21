@@ -97,7 +97,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  categorySelected: PropTypes.arrayOf(PropTypes.object),
   filter: PropTypes.bool,
   specificationsProps: PropTypes.bool,
 };

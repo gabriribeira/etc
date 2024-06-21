@@ -8,11 +8,11 @@ import SearchProducts from "../common/SearchProducts";
 
 const Products = () => {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
-  const handleCategoryChange = (selectedCategory) => {
-    setCategory(selectedCategory);
-    console.log(selectedCategory?.id); // Log o id da categoria aqui, acessando com segurança
+  const handleCategoryChange = (selectedCategories) => {
+    setCategories(selectedCategories);
+    console.log(selectedCategories.map(cat => cat.id)); // Log os ids das categorias selecionadas
   };
 
   return (
@@ -34,9 +34,8 @@ const Products = () => {
           <div className="my-3">
             <CategoriesInput
               onChange={handleCategoryChange}
-              value={category}
+              categorySelected={categories}
               label="Categories"
-              categorySelected={category}
               type="List"
             />
           </div>
@@ -47,15 +46,22 @@ const Products = () => {
             </div>
           ) : (
             <>
-              <div className="my-3">
-                <ScrollProducts label="Promotions" type={category ? category.id : "1"} />
-              </div>
-              <div className="mb-3">
-                <ScrollProducts label="Recommended for you" type={category ? category.id : "5"} />
-              </div>
-              <div className="mb-3">
-                <ScrollProducts label="Dairy" type={category ? category.id : "2"} />
-              </div>
+              {categories.length > 0 ? (
+                categories.map(category => (
+                  <div key={category.id} className="my-3">
+                    <ScrollProducts label={category.title} type={category.id} />
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="my-3">
+                    <ScrollProducts label="Promotions" type="1" />
+                  </div>
+                  <div className="mb-3">
+                    <ScrollProducts label="Recommended for you" type="5" />
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

@@ -11,6 +11,8 @@ import {
   useCreateListMutation,
   useCreateListFromRecipeMutation,
   useCreateListFromEventMutation,
+  useGetItemQuery,
+  useAddItemMutation,
 } from "../../app/api";
 import { useSelector } from "react-redux";
 import Loader from "../common/Loader";
@@ -19,8 +21,7 @@ const NewList = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-  const initialAiToggle =
-    location.state && location.state.aiToggle ? location.state.aiToggle : false;
+  const initialAiToggle = location.state && location.state.aiToggle ? location.state.aiToggle : false;
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -30,10 +31,21 @@ const NewList = () => {
   const [members, setMembers] = useState([]);
 
   const [createList, { isLoading: isLoadingCreate }] = useCreateListMutation();
-  const [createListFromRecipe, { isLoading: isLoadingRecipe }] =
-    useCreateListFromRecipeMutation();
-  const [createListFromEvent, { isLoading: isLoadingEvent }] =
-    useCreateListFromEventMutation();
+  const [createListFromRecipe, { isLoading: isLoadingRecipe }] = useCreateListFromRecipeMutation();
+  const [createListFromEvent, { isLoading: isLoadingEvent }] = useCreateListFromEventMutation();
+  const [addItem] = useAddItemMutation();
+
+  const productId = new URLSearchParams(location.search).get('product_id');
+  
+  const { data: product, isLoading: isLoadingProduct } = useGetItemQuery(productId, {
+    skip: !productId,
+  });
+
+  useEffect(() => {
+    if (productId && !product) {
+      console.log(`Fetching product with ID: ${productId}`);
+    }
+  }, [productId, product]);
 
   const handleRecipeButton = () => {
     setEventSelected(false);
@@ -55,20 +67,45 @@ const NewList = () => {
         user_id: user.id,
       };
 
+      let newList;
       if (aiToggle) {
         if (recipeSelected) {
-          await createListFromRecipe(newListData).unwrap();
+          newList = await createListFromRecipe(newListData).unwrap();
         } else if (eventSelected) {
-          await createListFromEvent(newListData).unwrap();
+          newList = await createListFromEvent(newListData).unwrap();
         }
       } else {
-        await createList(newListData).unwrap();
+        newList = await createList(newListData).unwrap();
       }
 
-      navigate("/lists");
+      if (productId && product) {
+        const itemData = {
+          list_id: newList.id,
+          category_id: product.category_id || 1, // Use default category if not provided
+          name: product.name,
+          price: product.value || 0, // Default to 0 if price is not provided
+          details: product.details || "",
+          brand: product.brand || "",
+          store: product.store || "",
+          amount: product.amount || 1, // Default to 1 if amount is not provided
+          unit: product.unit || 'unit', // Default to 'unit' if unit is not provided
+          members: [],
+          category: product.category || "",
+          img_url: product.img_url || "",
+          is_suggestion: false,
+          is_expense: false,
+        };
+
+        await addItem(itemData).unwrap();
+      }
+
+      navigate(`/lists/${newList.id}`);
     } catch (error) {
       console.error("Error creating list:", error);
-      // Logic to handle errors when creating the list
+      if (error.data) {
+        console.error("Error details:", error.data);
+      }
+      // Additional error handling logic can be added here
     }
   };
 
@@ -81,7 +118,7 @@ const NewList = () => {
   return (
     <div className="bg-white min-h-screen">
       <TopBar />
-      {isLoadingRecipe  && <Loader />}
+      {(isLoadingRecipe || isLoadingProduct) && <Loader />}
       <main className="pt-32">
         <div className="flex flex-col px-5 fade-in">
           <div className="flex flex-col w-full gap-y-3">
