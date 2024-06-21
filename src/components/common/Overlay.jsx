@@ -11,7 +11,7 @@ import { FiLock, FiUnlock } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi";
 import { BiPencil } from "react-icons/bi";
 import Cookies from "js-cookie";
-import { useGetHouseholdListsQuery, useAddItemMutation, useGetItemQuery } from "../../app/api"; // Import your API hooks
+import { useGetHouseholdListsQuery, useAddItemMutation, useGetProductByIdQuery } from "../../app/api"; // Import your API hooks
 import SearchInput from "./SearchInput";
 
 const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) => {
@@ -24,7 +24,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
   };
 
   const { data: lists, error, isLoading } = useGetHouseholdListsQuery(); // Fetch lists data
-  const { data: product, error: productError, isLoading: productLoading } = useGetItemQuery(productId); // Fetch product data
+  const { data: product, error: productError, isLoading: productLoading } = useGetProductByIdQuery(productId); // Fetch product data
   const [addItem] = useAddItemMutation(); // Use the addItem mutation
   const [search, setSearch] = useState("");
   const [selectedLists, setSelectedLists] = useState([]);
@@ -64,6 +64,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
   };
 
   const handleDone = async () => {
+    
     if (!selectedProduct) {
       console.error("Product data not available.");
       return;
@@ -103,7 +104,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
   return (
     <div className="fixed h-screen w-screen top-0 left-0 z-[102]">
       <div className="fixed h-screen w-screen top-0 left-0" id="overlay"></div>
-      <div className="absolute bg-white bottom-0 z-[111] shadow-[0px_-10px_30px_-10px_rgba(0,0,0,0.5)] left-0 w-screen rounded-t-[2rem] px-5 py-10" id="overlay-container">
+      <div className="absolute bg-white bottom-0 z-[111] shadow-[0px_-10px_30px_-10px_rgba(0,0,0,0.5)] left-0 w-screen rounded-t-[2rem] px-5 py-10 max-h-[80%] overflow-y-auto" id="overlay-container">
         <div className="absolute top-[10px] left-0 w-screen flex justify-center">
           <div className="w-[25%] h-[5px] bg-black/50 rounded-full"></div>
         </div>

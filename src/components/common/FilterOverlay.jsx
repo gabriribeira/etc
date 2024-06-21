@@ -405,7 +405,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
         onClick={hideFilters}
         className="fixed h-screen w-screen bg-black/20 top-0 left-0"
       ></div>
-      <div className="absolute bg-white bottom-0 left-0 w-screen rounded-t-[2rem] px-5 py-10">
+      <div className="absolute bg-white bottom-0 left-0 w-screen max-h-[80%] overflow-y-auto rounded-t-[2rem] px-5 py-10">
         <div className="absolute top-[10px] left-0 w-screen flex justify-center">
           <div className="w-[25%] h-[5px] bg-black/50 rounded-full"></div>
         </div>

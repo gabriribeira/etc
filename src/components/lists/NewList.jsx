@@ -11,7 +11,7 @@ import {
   useCreateListMutation,
   useCreateListFromRecipeMutation,
   useCreateListFromEventMutation,
-  useGetItemQuery,
+  useGetProductByIdQuery,
   useAddItemMutation,
 } from "../../app/api";
 import { useSelector } from "react-redux";
@@ -37,7 +37,7 @@ const NewList = () => {
 
   const productId = new URLSearchParams(location.search).get('product_id');
   
-  const { data: product, isLoading: isLoadingProduct } = useGetItemQuery(productId, {
+  const { data: product, isLoading: isLoadingProduct } = useGetProductByIdQuery(productId, {
     skip: !productId,
   });
 

@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    //baseUrl: "http://localhost:3001/api",
-    baseUrl: "https://etc-app.com/api",
+    baseUrl: "http://localhost:3001/api",
+    //baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -89,6 +89,14 @@ const api = createApi({
         method: "PATCH",
       }),
     }),
+
+    deleteList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
     estimateListValue: builder.mutation({
       query: (listId) => ({
         url: `/lists/${listId}/estimate-value`,
@@ -208,6 +216,10 @@ const api = createApi({
       }),
     }),
 
+    getProductById: builder.query({
+      query: (id) => `/products/${id}`,
+    }),
+
     getProductsByCategory: builder.query({
       query: (categoryId) => `/products/category/${categoryId}`,
     }),
@@ -270,6 +282,7 @@ export const {
   useGetListItemsQuery,
   useLockListMutation,
   useUnlockListMutation,
+  useDeleteListMutation,
   useEstimateListValueMutation,
   useGetItemQuery,
   useAddItemMutation,
@@ -291,6 +304,7 @@ export const {
   useGetExpenseQuery,
   useSearchProductsQuery,
   useGetProductsByCategoryQuery,
+  useGetProductByIdQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
   useSearchHouseholdsQuery,

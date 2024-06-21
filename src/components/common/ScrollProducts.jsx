@@ -25,6 +25,7 @@ const ScrollProducts = ({ label, type }) => {
   const handleOverlay = (productId) => {
     setSelectedProductId(productId); // Set the selected product ID
     setShowOverlay(true); // Show the overlay
+    console.log(productId);
   };
 
   return (

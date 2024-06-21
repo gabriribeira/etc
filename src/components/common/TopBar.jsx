@@ -7,12 +7,14 @@ import { CSSTransition } from "react-transition-group";
 import Overlay from "./Overlay";
 import NewButton from "./NewButton";
 import FilterOverlay from "./FilterOverlay";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { useDeleteListMutation } from "../../app/api";
 import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { RiNotification4Line } from "react-icons/ri";
 import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
 
-const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList }) => {
+const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList, id_List }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const userProfileRegex = /\/(users)\/\d+/;
@@ -23,6 +25,9 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showEditList, setShowEditList] = useState(false);
   const [showListOptions, setShowListOptions] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const [deleteList] = useDeleteListMutation();
 
   const handleBackClick = () => {
     if (onBack) {
@@ -142,6 +147,21 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     const listPageRegex = /^\/lists\/\d+$/;
     return listPageRegex.test(location.pathname);
   };
+
+  const handleDeleteList = async () => {
+    console.log("Delete List ID:", id_List);
+  
+    try {
+      await deleteList(id_List).unwrap(); 
+      setShowConfirmation(false);
+      //alert("List deleted successfully");
+      navigate("/lists"); 
+    } catch (error) {
+      console.error("Failed to delete the list:", error);
+      alert("Failed to delete the list. Please try again.");
+    }
+  };
+  
 
   return (
     <header className="fixed top-0 left-0 w-screen z-[101] bg-white">
@@ -338,9 +358,19 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
             ]}
             links={[null, null, null]}
             hideOverlay={() => setShowEditList(false)}
-            onClicks={[() => { listClosed ? unlockList() : lockList() }, () => { }, () => { }]}
+            onClicks={[() => { listClosed ? unlockList() : lockList() }, () => { }, () => setShowConfirmation(true)]}
           />
         </CSSTransition>
+
+        <ConfirmationDialog
+        title="Delete List?"
+        details="The list will be removed from the shopping."
+        label="Delete"
+        bg="bg-red-600"
+        showConfirmation={showConfirmation}
+        setShowConfirmation={setShowConfirmation}
+        action={handleDeleteList}
+      />
 
         <CSSTransition
           in={showFilterOverlay}
@@ -388,6 +418,7 @@ TopBar.propTypes = {
   onBack: PropTypes.func,
   lockList: PropTypes.func,
   unlockList: PropTypes.func,
+  id_List: PropTypes.string.isRequired,
 };
 
 export default TopBar;
