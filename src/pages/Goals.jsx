@@ -1,26 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import GoalsData from "../data/goals.json";
 import Button from "../components/common/Button";
 import ProgressBar from "../components/common/ProgressBar";
 import { useNavigate } from 'react-router-dom';
+import { useGetGoalsByTagsQuery, useAssignGoalsToHouseholdMutation, useAddHouseholdTagsMutation, useGetHouseholdGoalsQuery, useGetHouseholdTagsQuery } from "../app/api";
+import { useSelector } from "react-redux";
+import CategoriesInput from "../components/common/CategoriesInput";
 
 const Goals = () => {
-  const goalsData = GoalsData;
-  const totalTags = goalsData.length;
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedGoals, setSelectedGoals] = useState([]);
+  const household = useSelector((state) => state.auth.currentHouseholdId);
   const [step, setStep] = useState(1);
+  const [tags, setTags] = useState([]);
+  const [selectedGoals, setSelectedGoals] = useState([]);
   const navigate = useNavigate();
+  const { data: householdGoalsData } = useGetHouseholdGoalsQuery(household);
+  const { data: householdTagsData } = useGetHouseholdTagsQuery(household);
+  const [addHouseholdTags] = useAddHouseholdTagsMutation();
+  const { data: fetchedGoals } = useGetGoalsByTagsQuery(tags?.map((tag) => tag.id));
+  const [assignGoals] = useAssignGoalsToHouseholdMutation();
 
-  const toggleTag = (tag) => {
-    setSelectedTags((prevTags) =>
-      prevTags.includes(tag)
-        ? prevTags.filter((t) => t !== tag)
-        : [...prevTags, tag]
-    );
-  };
+  useEffect(() => {
+    if (householdGoalsData?.data?.length > 0 && householdTagsData?.data?.length > 0) {
+      setSelectedGoals(householdGoalsData.data);
+      setTags(householdTagsData.data);
+    }
+  }, [householdGoalsData, householdTagsData]);
 
   const toggleGoal = (goal) => {
     setSelectedGoals((prevGoals) =>
@@ -30,130 +35,101 @@ const Goals = () => {
     );
   };
 
-  const handleNext = () => {
-    if (step === 1 && selectedTags.length > 0) {
+  const handleTags = async () => {
+    try {
+      await addHouseholdTags({ householdId: household, tags: tags.map((tag) => tag.id) }).unwrap();
       setStep(2);
+    } catch (error) {
+      console.error("Error adding tags:", error);
     }
   };
 
-  const handleSelectGoal = () => {
-    if (step === 2 && selectedGoals.length > 0) {
-      navigate('/onboarding');
+  const handleSubmit = async () => {
+    try {
+      await assignGoals({ householdId: household, goalIds: selectedGoals.map((goal) => goal.id) }).unwrap();
+      navigate("/household");
+    } catch (error) {
+      console.error('Failed to assign goal:', error);
     }
   };
-
-  
-  const progress = (selectedTags.length / totalTags) * 100;
 
   return (
     <div className="relative bg-white min-h-screen flex flex-col">
-      <TopBar />
-      
-      <main className="pt-28 flex-grow">
+      <div className="relative bg-white min-h-screen flex flex-col">
+        <TopBar />
         {step === 1 && (
-          <div className="px-5 flex flex-col gap-y-6">
-            <div className="flex flex-col gap-y-3">
-              <h2 className="text-lg font-semibold text-black">
-                Sustainable Tags
-              </h2>
-              <p className="text-base text-black50 font-medium">
-                Select some tags that you want to define your household in terms of sustainable practices.
-              </p>
+          <main className="pt-32">
+            <form className="flex flex-1 flex-col w-full h-auto justify-between px-5">
+              <div className="flex flex-col gap-y-2 pb-5">
+                <h2 className="text-lg font-semibold text-black">
+                  Sustainable Tags
+                </h2>
+                <p className="text-base text-black50 font-medium">
+                  Select some tags that you want to define your household in terms of sustainable practices.
+                </p>
+              </div>
+              <ProgressBar progress={2} />
+              <div className="flex flex-col w-full gap-y-6 h-auto pt-5">
+                <CategoriesInput label={"Sustainable Tags"} categorySelected={tags} onChange={setTags} filter={false} />
+              </div>
+            </form>
+            <div className="h-full my-6 px-5">
+              <Button
+                label="Next"
+                action={handleTags}
+              />
             </div>
-            <div className="w-full h-2 bg-gray-300 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-green-600"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            <div className="flex flex-wrap w-full gap-3">
-              {goalsData &&
-                goalsData.map((goal, index) => (
-                  <button
-                    key={index}
-                    className={`rounded-2xl border-2 border-green text-base py-1 px-2 ${
-                      selectedTags.includes(goal.title)
-                        ? "bg-green text-white"
-                        : "text-green"
-                    }`}
-                    onClick={() => toggleTag(goal.title)}
-                  >
-                    {goal.title}
-                  </button>
-                ))}
-            </div>
-            <div className="w-full flex flex-col items-end gap-y-3">
-              <Button label="Next" action={handleNext} disabled={selectedTags.length === 0} />
-              <a href="/" className="text-base text-black60 font-medium">
-                do this later
-              </a>
-            </div>
-          </div>
+          </main>
         )}
         {step === 2 && (
-          <div className="px-5 flex flex-col gap-y-6">
-            <div className="flex flex-col gap-y-3">
-              <h2 className="text-lg font-semibold text-black">
-                Sustainable goal
-              </h2>
-              <p className="text-base text-black50 font-medium">
-                Select the Sustainable Goal you want your household to achieve, based on the tags you previously chose.
-              </p>
-            </div>
-            <div className="w-full h-2 bg-gray-300 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-green-600"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            <div className="flex flex-wrap w-full gap-3">
-                
-            
-              {goalsData &&
-                goalsData.map((goal, slide, index) => (
-                  <button 
-                    key={index} 
-                    className={`flex flex-col rounded-2xl border-2 border-green p-5 text-left gap-y-3 m-y-2 ${
-                      selectedGoals.includes(goal.goal)
+          <main className="pt-32">
+            <form className="flex flex-1 flex-col w-full h-auto justify-between px-5">
+              <div className="flex flex-col gap-y-2 mb-5">
+                <h2 className="text-lg font-semibold text-black">
+                  Sustainable Goals
+                </h2>
+                <p className="text-base text-black50 font-medium">
+                  Select a goals that you want to achieve as a household in terms of sustainable practices.
+                </p>
+              </div>
+              <ProgressBar progress={8} />
+              <div className="flex flex-col w-full gap-y-6 h-auto mt-5">
+                {fetchedGoals && fetchedGoals.data &&
+                  fetchedGoals.data.map((goal, slide, index) => (
+                    <button
+                      key={index}
+                      className={`flex flex-col rounded-2xl border-2 border-green p-5 text-left gap-y-3 m-y-2 ${selectedGoals.includes(goal)
                         ? "bg-green text-white"
                         : "text-green"
-                    }`}
-                    onClick={() => toggleGoal(goal.goal)}
-                  >
-                    <p>tags</p>
-
-                    <div className="flex flex-col">
-                      <h2 className="text-xs font-normal text-black">{goal.goal.slug}</h2>
-                      <h1 className="font-semibold text-2xl text-black">
-                        {goal.goal.title}
-                      </h1>
-                      <p className="font-normal text-sm text-black">{goal.goal.details}</p>
-                    </div>
-                    <div className="flex flex-col mb-3">
-                      <p className="text-black font-normal text-xs mb-1">
-                        métrica
-                      </p>
-                      <ProgressBar />
-                    </div>
-                  </button>
-            ))} 
-            
+                        }`}
+                      onClick={() => toggleGoal(goal)}
+                      type="button"
+                    >
+                      <p>{goal.amount} times in 1 month</p>
+                      <div className="flex flex-col">
+                        <h2 className="text-xs font-normal text-black">{goal.slug}</h2>
+                        <h1 className="font-semibold text-2xl text-black">
+                          {goal.title}
+                        </h1>
+                        <p className="font-normal text-sm text-black">{goal.details}</p>
+                      </div>
+                    </button>
+                  ))}
+              </div>
+            </form>
+            <div className="h-full my-6 px-5">
+              <Button
+                label="Next"
+                action={handleSubmit}
+              />
             </div>
-            
-            
-
-            <div className="w-full flex flex-col items-end gap-y-3">
-              <Button label="Select Goal" action={handleSelectGoal} />
-              <a href="/" className="text-base text-black60 font-medium">
-                do this later
-              </a>
-            </div>
-          </div>
+          </main>
         )}
-      </main>
-      <BottomBar />
+        <BottomBar />
+      </div>
     </div>
   );
 };
+
 
 export default Goals;

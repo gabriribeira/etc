@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { useSearchProductsQuery } from "../../app/api";
+import Overlay from "./Overlay";
+import { CSSTransition } from "react-transition-group";
 
 const SearchProducts = ({ label, name }) => {
   const { data: response, error, isLoading } = useSearchProductsQuery(name, { skip: !name });
   const [products, setProducts] = useState([]);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null); // State to store selected product ID
 
   useEffect(() => {
     if (response) {
@@ -21,6 +25,12 @@ const SearchProducts = ({ label, name }) => {
       return name.substring(0, 22) + '...';
     }
     return name;
+  };
+
+  const handleOverlay = (productId) => {
+    setSelectedProductId(productId); // Set the selected product ID
+    setShowOverlay(true); // Show the overlay
+    console.log(productId);
   };
 
   return (
@@ -43,7 +53,7 @@ const SearchProducts = ({ label, name }) => {
                       <p className="text-lg text-red-600 font-bold">{product.value}€</p>
                     </div>
                     <div>
-                      <BsPlusCircleFill size={45} />
+                      <BsPlusCircleFill size={45} onClick={() => handleOverlay(product.id)} />
                     </div>
                   </div>
                 </div>
@@ -52,6 +62,26 @@ const SearchProducts = ({ label, name }) => {
           ))}
         </div>
       </div>
+      <CSSTransition
+        in={showOverlay}
+        timeout={500}
+        classNames="menu-primary"
+        className="fixed bottom-0 left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-t-2xl p-5"
+        unmountOnExit
+      >
+        <Overlay
+          label="Add to List"
+          options={[
+            "New List",
+            "Search",
+            "Lists",
+          ]}
+          links={[null, null, null]}
+          hideOverlay={() => setShowOverlay(false)}
+          onClicks={[() => {}, () => {}, () => {}]}
+          productId={selectedProductId} // Pass the selected product ID to the overlay
+        />
+      </CSSTransition>
     </div>
   );
 };

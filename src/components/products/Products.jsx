@@ -8,25 +8,25 @@ import SearchProducts from "../common/SearchProducts";
 
 const Products = () => {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
-  const handleCategoryChange = (selectedCategory) => {
-    setCategory(selectedCategory);
-    console.log(selectedCategory?.id); // Log o id da categoria aqui, acessando com segurança
+  const handleCategoryChange = (selectedCategories) => {
+    setCategories(selectedCategories);
+    console.log(selectedCategories.map(cat => cat.id)); // Log os ids das categorias selecionadas
   };
 
   return (
     <div className="bg-white min-h-screen">
       <TopBar />
-      <main className="mt-16">
+      <main className="mt-14">
         <div className="flex flex-col px-5 fade-in">
           <div className="flex flex-col w-full gap-y-3 my-2">
             <form>
               <SearchInput
-                label="Buscar"
+                label="Search"
                 value={search}
                 onChange={setSearch}
-                placeholder="Encontrar Produto"
+                placeholder="Find Products"
               />
             </form>
           </div>
@@ -34,28 +34,34 @@ const Products = () => {
           <div className="my-3">
             <CategoriesInput
               onChange={handleCategoryChange}
-              value={category}
-              label="Categorias"
-              categorySelected={category}
+              categorySelected={categories}
+              label="Categories"
               type="List"
             />
           </div>
 
           {search ? (
             <div>
-              <SearchProducts label="Resultados" name={search} />
+              <SearchProducts label="Results" name={search} />
             </div>
           ) : (
             <>
-              <div className="my-3">
-                <ScrollProducts label="Promoções" type={category ? category.id : "1"} />
-              </div>
-              <div className="mb-3">
-                <ScrollProducts label="Recomendados para você" type={category ? category.id : "5"} />
-              </div>
-              <div className="mb-3">
-                <ScrollProducts label="Laticínios" type={category ? category.id : "2"} />
-              </div>
+              {categories.length > 0 ? (
+                categories.map(category => (
+                  <div key={category.id} className="my-3">
+                    <ScrollProducts label={category.title} type={category.id} />
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="my-3">
+                    <ScrollProducts label="Promotions" type="1" />
+                  </div>
+                  <div className="mb-3">
+                    <ScrollProducts label="Recommended for you" type="5" />
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

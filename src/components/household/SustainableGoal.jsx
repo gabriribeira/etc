@@ -1,132 +1,161 @@
 import React, { useEffect, useState } from "react";
-import HouseholdGoals from "../../data/households_goals.json";
-import GoalsLogs from "../../data/goals_logs.json";
-import Goals from "../../data/goals.json";
 import ProgressBar from "../common/ProgressBar";
 import Button from "../common/Button";
-import HouseholdsData from "../../data/households.json";
+import { useSelector } from "react-redux";
+import {
+  useGetHouseholdGoalsQuery,
+  useGetHouseholdTagsQuery,
+  useIncrementGoalMutation,
+  useGetCompletedHouseholdGoalsQuery,
+  useLazyGetHouseholdGoalProgressQuery,
+} from "../../app/api";
+import { Link } from "react-router-dom";
 
 const SustainableGoal = () => {
-  const householdGoals = HouseholdGoals;
-  const goalsLogs = GoalsLogs;
-  const goals = Goals;
-  const households = HouseholdsData;
-  const [householdGoal, setHouseholdGoal] = useState(null);
-  const [goal, setGoal] = useState(null);
-  const [householdGoalTimes, setHouseholdGoalTimes] = useState(null);
-  const [tags, setTags] = useState(null);
-  const [authHousehold, setAuthHousehold] = useState(null);
+  const householdId = useSelector((state) => state.auth.currentHouseholdId);
+  const userId = useSelector((state) => state.auth.user?.id);
+  const { data: householdGoalsData, isLoading: isHouseholdGoalsLoading } = useGetHouseholdGoalsQuery(householdId, {
+    skip: !householdId,
+  });
+  const { data: householdTagsData, isLoading: isHouseholdTagsLoading } = useGetHouseholdTagsQuery(householdId, {
+    skip: !householdId,
+  });
+  const { data: completedGoalsData, isLoading: isCompletedGoalsLoading } = useGetCompletedHouseholdGoalsQuery(householdId, {
+    skip: !householdId,
+  });
+  const [getHouseholdGoalProgress] = useLazyGetHouseholdGoalProgressQuery();
+
+  const [householdGoals, setHouseholdGoals] = useState([]);
+  const [completedGoals, setCompletedGoals] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [progressData, setProgressData] = useState({});
+  const [incrementGoal] = useIncrementGoalMutation();
+
   useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
-    const storedHousehold = getCookieValue("household");
-    if (storedHousehold) {
-      setAuthHousehold(storedHousehold);
+    if (householdGoalsData?.data?.length > 0 && householdTagsData?.data?.length > 0) {
+      setHouseholdGoals(householdGoalsData.data);
+      setTags(householdTagsData.data);
     }
-  }, []);
+  }, [householdGoalsData, householdTagsData]);
+
   useEffect(() => {
-    if (householdGoals && goalsLogs && authHousehold) {
-      const householdGoalAux = householdGoals.find(
-        (householdGoal) =>
-          householdGoal.household_id === authHousehold.id &&
-          householdGoal.finished === false
-      );
-      setHouseholdGoal(householdGoalAux);
-      if (householdGoalAux) {
-        setGoal(goals.find((goal) => goal.id === householdGoalAux.goal_id));
-        console.log(householdGoalAux);
-        const householdGoalLogs = goalsLogs.filter(
-          (goalLog) => goalLog.goal_id === householdGoalAux.goal_id
-        );
-        console.log(householdGoalLogs);
-        setHouseholdGoalTimes(householdGoalLogs.length);
-      }
+    if (completedGoalsData?.data?.length > 0) {
+      setCompletedGoals(completedGoalsData.data);
     }
-  }, [householdGoals, goalsLogs, authHousehold]);
+  }, [completedGoalsData]);
+
   useEffect(() => {
-    if (households && authHousehold) {
-      let householdTagsArray = [];
-      const householdTags = households.find(
-        (household) => household.id === authHousehold.id
-      ).tags;
-      householdTags.forEach((tag) => {
-        goals.forEach((goal) => {
-          if (goal.id === tag) {
-            householdTagsArray.push(goal);
-          }
-        });
+    if (householdGoals.length > 0) {
+      householdGoals.forEach(async (goal) => {
+        const progress = await getHouseholdGoalProgress(goal.id).unwrap();
+        setProgressData((prevData) => ({
+          ...prevData,
+          [goal.id]: progress.data.length,
+        }));
       });
-      setTags(householdTagsArray);
     }
-  }, [households, authHousehold]);
-  const handleIncrement = () => {
-    if (householdGoalTimes < householdGoal.amount) {
-      const newGoalLog = {
-        id: goalsLogs.length + 1,
-        goal_id: householdGoal.goal_id,
-        household_id: householdGoal.household_id,
-        created_at: new Date().toISOString().split("T")[0],
-      };
-      goalsLogs.push(newGoalLog);
-      setHouseholdGoalTimes(householdGoalTimes + 1);
+  }, [householdGoals, getHouseholdGoalProgress]);
+
+  const handleIncrement = async (householdGoalId) => {
+    try {
+      const response = await incrementGoal({ householdGoalId, userId }).unwrap();
+      if (response.is_completed) {
+        alert('Goal completed!');
+      } else if (response) {
+        setProgressData((prevData) => ({
+          ...prevData,
+          [householdGoalId]: prevData[householdGoalId] + 1,
+        }));
+        // Refresh the goals data
+        const updatedGoals = householdGoals.map(goal =>
+          goal.id === householdGoalId ? { ...goal, Goal_Records: [...goal.Goal_Records, response] } : goal
+        );
+        setHouseholdGoals(updatedGoals);
+      } else {
+        alert('Failed to increment goal');
+      }
+    } catch (error) {
+      console.error('Error incrementing goal:', error);
+      if (error?.data?.message === 'You can only increment once a day') {
+        alert('You can only increment once a day');
+      } else if (error?.data?.message === 'Goal already completed') {
+        alert('Goal already completed');
+      } else {
+        alert('Failed to increment goal');
+      }
     }
   };
-  return householdGoal && goal && householdGoalTimes ? (
-    <div className="flex flex-col w-full px-5 gap-y-3">
-      <h2 className="text-lg text-black font-semibold">Sustainability</h2>
-      <div className="flex flex-wrap items-center gap-x-3">
-        {tags &&
-          tags.map((tag, index) => (
-            <div
-              className="rounded-2xl text-white bg-green bg-gradient-to-r from-green to-white/30 text-base py-1 px-3"
-              key={index}
-            >
-              {tag.title}
+
+  useEffect(() => {
+    console.log("Household Goals:", householdGoals);
+    console.log("Completed Goals:", completedGoals);
+    console.log("Tags:", tags);
+    console.log("Progress Data:", progressData);
+  }, [householdGoals, completedGoals, tags, progressData]);
+
+  if (isHouseholdGoalsLoading || isHouseholdTagsLoading || isCompletedGoalsLoading) return <div>Loading...</div>;
+
+  return (
+    (householdGoals?.length > 0 || tags.length > 0) ? (
+      <div className="flex flex-col w-full px-5 gap-y-3">
+        <h2 className="text-lg text-black font-semibold">Sustainability</h2>
+        {tags && tags.length > 0 &&
+          <div className="flex flex-wrap items-center gap-2">
+            {tags.map((tag, index) => (
+              <div
+                className="rounded-2xl text-white bg-green bg-gradient-to-r from-green to-white/30 text-base py-1 px-3"
+                key={index}
+              >
+                {tag.title}
+              </div>
+            ))}
+          </div>
+        }
+        {householdGoals && householdGoals.length > 0 &&
+          <div className="flex overflow-x-scroll space-x-3">
+            {householdGoals.map((goal, index) => (
+              <div key={index} className="flex-shrink-0 w-72 bg-green bg-gradient-to-br from-black/30 to-white/70 rounded-2xl p-5 text-white justify-between flex flex-col">
+                <div className="flex flex-col">
+                  <h2 className="text-lg font-medium text-white">{goal.Goal.slug}</h2>
+                  <div className="flex flex-col">
+                    <h1 className="font-medium text-2xl text-black">{goal.Goal.title}</h1>
+                    <p className="font-normal text-sm text-black">{goal.Goal.details}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col mb-3">
+                  <p className="text-black font-base text-sm mb-1">
+                    {progressData[goal.id] || 0} / {goal.Goal.amount}
+                  </p>
+                  <ProgressBar progress={(progressData[goal.id] || 0) / goal.Goal.amount * 100} />
+                </div>
+                <Button label={"Increment"} action={() => handleIncrement(goal.id)} />
+              </div>
+            ))}
+          </div>
+        }
+        {completedGoals && completedGoals.length > 0 &&
+          <div className="">
+            <h2 className="text-lg text-black font-semibold">Completed Goals</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {completedGoals.map((goal, index) => (
+                <div key={index} className="col-span-1 flex flex-col items-start bg-salmon bg-gradient-to-br from-yellow-500 to-white/50 rounded-2xl p-2">
+                  <h1 className="font-semibold text-sm text-black leading-none">{goal.Goal.slug}</h1>
+                  <p className="text-[11px] text-black mt-1">{new Date(goal.updatedAt).toLocaleDateString()}</p>
+                </div>
+              ))}
             </div>
-          ))}
-      </div>
-      {householdGoal && householdGoalTimes && (
-        <div className="flex flex-col bg-green bg-gradient-to-br from-black/30 to-white/70 rounded-2xl p-5 text-white gap-y-3">
-          <h2 className="text-lg font-medium text-white">{goal.goal.slug}</h2>
-          <img
-            //eslint-disable-next-line
-            src={require(`../../assets/data/goals/${goal.goal.img}`)}
-            alt="Goal Preview Picture"
-            className="w-full object-cover"
-          />
-          <div className="flex flex-col">
-            <h1 className="font-medium text-2xl text-black">
-              {goal.goal.title}
-            </h1>
-            <p className="font-normal text-sm text-black">{goal.goal.details}</p>
           </div>
-          <div className="flex flex-col mb-3">
-            <p className="text-black font-base text-sm mb-1">
-              {(householdGoalTimes * 100) / householdGoal.amount}%
-            </p>
-            <ProgressBar progress={householdGoalTimes} />
-          </div>
-          <Button label={"Increment"} action={handleIncrement} />
-        </div>
-      )}
-    </div>
-  ) : (
-    <div className="flex flex-col bg-green/80 rounded-2xl p-3 text-white gap-y-3 mx-5">
-      <h2 className="text-lg font-light text-white">Household Goal</h2>
-      <div className="flex flex-col">
-        <h1 className="font-semibold text-2xl text-white">
-          Start a new goal today!
-        </h1>
+        }
       </div>
-    </div>
+    ) : (
+      <div className="flex flex-col w-full px-5 gap-y-3">
+        <h2 className="text-lg text-black font-semibold">Sustainability</h2>
+        <Link to="/goals" className="text-white bg-green p-3 rounded-2xl flex flex-col">
+          <h1 className="font-bold text-2xl">Start a Goal today!</h1>
+          <p className="text-md font-light leading-none mt-2">Select goals that you want to achieve as a household in terms of sustainable practices.</p>
+        </Link>
+      </div>
+    )
   );
 };
 

@@ -25,7 +25,7 @@ const PhotoInput = ({ onChange, value, label }) => {
       <label htmlFor="photo-input" className="cursor-pointer">
         <div className="flex items-center justify-center bg-black20 h-20 w-20 rounded-[20px]">
           {value ? (
-            <img src={photo ? photo : value} alt="Selected" className=" object-cover h-full w-full rounded-[20px]" />
+            <img src={photo ? photo : value} alt="Selected" className=" object-cover h-full w-full rounded-[20px]" referrerPolicy="no-referrer" />
           ) : (
             <span className="flex items-center justify-start h-full">
                 <span className=''><IoCameraOutline size={30} /></span></span>

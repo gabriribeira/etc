@@ -100,6 +100,7 @@ const ListDisplay = () => {
           listClosed={list.is_closed}
           lockList={handleLock}
           unlockList={handleUnlock}
+          id_List={list.id}
         />
       )}
       {list ? (

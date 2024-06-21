@@ -143,6 +143,7 @@ const Task = ({ task, defaultTask, logProp, isPrivate, done, history }) => {
                 }
                 alt="User Profile Picture"
                 className="w-[40px] h-[40px] rounded-full object-cover object-center"
+                referrerPolicy="no-referrer"
               />
             )}
             <Link
@@ -183,6 +184,7 @@ const Task = ({ task, defaultTask, logProp, isPrivate, done, history }) => {
                     }
                     alt="User Profile Picture"
                     className="w-full h-full rounded-full absolute top-0 left-0 object-cover object-center shrink-0"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="flex flex-col">

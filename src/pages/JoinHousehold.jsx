@@ -4,6 +4,7 @@ import SearchInput from "../components/common/SearchInput";
 import Button from "../components/common/Button";
 import { useSearchHouseholdsQuery, useCreateRequestMutation } from "../app/api";
 import { useSelector } from "react-redux";
+import Image from "../assets/imgs/etc/logo_dots.png";
 
 const JoinHousehold = () => {
   const [search, setSearch] = useState("");
@@ -48,9 +49,10 @@ const JoinHousehold = () => {
             <div className="flex flex-col gap-y-10 mt-6">
               <div className="flex flex-col gap-y-3">
                 <img
-                  src={household.img_url} // Update this line to use the proper image URL field
+                  src={household.img_url ? household.img_url : Image}
                   alt="Household"
                   className="w-[150px] h-[150px] rounded-full m-auto"
+                  referrerPolicy="no-referrer"
                 />
                 <h1 className="text-2xl m-auto">{household.name}</h1>
               </div>
@@ -64,9 +66,10 @@ const JoinHousehold = () => {
             <div className="flex flex-col gap-y-4 mt-6 h-full">
               <div className="flex flex-col gap-y-5">
                 <img
-                  src={household.img_url} // Update this line to use the proper image URL field
+                  src={household.img_url ? household.img_url : Image}
                   alt="Household"
                   className="w-[150px] h-[150px] rounded-full m-auto"
+                  referrerPolicy="no-referrer"
                 />
                 <h1 className="text-2xl m-auto">{household.name}</h1>
               </div>

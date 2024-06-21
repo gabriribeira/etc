@@ -24,10 +24,10 @@ const api = createApi({
       }),
     }),
     updateUser: builder.mutation({
-      query: ({ id, ...data }) => ({
+      query: ({ id, formData }) => ({
         url: `/users/${id}`,
         method: "PUT",
-        body: data,
+        body: formData,
       }),
     }),
     checkAuth: builder.query({
@@ -89,6 +89,14 @@ const api = createApi({
         method: "PATCH",
       }),
     }),
+
+    deleteList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
     estimateListValue: builder.mutation({
       query: (listId) => ({
         url: `/lists/${listId}/estimate-value`,
@@ -119,10 +127,10 @@ const api = createApi({
       }),
     }),
     createHousehold: builder.mutation({
-      query: (household) => ({
+      query: (formData) => ({
         url: "/households",
         method: "POST",
-        body: household,
+        body: formData,
       }),
     }),
     addMembers: builder.mutation({
@@ -208,6 +216,10 @@ const api = createApi({
       }),
     }),
 
+    getProductById: builder.query({
+      query: (id) => `/products/${id}`,
+    }),
+
     getProductsByCategory: builder.query({
       query: (categoryId) => `/products/category/${categoryId}`,
     }),
@@ -221,6 +233,69 @@ const api = createApi({
         method: "POST",
         body: request,
       }),
+    }),
+    addUserSpecifications: builder.mutation({
+      query: ({ userId, specifications }) => ({
+        url: `/users/${userId}/specifications`,
+        method: "POST",
+        body: { specifications },
+      }),
+    }),
+    getSpecifications: builder.query({
+      query: () => `/specifications`,
+    }),
+    getUserSpecifications: builder.query({
+      query: (userId) => `/users/${userId}/specifications`,
+    }),
+    updateHousehold: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/households/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+    }),
+    getHouseholdTags: builder.query({
+      query: (householdId) => `/households/${householdId}/tags`,
+    }),
+    getHouseholdUsers: builder.query({
+      query: (householdId) => `/households/${householdId}/users`,
+    }),
+    updateHouseholdTags: builder.mutation({
+      query: ({ householdId, tags }) => ({
+        url: `/households/${householdId}/tags`,
+        method: "PUT",
+        body: { tags },
+      }),
+    }),
+    assignGoalsToHousehold: builder.mutation({
+      query: (assignment) => ({
+        url: '/goals/assign',
+        method: 'POST',
+        body: assignment,
+      }),
+    }),
+    getGoalsByTags: builder.query({
+      query: (tagIds) => ({
+        url: '/goals/by-tags',
+        method: 'POST',
+        body: { tagIds },
+      }),
+    }),
+    getHouseholdGoals: builder.query({
+      query: (householdId) => `/goals/household/${householdId}`,
+    }),
+    incrementGoal: builder.mutation({
+      query: ({ householdGoalId, userId }) => ({
+        url: `goals/increment`,
+        method: 'POST',
+        body: { householdGoalId, userId },
+      }),
+    }),
+    getCompletedHouseholdGoals: builder.query({
+      query: (householdId) => `/goals/${householdId}/completed-goals`,
+    }),
+    getHouseholdGoalProgress: builder.query({
+      query: (householdGoalId) => `/goals/${householdGoalId}/progress`,
     }),
   }),
 });
@@ -240,6 +315,7 @@ export const {
   useGetListItemsQuery,
   useLockListMutation,
   useUnlockListMutation,
+  useDeleteListMutation,
   useEstimateListValueMutation,
   useGetItemQuery,
   useAddItemMutation,
@@ -261,9 +337,23 @@ export const {
   useGetExpenseQuery,
   useSearchProductsQuery,
   useGetProductsByCategoryQuery,
+  useGetProductByIdQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
   useSearchHouseholdsQuery,
   useCreateJoinRequestMutation,
+  useAddUserSpecificationsMutation,
+  useGetSpecificationsQuery,
+  useGetUserSpecificationsQuery,
+  useUpdateHouseholdMutation,
+  useGetHouseholdTagsQuery,
+  useGetHouseholdUsersQuery,
+  useUpdateHouseholdTagsMutation,
+  useAssignGoalsToHouseholdMutation,
+  useGetGoalsByTagsQuery,
+  useGetHouseholdGoalsQuery,
+  useIncrementGoalMutation,
+  useGetCompletedHouseholdGoalsQuery,
+  useLazyGetHouseholdGoalProgressQuery,
 } = api;
 export default api;

@@ -93,7 +93,7 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="/register/step2" element={<RegisterStep2 />} />
           <Route
-            path="/households/:household/edit"
+            path="/household/edit"
             element={<EditHousehold />}
           />
           <Route path="/expenses/:expense" element={<Expense />} />
@@ -119,7 +119,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
-          <Route path="/users/:user/edit" element={<EditUser />} />
+          <Route path="/profile/edit" element={<EditUser />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/products" element={<Products />} />
           <Route path="/lists/archive" element={<Lists/>} />

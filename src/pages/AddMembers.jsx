@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SearchInput from "../components/common/SearchInput";
 import { useSearchUsersQuery } from "../app/api";
 
-const AddMembers = ({ authHousehold, members, setMembers }) => {
+const AddMembers = ({ authUser, authHousehold, members, setMembers }) => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   //eslint-disable-next-line
@@ -12,8 +12,8 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
   });
 
   useEffect(() => {
-    if (users) {
-      setResults(users);
+    if (users?.data) {
+      setResults(users.data.filter((user) => user.id !== authUser.id));
     }
   }, [users]);
 
@@ -22,7 +22,7 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
     if (!members.some((member) => member.id === user.id)) {
       setMembers([...members, user]);
     }
-    setSearch(""); // Clear search input after selecting a user
+    setSearch("");
   };
 
   return (
@@ -33,6 +33,7 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
             src={authHousehold.img_url}
             alt="Authenticated User Profile Picture"
             className="w-[60px] h-[60px] rounded-full object-cover object-center left-0 top-0"
+            referrerPolicy="no-referrer"
           />
           <h1 className="text-xl font-semibold text-black">
             {authHousehold.name}
@@ -43,7 +44,7 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
             label="Search for other users"
             value={search}
             onChange={setSearch}
-            results={results.data}
+            results={results}
             onSelect={handleSelect}
           />
         </div>
@@ -57,6 +58,7 @@ const AddMembers = ({ authHousehold, members, setMembers }) => {
                 src={member.img_url}
                 alt="Authenticated User Profile Picture"
                 className="w-[50px] h-[50px] rounded-full object-cover object-center left-0 top-0"
+                referrerPolicy="no-referrer"
               />
               <h2 className="font-medium text-base">
                 {member.name.split(" ")[0]}

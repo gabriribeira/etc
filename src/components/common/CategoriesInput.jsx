@@ -1,36 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Category from "./Category";
-import { useGetTagsQuery } from "../../app/api";
+import { useGetTagsQuery, useGetSpecificationsQuery } from "../../app/api";
 
-const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
+const CategoriesInput = ({ label, categorySelected, onChange, filter, specificationsProps }) => {
   const { data: categories } = useGetTagsQuery();
   const [showAll, setShowAll] = useState(false);
+  const { data: specifications } = useGetSpecificationsQuery();
 
   const handleChange = (category) => {
-    if (categorySelected.includes(category)) {
-      const newCategory = categorySelected.filter((item) => item !== category);
-      return onChange(newCategory);
+    if (specificationsProps) {
+      handleSpecifications(category);
     } else {
-      return onChange([...categorySelected, category]);
+      handleTags(category);
     }
   };
 
-  useEffect(() => {
-    console.log(categorySelected);
-  }, [categorySelected]);
+  const handleTags = (category) => {
+    const selectedCategories = Array.isArray(categorySelected) ? categorySelected : [];
+    if (selectedCategories.find((item) => item.id === category.id)) {
+      const newCategory = selectedCategories.filter((item) => item.id !== category.id);
+      onChange(newCategory);
+    } else {
+      onChange([...selectedCategories, category]);
+    }
+  };
+
+  const handleSpecifications = (spec) => {
+    const selectedSpecifications = Array.isArray(categorySelected) ? categorySelected : [];
+    if (selectedSpecifications.find((item) => item.id === spec.id)) {
+      const newSpecifications = selectedSpecifications.filter((item) => item.id !== spec.id);
+      onChange(newSpecifications);
+    } else {
+      onChange([...selectedSpecifications, spec]);
+    }
+  };
+
+  const isCategorySelected = (id) => {
+    const selectedCategories = Array.isArray(categorySelected) ? categorySelected : [];
+    return selectedCategories.some((selected) => selected.id === id);
+  };
 
   return (
-    categories && (
+    categories && specifications && (
       <div className="w-full flex flex-col">
         {label && (
           <div className="flex justify-between items-center mb-2">
-            <label htmlFor={label} className="text-lg font-medium">
+            <label htmlFor={label} className="text-lg font-semibold">
               {label}
             </label>
             <button
-              className="text-blue-500 "
+              className="text-blue-500"
               onClick={() => setShowAll(!showAll)}
+              type="button"
             >
               {showAll ? "View Less" : "View All"}
             </button>
@@ -48,15 +70,25 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
               </button>
             </>
           )}
-          {categories.slice(0, showAll ? categories.length : 3).map((category, index) => (
+          {specificationsProps ? specifications.map((spec) => (
             <Category
-              key={index}
-              category={category}
+              key={spec.id}
+              category={spec}
               onChange={handleChange}
               filter={filter}
-              value={categorySelected.includes(category) ? true : false}
+              value={isCategorySelected(spec.id)}
+              specificationsProps={specificationsProps}
             />
-          ))}
+          )) :
+            categories.slice(0, showAll ? categories.length : 3).map((category) => (
+              <Category
+                key={category.id}
+                category={category}
+                onChange={handleChange}
+                filter={filter}
+                value={isCategorySelected(category.id)}
+              />
+            ))}
         </div>
       </div>
     )
@@ -66,8 +98,9 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter }) => {
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  categorySelected: PropTypes.arrayOf(PropTypes.object),
   filter: PropTypes.bool,
+  specificationsProps: PropTypes.bool,
 };
 
 export default CategoriesInput;

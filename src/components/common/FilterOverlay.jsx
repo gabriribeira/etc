@@ -272,6 +272,128 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           </div>
         );
 
+      case "Order by":
+        return (
+          <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
+            <button
+              onClick={() => handleFilters("Price Low to High")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Price Low to High") && "font-bold"
+              }`}
+            >
+              Price Low to High
+              {checkIfFilterIsApplied("Price Low to High") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Price High to Low")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Price High to Low") && "font-bold"
+              }`}
+            >
+              Price High to Low
+              {checkIfFilterIsApplied("Price High to Low") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Popularity")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Popularity") && "font-bold"
+              }`}
+            >
+              Popularity
+              {checkIfFilterIsApplied("Popularity") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+          </div>
+        );
+
+      case "Supermarket":
+        return (
+          <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
+            <button
+              onClick={() => handleFilters("All")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("All") && "font-bold"
+              }`}
+            >
+              All
+              {checkIfFilterIsApplied("All") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Aldi")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Aldi") && "font-bold"
+              }`}
+            >
+              Aldi
+              {checkIfFilterIsApplied("Aldi") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Auchan")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Auchan") && "font-bold"
+              }`}
+            >
+              Auchan
+              {checkIfFilterIsApplied("Auchan") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Continente")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Continente") && "font-bold"
+              }`}
+            >
+              Continente
+              {checkIfFilterIsApplied("Continente") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Lidl")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Lidl") && "font-bold"
+              }`}
+            >
+              Lidl
+              {checkIfFilterIsApplied("Lidl") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Mercadona")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Mercadona") && "font-bold"
+              }`}
+            >
+              Mercadona
+              {checkIfFilterIsApplied("Mercadona") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+            <button
+              onClick={() => handleFilters("Pingo Doce")}
+              className={`relative flex items-center ${
+                checkIfFilterIsApplied("Pingo Doce") && "font-bold"
+              }`}
+            >
+              Pingo Doce
+              {checkIfFilterIsApplied("Pingo Doce") && (
+                <IoCheckmark className="absolute top-0 text-2xl text-black right-100 -ml-10" />
+              )}
+            </button>
+          </div>
+        );
+
       default:
         return "All";
     }
@@ -283,7 +405,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
         onClick={hideFilters}
         className="fixed h-screen w-screen bg-black/20 top-0 left-0"
       ></div>
-      <div className="absolute bg-white bottom-0 left-0 w-screen rounded-t-[2rem] px-5 py-10">
+      <div className="absolute bg-white bottom-0 left-0 w-screen max-h-[80%] overflow-y-auto rounded-t-[2rem] px-5 py-10">
         <div className="absolute top-[10px] left-0 w-screen flex justify-center">
           <div className="w-[25%] h-[5px] bg-black/50 rounded-full"></div>
         </div>

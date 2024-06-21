@@ -38,6 +38,13 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
     navigate(`/lists/${list_id}/item/${item.id}/image/`);
   };
 
+  const truncateName = (name) => {
+    if (name.length > 20) {
+      return `${name.slice(0, 20)}...`;
+    }
+    return name;
+  };
+
   return (
     <div className="w-full flex items-center justify-between bg-black rounded-2xl p-3 gap-x-3">
       <div className="flex items-center gap-x-3">
@@ -63,7 +70,7 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
               checked ? "line-through" : ""
             }`}
           >
-            {item.name}
+            {truncateName(item.name)}
           </h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
           {item.amount && item.unit && (
@@ -86,6 +93,7 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
               src={item.img_url}
               className="w-full h-full rounded-full object-cover"
               alt={item.name}
+              referrerPolicy="no-referrer"
             />
           </div>
         )}

@@ -8,6 +8,7 @@ import Overlay from "./Overlay";
 const ScrollProducts = ({ label, type }) => {
   const { data: response, error, isLoading } = useGetProductsByCategoryQuery(type);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null); // State to store selected product ID
 
   if (isLoading) return <div>Carregando...</div>;
   if (error) return <div>Erro ao carregar os produtos</div>;
@@ -21,9 +22,11 @@ const ScrollProducts = ({ label, type }) => {
     return name;
   };
 
-  const handleOverlay = () => {
-    setShowOverlay(!showOverlay);
-  }
+  const handleOverlay = (productId) => {
+    setSelectedProductId(productId); // Set the selected product ID
+    setShowOverlay(true); // Show the overlay
+    console.log(productId);
+  };
 
   return (
     <div className="flex flex-col bg-white m-auto p-auto">
@@ -45,35 +48,35 @@ const ScrollProducts = ({ label, type }) => {
                       <p className="text-lg text-red-600 font-bold">{(product.value * 0.9).toFixed(2)}€</p>
                     </div>
                     <div className="flex items-end">
-                      <BsPlusCircleFill size={45} onClick={handleOverlay} />
+                      <BsPlusCircleFill size={45} onClick={() => handleOverlay(product.id)} />
                     </div>
                   </div>
                 </div>
               </div>
-
-              <CSSTransition
-                in={showOverlay}
-                timeout={500}
-                classNames="menu-primary"
-                className="fixed top-[60px] left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-b-2xl p-5"
-                unmountOnExit
-              >
-                <Overlay
-                  label="Add to List"
-                  options={[
-                    "New List",
-                    "Search",
-                    "Lists",
-                  ]}
-                  links={[null, null, null]}
-                  hideOverlay={() => setShowOverlay(false)}
-                  onClicks={[() => {}, () => {}, () => {}]}
-                />
-              </CSSTransition>
             </div>
           ))}
         </div>
       </div>
+      <CSSTransition
+        in={showOverlay}
+        timeout={500}
+        classNames="menu-primary"
+        className="fixed bottom-0 left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-t-2xl p-5"
+        unmountOnExit
+      >
+        <Overlay
+          label="Add to List"
+          options={[
+            "New List",
+            "Search",
+            "Lists",
+          ]}
+          links={[null, null, null]}
+          hideOverlay={() => setShowOverlay(false)}
+          onClicks={[() => {}, () => {}, () => {}]}
+          productId={selectedProductId} // Pass the selected product ID to the overlay
+        />
+      </CSSTransition>
     </div>
   );
 };

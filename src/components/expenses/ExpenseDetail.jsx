@@ -82,6 +82,7 @@ const ExpenseDetail = () => {
                 src={require(`../../assets/data/users/${user.img}`)}
                 alt="User Profile Picture"
                 className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="flex flex-col grow">
@@ -101,6 +102,7 @@ const ExpenseDetail = () => {
                   src={require(`../../assets/data/users/${member.img}`)}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div>{member.name}</div>

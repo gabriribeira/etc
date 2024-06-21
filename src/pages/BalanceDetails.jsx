@@ -72,6 +72,7 @@ const BalanceDetails = () => {
                   src={require(`../assets/data/users/${authUser.img}`)}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
@@ -80,6 +81,7 @@ const BalanceDetails = () => {
                   src={require(`../assets/data/users/${user.img}`)}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                  referrerPolicy="no-referrer"  
                 />
               </div>
             </div>

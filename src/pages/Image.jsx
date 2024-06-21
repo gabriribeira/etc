@@ -19,6 +19,7 @@ const Image = () => {
               src={require(`../assets/imgs/products/${item.img_url}`)}
               alt={item.name}
               className="max-w-full max-h-full mb-4 rounded-md"
+              referrerPolicy="no-referrer"
             />
           ) : (
             <p>Imagem não encontrada</p>
