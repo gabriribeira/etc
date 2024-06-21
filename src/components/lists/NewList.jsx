@@ -59,12 +59,19 @@ const NewList = () => {
     setDescription("");
   };
 
+  useEffect(() => {
+    if (members.length > 0) {
+      console.log(members);
+    }
+  }, [members]);
+
   const handleNewList = async () => {
     try {
       const newListData = {
         name: name,
         description: description,
         user_id: user.id,
+        userIds: members
       };
 
       let newList;
@@ -213,11 +220,10 @@ const NewList = () => {
                       label=""
                       value={description}
                       onChange={setDescription}
-                      placeholder={`${
-                        eventSelected
+                      placeholder={`${eventSelected
                           ? "Eg: Birthday dinner for 5 friends, picnic date"
                           : "Eg: Vegetarian Lasagna, Gluten Free"
-                      }`}
+                        }`}
                     />
                   )}
                 </div>

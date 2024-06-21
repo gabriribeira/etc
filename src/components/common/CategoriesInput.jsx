@@ -52,6 +52,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
             <button
               className="text-blue-500"
               onClick={() => setShowAll(!showAll)}
+              type="button"
             >
               {showAll ? "View Less" : "View All"}
             </button>
