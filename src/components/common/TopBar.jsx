@@ -218,7 +218,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               </Link>
             ) : (
               <Link
-                to={`/users/${user?.id}`}
+                to={`/profile`}
                 className="flex items-center gap-x-3 z-[101]"
               >
                 <img

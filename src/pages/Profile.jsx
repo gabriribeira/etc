@@ -45,7 +45,7 @@ const Profile = () => {
         <TopBar />
         <main className="mt-16">
           <div className="flex flex-col">
-            <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20   text-center relative">
+            <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
               <div className="py-16 flex flex-col items-center justify-center text-white">
                 <Link
                   to={`/profile/edit`}

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
-import { RxDotsVertical } from "react-icons/rx";
 import { useGetUserHouseholdsQuery, useGetUserQuery } from "../app/api";
-import DefaultProfilePicture from "../assets/data/users/leo.webp";
-import CategoriesData from "../data/categories.json";
+import DefaultProfilePicture from "../assets/imgs/etc/logo_dots.png";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const User = () => {
-  const categoriesData = CategoriesData;
   const location = useLocation();
   const { data: user } = useGetUserQuery(location.pathname.split("/")[2]);
-  const [imageUrl, setImageUrl] = useState(DefaultProfilePicture);
   const {
     data: households,
-    isLoading,
-    error,
+    isLoading: isLoadingHouseholds,
+    error: householdsError,
   } = useGetUserHouseholdsQuery(location.pathname.split("/")[2]);
+
+  const [imageUrl, setImageUrl] = useState(DefaultProfilePicture);
 
   useEffect(() => {
     if (user) {
@@ -25,17 +22,12 @@ const User = () => {
     }
   }, [user]);
 
-  if (isLoading) {
+  if (isLoadingHouseholds) {
     return <div>Loading...</div>;
   }
-  if (error) {
-    return <div>Error: {error.message}</div>;
+  if (householdsError) {
+    return <div>Error: {householdsError.message}</div>;
   }
-
-  const getCategoryTitle = (categoryId) => {
-    const category = categoriesData.find((cat) => cat.id === categoryId);
-    return category ? category.title : "Unknown";
-  };
 
   return (
     user &&
@@ -44,18 +36,11 @@ const User = () => {
         <TopBar />
         <main className="mt-32 bg-white">
           <div className="flex flex-col">
-            <div className="flex flex-col bg-black20 text-center relative">
-              <Link
-                to={`/users/${user.id}/edit`}
-                className="font-medium text-sm absolute top-3 right-3"
-              >
-                edit
-              </Link>
+            <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
               <div className="py-16 flex flex-col items-center justify-center">
                 <img
                   src={imageUrl}
                   alt="Profile Picture"
-                  onError={(e) => (e.currentTarget.src = DefaultProfilePicture)}
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
                   referrerPolicy="no-referrer"
                 />
@@ -65,27 +50,11 @@ const User = () => {
                 <p className="font-light text-sm text-white">
                   @{user.data.username}
                 </p>
-                <h1 className="font-medium text-xl mt-2">{user.name}</h1>
-                <p className="font-normal text-sm">@{user.username}</p>
               </div>
             </div>
             <div className="flex flex-col px-5 mt-6">
               <h1 className="font-semibold text-lg mb-2">Description</h1>
-              <p className="text-black text-base">{user.data.description}</p>
-            </div>
-
-            <div className="flex flex-col px-5 mt-6">
-              <h1 className="font-semibold text-lg mb-4">Food Restrictions</h1>
-              <p className="text-base">
-                {user.food_restriction.map((categoryId, index) => (
-                  <span
-                    key={index}
-                    className="bg-black text-white p-3 rounded-xl mr-2"
-                  >
-                    {getCategoryTitle(categoryId)}
-                  </span>
-                ))}
-              </p>
+              <p className="text-black text-base">{user?.data?.description || "No description yet"}</p>
             </div>
 
             <div className="flex flex-col px-5 mt-6">
@@ -110,15 +79,6 @@ const User = () => {
                         <p className="text-white text-lg font-medium">
                           {household.name}
                         </p>
-                      </div>
-                      <div className="flex items-center gap-x-3">
-                        <button
-                          type="button"
-                          className="text-white text-2xl"
-                          aria-label="Household settings"
-                        >
-                          <RxDotsVertical />
-                        </button>
                       </div>
                     </div>
                   ))}
