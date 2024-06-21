@@ -38,7 +38,7 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
       </div>
       <div className="flex flex-col px-5">
         <h1 className="font-semibold text-lg mb-2">Description</h1>
-        <p className="text-black text-base">{household.description}</p>
+        <p className="text-black text-base">{household.description ? household.description : "No description yet"}</p>
       </div>
     </>
   );
