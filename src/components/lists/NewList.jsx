@@ -47,12 +47,19 @@ const NewList = () => {
     setDescription("");
   };
 
+  useEffect(() => {
+    if (members.length > 0) {
+      console.log(members);
+    }
+  }, [members]);
+
   const handleNewList = async () => {
     try {
       const newListData = {
         name: name,
         description: description,
         user_id: user.id,
+        userIds: members
       };
 
       if (aiToggle) {
@@ -81,7 +88,7 @@ const NewList = () => {
   return (
     <div className="bg-white min-h-screen">
       <TopBar />
-      {isLoadingRecipe  && <Loader />}
+      {isLoadingRecipe && <Loader />}
       <main className="pt-32">
         <div className="flex flex-col px-5 fade-in">
           <div className="flex flex-col w-full gap-y-3">
@@ -176,11 +183,10 @@ const NewList = () => {
                       label=""
                       value={description}
                       onChange={setDescription}
-                      placeholder={`${
-                        eventSelected
+                      placeholder={`${eventSelected
                           ? "Eg: Birthday dinner for 5 friends, picnic date"
                           : "Eg: Vegetarian Lasagna, Gluten Free"
-                      }`}
+                        }`}
                     />
                   )}
                 </div>
