@@ -127,10 +127,10 @@ const api = createApi({
       }),
     }),
     createHousehold: builder.mutation({
-      query: (household) => ({
+      query: (formData) => ({
         url: "/households",
         method: "POST",
-        body: household,
+        body: formData,
       }),
     }),
     addMembers: builder.mutation({
@@ -257,12 +257,45 @@ const api = createApi({
     getHouseholdTags: builder.query({
       query: (householdId) => `/households/${householdId}/tags`,
     }),
+    getHouseholdUsers: builder.query({
+      query: (householdId) => `/households/${householdId}/users`,
+    }),
     updateHouseholdTags: builder.mutation({
       query: ({ householdId, tags }) => ({
         url: `/households/${householdId}/tags`,
         method: "PUT",
         body: { tags },
       }),
+    }),
+    assignGoalsToHousehold: builder.mutation({
+      query: (assignment) => ({
+        url: '/goals/assign',
+        method: 'POST',
+        body: assignment,
+      }),
+    }),
+    getGoalsByTags: builder.query({
+      query: (tagIds) => ({
+        url: '/goals/by-tags',
+        method: 'POST',
+        body: { tagIds },
+      }),
+    }),
+    getHouseholdGoals: builder.query({
+      query: (householdId) => `/goals/household/${householdId}`,
+    }),
+    incrementGoal: builder.mutation({
+      query: ({ householdGoalId, userId }) => ({
+        url: `goals/increment`,
+        method: 'POST',
+        body: { householdGoalId, userId },
+      }),
+    }),
+    getCompletedHouseholdGoals: builder.query({
+      query: (householdId) => `/goals/${householdId}/completed-goals`,
+    }),
+    getHouseholdGoalProgress: builder.query({
+      query: (householdGoalId) => `/goals/${householdGoalId}/progress`,
     }),
   }),
 });
@@ -314,6 +347,13 @@ export const {
   useGetUserSpecificationsQuery,
   useUpdateHouseholdMutation,
   useGetHouseholdTagsQuery,
+  useGetHouseholdUsersQuery,
   useUpdateHouseholdTagsMutation,
+  useAssignGoalsToHouseholdMutation,
+  useGetGoalsByTagsQuery,
+  useGetHouseholdGoalsQuery,
+  useIncrementGoalMutation,
+  useGetCompletedHouseholdGoalsQuery,
+  useLazyGetHouseholdGoalProgressQuery,
 } = api;
 export default api;
