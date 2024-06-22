@@ -33,6 +33,9 @@ import GoogleAuthCallback from "./pages/GoogleAuthCallback";
 import RegisterStep2 from "./pages/RegisterStep2";
 import HouseholdOnboarding from "./pages/HouseholdOnboarding";
 import Products from "./components/products/Products";
+import ListArchive from "./pages/ListArchive";
+import Archive from "./pages/Archive";
+import EditList from "./components/lists/EditList";
 // import io from "socket.io-client";
 
 function App() {
@@ -111,6 +114,7 @@ function App() {
           <Route path="/lists/:list/item/:id/image" element={<Image />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/lists/new" element={<NewList />} />
+          <Route path="/lists/edit/:list" element={<EditList />} />
           <Route path="/expenses/new" element={<NewExpense />} />
           <Route path="/households/onboarding" element={<HouseholdOnboarding />} />
           <Route path="/households/join" element={<JoinHousehold />} />
@@ -122,6 +126,8 @@ function App() {
           <Route path="/profile/edit" element={<EditUser />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/lists/archive" element={<ListArchive />} />
+          <Route path="/lists/listarchive" element={<Archive />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

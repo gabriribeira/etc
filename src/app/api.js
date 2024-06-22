@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    //baseUrl: "http://localhost:3001/api",
-    baseUrl: "https://etc-app.com/api",
+    baseUrl: "http://localhost:3001/api",
+    //baseUrl: "https://etc-app.com/api",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -86,6 +86,21 @@ const api = createApi({
     unlockList: builder.mutation({
       query: (id) => ({
         url: `/lists/${id}/unlock`,
+        method: "PATCH",
+      }),
+    }),
+
+    updateList: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/lists/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
+
+    archiveList: builder.mutation({
+      query: (id) => ({
+        url: `/lists/${id}/finish`,
         method: "PATCH",
       }),
     }),
@@ -297,6 +312,9 @@ const api = createApi({
     getHouseholdGoalProgress: builder.query({
       query: (householdGoalId) => `/goals/${householdGoalId}/progress`,
     }),
+    getCategories: builder.query({
+      query: () => "/categories",
+    }),    
   }),
 });
 
@@ -315,6 +333,8 @@ export const {
   useGetListItemsQuery,
   useLockListMutation,
   useUnlockListMutation,
+  useUpdateListMutation,
+  useArchiveListMutation,
   useDeleteListMutation,
   useEstimateListValueMutation,
   useGetItemQuery,
@@ -355,5 +375,6 @@ export const {
   useIncrementGoalMutation,
   useGetCompletedHouseholdGoalsQuery,
   useLazyGetHouseholdGoalProgressQuery,
+  useGetCategoriesQuery,
 } = api;
 export default api;
