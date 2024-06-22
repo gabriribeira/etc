@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import MembersInput from "../common/MembersInput";
 import TopBar from "../common/TopBar";
 import BottomBar from "../common/BottomBar";
-import { useGetListQuery } from "../../app/api";
+import { useGetListQuery, useUpdateListMutation } from "../../app/api";
 import { useSelector } from "react-redux";
 import Loader from "../common/Loader";
 
 const EditList = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
   const pathname = window.location.pathname;
@@ -21,7 +21,7 @@ const EditList = () => {
   const [members, setMembers] = useState([]);
 
   const { data: list, isLoading: isLoadingList } = useGetListQuery(listId);
-  //const [updateList, { isLoading: isLoadingUpdate }] = useUpdateListMutation();
+  const [updateList] = useUpdateListMutation();
 
   // Log listId to verify it is correctly captured
   console.log("List ID from URL:", listId);
@@ -47,8 +47,8 @@ const EditList = () => {
       console.log("Updating List with ID:", listId);
       console.log("Updated List Data:", updatedListData);
 
-      //await updateList(updatedListData).unwrap();
-      //navigate(`/lists/${listId}`);
+      await updateList(updatedListData).unwrap();
+      navigate(`/lists/${listId}`);
     } catch (error) {
       console.error("Error updating list:", error);
       if (error.data) {
