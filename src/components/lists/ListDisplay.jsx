@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import {
   useGetListQuery,
@@ -7,6 +7,7 @@ import {
   useLockListMutation,
   useUnlockListMutation,
   useEstimateListValueMutation,
+  useGetCategoriesQuery,
 } from "../../app/api";
 import Item from "./Item";
 import { SlArrowRight } from "react-icons/sl";
@@ -30,12 +31,25 @@ const ListDisplay = () => {
     isLoading: itemsLoading,
     refetch: refetchItems,
   } = useGetListItemsQuery(listId);
+  const { data: categories, isLoading: categoriesLoading } = useGetCategoriesQuery();
   const [addItem] = useAddItemMutation();
   const [lockList] = useLockListMutation();
   const [unlockList] = useUnlockListMutation();
   const [estimateListValue] = useEstimateListValueMutation();
   const [estimatedValue, setEstimatedValue] = useState(null);
   const [newItem, setNewItem] = useState("");
+
+  useEffect(() => {
+    if (categories && !categoriesLoading) {
+      const categoryMap = categories.reduce((acc, category) => {
+        acc[category.id] = category.name;
+        return acc;
+      }, {});
+      setCategoryMap(categoryMap);
+    }
+  }, [categories, categoriesLoading]);
+
+  const [categoryMap, setCategoryMap] = useState({});
 
   const handleNewItem = async (e) => {
     e.preventDefault();
@@ -87,10 +101,24 @@ const ListDisplay = () => {
     }
   };
 
-  if (listLoading || itemsLoading) return <p>Loading...</p>;
+  if (listLoading || itemsLoading || categoriesLoading) return <p>Loading...</p>;
   if (listError || itemsError) return <p>Error loading data</p>;
 
   const isListLockedByUser = list.is_closed && list.user_id_closed === user;
+
+  // Group items by category
+  const groupedItems = items.reduce((acc, item) => {
+    const category = item.category_id ? categoryMap[item.category_id] : "Uncategorized";
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(item);
+    return acc;
+  }, {});
+
+  // Separate uncategorized items
+  const uncategorizedItems = groupedItems["Uncategorized"] || [];
+  delete groupedItems["Uncategorized"];
 
   return (
     <div className="bg-white min-h-screen">
@@ -161,17 +189,40 @@ const ListDisplay = () => {
                   </div>
                 )}
                 <div className="flex flex-col-reverse gap-y-3">
-                  {items &&
-                    items.map((item, index) => (
-                      <Item
-                        item={item}
-                        key={index}
-                        list_id={list.id}
-                        refetch={refetchItems}
-                        isListLocked={list.is_closed}
-                        isListLockedByUser={isListLockedByUser}
-                      />
-                    ))}
+                  {uncategorizedItems.length > 0 && (
+                    <div className="flex flex-col gap-y-3">
+                      <h2 className="font-medium text-lg">Uncategorized</h2>
+                      <div className="flex flex-col gap-3">
+                        {uncategorizedItems.map((item, index) => (
+                          <Item
+                            item={item}
+                            key={`uncategorized-${index}`}
+                            list_id={list.id}
+                            refetch={refetchItems}
+                            isListLocked={list.is_closed}
+                            isListLockedByUser={isListLockedByUser}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {Object.entries(groupedItems).map(([category, items]) => (
+                    <div key={`category-${category}`} className="flex flex-col gap-y-3">
+                      <h2 className="font-medium text-lg">{category}</h2>
+                      <div className="flex flex-col gap-y-3">
+                        {items.map((item, index) => (
+                          <Item
+                            item={item}
+                            key={`category-${category}-${index}`}
+                            list_id={list.id}
+                            refetch={refetchItems}
+                            isListLocked={list.is_closed}
+                            isListLockedByUser={isListLockedByUser}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
