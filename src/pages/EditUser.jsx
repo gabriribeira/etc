@@ -88,17 +88,17 @@ const EditUser = () => {
               <Input
                 label="Name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e)}
               />
               <Input
                 label="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e)}
               />
               <Input
                 label="Description"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e)}
               />
               <CategoriesInput
                 label="Food Restrictions"

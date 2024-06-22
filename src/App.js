@@ -33,6 +33,8 @@ import GoogleAuthCallback from "./pages/GoogleAuthCallback";
 import RegisterStep2 from "./pages/RegisterStep2";
 import HouseholdOnboarding from "./pages/HouseholdOnboarding";
 import Products from "./components/products/Products";
+import Settings from "./pages/Settings";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import io from "socket.io-client";
 
 function App() {
@@ -117,11 +119,13 @@ function App() {
           <Route path="/households/new" element={<NewHousehold />} />
           <Route path="/lists/:list" element={<List />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
           <Route path="/profile/edit" element={<EditUser />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,48 +1,54 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Category from "./Category";
-import { useGetTagsQuery, useGetSpecificationsQuery } from "../../app/api";
+import { useGetTagsQuery, useGetSpecificationsQuery, useGetCategoriesQuery } from "../../app/api";
 
-const CategoriesInput = ({ label, categorySelected, onChange, filter, specificationsProps }) => {
+const CategoriesInput = ({ label, categorySelected, onChange, filter, specificationsProps, categoriesProps }) => {
   const { data: categories } = useGetTagsQuery();
   const [showAll, setShowAll] = useState(false);
   const { data: specifications } = useGetSpecificationsQuery();
+  const { data: categoriesLegit } = useGetCategoriesQuery();
 
   const handleChange = (category) => {
     if (specificationsProps) {
       handleSpecifications(category);
+    } else if (categoriesProps) {
+      handleCategories(category);
     } else {
       handleTags(category);
     }
   };
 
   const handleTags = (category) => {
-    const selectedCategories = Array.isArray(categorySelected) ? categorySelected : [];
-    if (selectedCategories.find((item) => item.id === category.id)) {
-      const newCategory = selectedCategories.filter((item) => item.id !== category.id);
-      onChange(newCategory);
+    if (categorySelected === category.id) {
+      onChange(null); // Deselect if the same category is clicked
     } else {
-      onChange([...selectedCategories, category]);
+      onChange(category.id); // Select the new category
+    }
+  };
+
+  const handleCategories = (spec) => {
+    if (categorySelected === spec.id) {
+      onChange(null); // Deselect if the same category is clicked
+    } else {
+      onChange(spec.id); // Select the new category
     }
   };
 
   const handleSpecifications = (spec) => {
-    const selectedSpecifications = Array.isArray(categorySelected) ? categorySelected : [];
-    if (selectedSpecifications.find((item) => item.id === spec.id)) {
-      const newSpecifications = selectedSpecifications.filter((item) => item.id !== spec.id);
-      onChange(newSpecifications);
+    if (categorySelected === spec.id) {
+      onChange(null); // Deselect if the same category is clicked
     } else {
-      onChange([...selectedSpecifications, spec]);
+      onChange(spec.id); // Select the new category
     }
   };
 
   const isCategorySelected = (id) => {
-    const selectedCategories = Array.isArray(categorySelected) ? categorySelected : [];
-    return selectedCategories.some((selected) => selected.id === id);
+    return categorySelected === id;
   };
 
   return (
-    categories && specifications && (
+    categories && specifications && categoriesLegit && (
       <div className="w-full flex flex-col">
         {label && (
           <div className="flex justify-between items-center mb-2">
@@ -79,6 +85,15 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
               value={isCategorySelected(spec.id)}
               specificationsProps={specificationsProps}
             />
+          )) : categoriesProps ? categoriesLegit.slice(0, showAll ? categoriesLegit.length : 3).map((category) => (
+            <Category
+              key={category.id}
+              category={category}
+              onChange={handleChange}
+              filter={filter}
+              value={isCategorySelected(category.id)}
+              categoriesProps={categoriesProps}
+            />
           )) :
             categories.slice(0, showAll ? categories.length : 3).map((category) => (
               <Category
@@ -98,9 +113,10 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.arrayOf(PropTypes.object),
+  categorySelected: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // Changed to allow single category selection
   filter: PropTypes.bool,
   specificationsProps: PropTypes.bool,
+  categoriesProps: PropTypes.bool,
 };
 
 export default CategoriesInput;

@@ -9,12 +9,13 @@ import NewButton from "./NewButton";
 import FilterOverlay from "./FilterOverlay";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useDeleteListMutation } from "../../app/api";
-import { IoSettingsOutline, IoFilterCircleOutline } from "react-icons/io5";
+import { IoFilterCircleOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
-import { RiNotification4Line } from "react-icons/ri";
-import { IoIosCheckboxOutline } from "react-icons/io";  // Import the checkbox icon
+import { IoIosCheckboxOutline } from "react-icons/io";
+import { RiNotificationLine } from "react-icons/ri";
+import { HiMenuAlt3 } from "react-icons/hi";
 
-const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList, id_List }) => {
+const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockList, id_List, onFiltersChange }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const userProfileRegex = /\/(users)\/\d+/;
@@ -53,9 +54,12 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     setShowListOptions(!showListOptions);
   };
 
+
   const setFilter = (newFilters) => {
     setAppliedFilters(newFilters);
+    if (onFiltersChange) onFiltersChange(newFilters); // Pass filters to the parent component
   };
+
 
   const [filters, setFilters] = useState([]);
 
@@ -68,9 +72,9 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     } else if (location.pathname === "/expenses") {
       setFilters(["Paid by", "Category"]);
     }
-      else if (location.pathname === "/products"){
-        setFilters(["Order by", "Supermarket", "Category"]);
-      }
+    else if (location.pathname === "/products") {
+      setFilters(["Order by", "Supermarket", "Category"]);
+    }
   }, [location.pathname]);
 
   const isEditPage = () => {
@@ -134,7 +138,11 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       editUserPageRegex.test(location.pathname) ||
       userPageRegex.test(location.pathname) ||
       editProfilePageRegex.test(location.pathname) ||
-      editHouseholdPageRegex.test(location.pathname)
+      editHouseholdPageRegex.test(location.pathname) || 
+      location.pathname === "/settings" ||
+      location.pathname === "/notifications" ||
+      location.pathname === "/about" ||
+      location.pathname === "/privacy-policy"
     ) {
       setShowBackButton(true);
     } else {
@@ -150,18 +158,17 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
 
   const handleDeleteList = async () => {
     console.log("Delete List ID:", id_List);
-  
+
     try {
-      await deleteList(id_List).unwrap(); 
+      await deleteList(id_List).unwrap();
       setShowConfirmation(false);
       //alert("List deleted successfully");
-      navigate("/lists"); 
+      navigate("/lists");
     } catch (error) {
       console.error("Failed to delete the list:", error);
       alert("Failed to delete the list. Please try again.");
     }
   };
-  
 
   return (
     <header className="fixed top-0 left-0 w-screen z-[101] bg-white">
@@ -218,7 +225,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               </Link>
             ) : (
               <Link
-                to={`/users/${user?.id}`}
+                to={`/profile`}
                 className="flex items-center gap-x-3 z-[101]"
               >
                 <img
@@ -241,18 +248,17 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
             />
           </div>
           <div className="flex items-center gap-x-3">
-            {/^\/households\/\d+$/.test(location.pathname) && (
+            {(location.pathname === '/household' || location.pathname === `/profile` || location.pathname === "/settings" || location.pathname === "notifications" || location.pathname === '/profile/edit' || location.pathname === '/household/edit' || location.pathname === '/privacy-policy' || location.pathname === '/about') && (
               <>
-                <RiNotification4Line size={25} />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowSettings(!showSettings);
-                  }}
-                  className="text-2xl z-[101]"
-                  aria-label="Button Settings"
-                >
-                  <IoSettingsOutline size={25} />
+                 <button type="button" className="text-2xl z-[101] text-black">
+                  <Link to="/notifications">
+                    <RiNotificationLine size={25} />
+                  </Link>
+                </button>
+                <button type="button" className="text-2xl z-[101] text-black">
+                  <Link to="/settings">
+                    <HiMenuAlt3 size={25} />
+                  </Link>
                 </button>
               </>
             )}
@@ -363,14 +369,14 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
         </CSSTransition>
 
         <ConfirmationDialog
-        title="Delete List?"
-        details="The list will be removed from the shopping."
-        label="Delete"
-        bg="bg-red-600"
-        showConfirmation={showConfirmation}
-        setShowConfirmation={setShowConfirmation}
-        action={handleDeleteList}
-      />
+          title="Delete List?"
+          details="The list will be removed from the shopping."
+          label="Delete"
+          bg="bg-red-600"
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          action={handleDeleteList}
+        />
 
         <CSSTransition
           in={showFilterOverlay}
@@ -387,6 +393,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
             location={location} // Passando location para FilterOverlay
           />
         </CSSTransition>
+
       </div>
 
       {showBackButton && (
@@ -419,6 +426,7 @@ TopBar.propTypes = {
   lockList: PropTypes.func,
   unlockList: PropTypes.func,
   id_List: PropTypes.string.isRequired,
+  onFiltersChange: PropTypes.func,
 };
 
 export default TopBar;

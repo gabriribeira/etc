@@ -45,8 +45,8 @@ const Profile = () => {
         <TopBar />
         <main className="mt-16">
           <div className="flex flex-col">
-            <div className="flex flex-col bg-black20 text-center relative">
-              <div className="py-16 flex flex-col items-center justify-center">
+            <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20 text-center relative">
+              <div className="py-16 flex flex-col items-center justify-center text-white">
                 <Link
                   to={`/profile/edit`}
                   className="font-medium text-sm absolute top-3 right-3"
@@ -59,13 +59,13 @@ const Profile = () => {
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
                   referrerPolicy="no-referrer"
                 />
-                <h1 className="font-semibold text-xl mt-2">{user.name}</h1>
-                <p className="font-normal text-sm ">@{user.username}</p>
+                <h1 className="font-medium text-xl mt-2">{user.name}</h1>
+                {user.username && <p className="font-normal text-sm ">@{user.username}</p>}
               </div>
             </div>
             <div className="flex flex-col px-5 mt-6">
               <h1 className="font-semibold text-lg mb-2">Description</h1>
-              <p className="text-black text-base">{user.description}</p>
+              <p className="text-black text-base">{user.description ? user.description : "No description yet"}</p>
             </div>
 
             <div className="flex flex-col px-5 mt-6">
