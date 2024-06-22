@@ -13,7 +13,7 @@ import {
   useAddItemMutation,
   useUpdateItemMutation,
   useSearchProductsQuery,
-  useGetListItemsQuery
+  useGetListItemsQuery,
 } from "../app/api";
 import { useDebounce } from "../hooks/useDebounce";
 
@@ -67,7 +67,7 @@ const ItemDetails = () => {
     try {
       const formData = new FormData();
       formData.append("list_id", Number(listId));
-      formData.append("category_id", category ? category : null);
+      category && formData.append("category_id", category);
       formData.append("name", name);
       formData.append("price", Number(value));
       formData.append("details", details);
