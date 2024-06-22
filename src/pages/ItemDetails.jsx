@@ -62,7 +62,7 @@ const ItemDetails = () => {
   const handleSaveItem = async () => {
     const itemData = {
       list_id: Number(listId),
-      category_id: 1,
+      category_id: category ? category : null,
       name,
       price: Number(value),
       details,
@@ -167,6 +167,7 @@ const ItemDetails = () => {
               value={category}
               label="Category"
               categorySelected={category}
+              categoriesProps={true}
               type="List"
             />
             <Input label="Store" value={store} onChange={setStore} />
