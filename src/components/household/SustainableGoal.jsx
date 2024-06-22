@@ -152,7 +152,7 @@ const SustainableGoal = () => {
         <h2 className="text-lg text-black font-semibold">Sustainability</h2>
         <Link to="/goals" className="text-white bg-green p-3 rounded-2xl flex flex-col">
           <h1 className="font-bold text-2xl">Start a Goal today!</h1>
-          <p className="text-md font-light leading-none mt-2">Select goals that you want to achieve as a household in terms of sustainable practices.</p>
+          <p className="text-md font-light leading-none mt-2">Mini challenges for your household to implement sustainable practices, the easy way! Choose your favorite theme and start today.</p>
         </Link>
       </div>
     )

@@ -16,6 +16,12 @@ const api = createApi({
         body: credentials,
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "GET",
+      }),
+    }),
     register: builder.mutation({
       query: (user) => ({
         url: "/auth/register",
@@ -162,13 +168,6 @@ const api = createApi({
         body: request,
       }),
     }),
-    updateRequestStatus: builder.mutation({
-      query: (requestStatus) => ({
-        url: "/households/updateRequestStatus",
-        method: "POST",
-        body: requestStatus,
-      }),
-    }),
     getHousehold: builder.query({
       query: () => "/households/auth/household",
     }),
@@ -234,7 +233,15 @@ const api = createApi({
     getProductById: builder.query({
       query: (id) => `/products/${id}`,
     }),
-
+    getAllProducts: builder.query({
+      query: () => `/products`,
+    }),
+    getProductsBySupermarket: builder.query({
+      query: (supermarket) => `/products/supermarket/${supermarket}`,
+    }),
+    getProductsOrderedByPrice: builder.query({
+      query: (order) => `/products/orderByPrice?order=${order}`,
+    }),
     getProductsByCategory: builder.query({
       query: (categoryId) => `/products/category/${categoryId}`,
     }),
@@ -313,13 +320,30 @@ const api = createApi({
       query: (householdGoalId) => `/goals/${householdGoalId}/progress`,
     }),
     getCategories: builder.query({
-      query: () => "/categories",
-    }),    
+      query: () => `/categories`,
+    }),
+    getRequests: builder.query({
+      query: () => '/households/requests',
+    }),
+    updateRequestStatus: builder.mutation({
+      query: ({ requestId, status }) => ({
+        url: '/households/updateRequestStatus',
+        method: 'POST',
+        body: { requestId, status },
+      }),
+    }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
+  useLogoutMutation,
   useRegisterMutation,
   useUpdateUserMutation,
   useCheckAuthQuery,
@@ -344,7 +368,6 @@ export const {
   useCreateHouseholdMutation,
   useAddMembersMutation,
   useCreateRequestMutation,
-  useUpdateRequestStatusMutation,
   useGetHouseholdQuery,
   useGetUserQuery,
   useGetUserHouseholdsQuery,
@@ -356,7 +379,10 @@ export const {
   useGetExpensesQuery,
   useGetExpenseQuery,
   useSearchProductsQuery,
+  useGetAllProductsQuery,
   useGetProductsByCategoryQuery,
+  useGetProductsBySupermarketQuery,
+  useGetProductsOrderedByPriceQuery,
   useGetProductByIdQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
@@ -376,5 +402,8 @@ export const {
   useGetCompletedHouseholdGoalsQuery,
   useLazyGetHouseholdGoalProgressQuery,
   useGetCategoriesQuery,
+  useGetRequestsQuery,
+  useUpdateRequestStatusMutation,
+  useDeleteUserMutation,
 } = api;
 export default api;

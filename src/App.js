@@ -36,6 +36,8 @@ import Products from "./components/products/Products";
 import ListArchive from "./pages/ListArchive";
 import Archive from "./pages/Archive";
 import EditList from "./components/lists/EditList";
+import Settings from "./pages/Settings";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import io from "socket.io-client";
 
 function App() {
@@ -121,6 +123,7 @@ function App() {
           <Route path="/households/new" element={<NewHousehold />} />
           <Route path="/lists/:list" element={<List />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/users/:user" element={<User />} />
           <Route path="/profile/edit" element={<EditUser />} />
@@ -128,6 +131,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/lists/archive" element={<ListArchive />} />
           <Route path="/lists/listarchive" element={<Archive />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

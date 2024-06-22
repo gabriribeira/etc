@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
-import CategoriesData from "../../data/categories.json";
+// import CategoriesInput from "./CategoriesInput";
 import { IoCheckmark } from "react-icons/io5";
+import { useGetTagsQuery } from "../../app/api";
 
-const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, location }) => {
+//eslint-disable-next-line
+const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
+  const { data: tagsData } = useGetTagsQuery();
+  //eslint-disable-next-line
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (tagsData?.data?.length > 0) {
+      setCategories(tagsData.data);
+    }
+  }, [tagsData]);
+
   const handleFilters = (filterItem) => {
     setFilter((prevFilters) => {
       if (prevFilters.includes(filterItem)) {
@@ -14,42 +26,44 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           return ["All", "Unchecked", "Checked"].includes(filterItem)
             ? filterItem === "All"
               ? [...prevFilters, filterItem].filter(
-                  (item) => item !== "Unchecked" && item !== "Checked"
-                )
+                (item) => item !== "Unchecked" && item !== "Checked"
+              )
               : filterItem === "Unchecked"
-              ? [...prevFilters, filterItem].filter(
+                ? [...prevFilters, filterItem].filter(
                   (item) => item !== "All" && item !== "Checked"
                 )
-              : filterItem === "Checked"
-              ? [...prevFilters, filterItem].filter(
-                  (item) => item !== "All" && item !== "Unchecked"
-                )
-              : [...prevFilters, filterItem]
+                : filterItem === "Checked"
+                  ? [...prevFilters, filterItem].filter(
+                    (item) => item !== "All" && item !== "Unchecked"
+                  )
+                  : [...prevFilters, filterItem]
             : ["Everyone", "You"].filter((item) => item !== filterItem);
         } else if (["AllLists", "Opened", "Closed"].includes(filterItem)) {
           return ["AllLists", "Opened", "Closed"].includes(filterItem)
             ? filterItem === "AllLists"
               ? [...prevFilters, filterItem].filter(
-                  (item) => item !== "Opened" && item !== "Closed"
-                )
+                (item) => item !== "Opened" && item !== "Closed"
+              )
               : filterItem === "Opened"
-              ? [...prevFilters, filterItem].filter(
+                ? [...prevFilters, filterItem].filter(
                   (item) => item !== "AllLists" && item !== "Closed"
                 )
-              : filterItem === "Closed"
-              ? [...prevFilters, filterItem].filter(
-                  (item) => item !== "AllLists" && item !== "Opened"
-                )
-              : [...prevFilters, filterItem]
+                : filterItem === "Closed"
+                  ? [...prevFilters, filterItem].filter(
+                    (item) => item !== "AllLists" && item !== "Opened"
+                  )
+                  : [...prevFilters, filterItem]
             : ["Everyone", "You"].filter((item) => item !== filterItem);
         } else if (["Everyone", "You"].includes(filterItem)) {
           return ["Everyone", "You"].includes(filterItem)
             ? filterItem === "Everyone"
               ? [...prevFilters, filterItem].filter((item) => item !== "You")
               : filterItem === "You"
-              ? [...prevFilters, filterItem].filter((item) => item !== "Everyone")
-              : [...prevFilters, filterItem]
+                ? [...prevFilters, filterItem].filter((item) => item !== "Everyone")
+                : [...prevFilters, filterItem]
             : ["Everyone", "You"].filter((item) => item !== filterItem);
+        } else if (["Price Low to High", "Price High to Low", "Popularity"].includes(filterItem)) {
+          return [filterItem];
         } else {
           return [...prevFilters, filterItem];
         }
@@ -74,9 +88,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("All")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("All") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("All") && "font-bold"
+                }`}
             >
               All
               {checkIfFilterIsApplied("All") && (
@@ -85,9 +98,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Unchecked")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Unchecked") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Unchecked") && "font-bold"
+                }`}
             >
               Unchecked
               {checkIfFilterIsApplied("Unchecked") && (
@@ -96,9 +108,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Checked")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Checked") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Checked") && "font-bold"
+                }`}
             >
               Checked
               {checkIfFilterIsApplied("Checked") && (
@@ -113,9 +124,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("AllLists")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("AllLists") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("AllLists") && "font-bold"
+                }`}
             >
               All
               {checkIfFilterIsApplied("AllLists") && (
@@ -124,9 +134,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Opened")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Opened") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Opened") && "font-bold"
+                }`}
             >
               Unlocked
               {checkIfFilterIsApplied("Opened") && (
@@ -135,9 +144,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Closed")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Closed") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Closed") && "font-bold"
+                }`}
             >
               Locked
               {checkIfFilterIsApplied("Closed") && (
@@ -152,9 +160,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("Everyone")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Everyone") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Everyone") && "font-bold"
+                }`}
             >
               Everyone
               {checkIfFilterIsApplied("Everyone") && (
@@ -163,9 +170,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("You")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("You") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("You") && "font-bold"
+                }`}
             >
               You
               {checkIfFilterIsApplied("You") && (
@@ -180,9 +186,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("Cheapest")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Cheapest") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Cheapest") && "font-bold"
+                }`}
             >
               Cheapest Suggestions
               {checkIfFilterIsApplied("Cheapest") && (
@@ -191,9 +196,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Greenest")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Greenest") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Greenest") && "font-bold"
+                }`}
             >
               Greenest Suggestions
               {checkIfFilterIsApplied("Greenest") && (
@@ -202,9 +206,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Simple")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Simple") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Simple") && "font-bold"
+                }`}
             >
               Simple Products
               {checkIfFilterIsApplied("Simple") && (
@@ -213,9 +216,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Detailed")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Detailed") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Detailed") && "font-bold"
+                }`}
             >
               Detailed Products
               {checkIfFilterIsApplied("Detailed") && (
@@ -224,34 +226,25 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
           </div>
         );
-
-      case "Category": {
-        const categoryType = location.pathname === "/expenses" ? "Expense" : "List";
-        return (
-          <div className="flex flex-wrap gap-2">
-            {CategoriesData.filter(category => category.type === categoryType).map((category, index) => (
-              <button
-                key={index}
-                onClick={() => handleFilters(category.title)}
-                className={`py-1 px-2 border border-black rounded-2xl text-base font-normal transition-all duration-300 ${
-                  checkIfFilterIsApplied(category.title) ? "bg-black text-white" : "bg-white text-black"
-                }`}
-              >
-                {category.title}
-              </button>
-            ))}
-          </div>
-        );
-      }
+      // case "Category": {
+      //   const categoryType = location.pathname === "/expenses" ? "Expense" : "List";
+      //   return (
+      //     <CategoriesInput
+      //       label="Categories"
+      //       categorySelected={appliedFilters}
+      //       onChange={setFilter}
+      //       categoriesProps={categoryType === "List"}
+      //     />
+      //   );
+      // }
 
       case "Paid by":
         return (
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("You")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("You") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("You") && "font-bold"
+                }`}
             >
               Everyone
               {checkIfFilterIsApplied("You") && (
@@ -260,9 +253,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Others")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Others") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Others") && "font-bold"
+                }`}
             >
               Only you
               {checkIfFilterIsApplied("Others") && (
@@ -277,9 +269,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("Price Low to High")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Price Low to High") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Price Low to High") && "font-bold"
+                }`}
             >
               Price Low to High
               {checkIfFilterIsApplied("Price Low to High") && (
@@ -288,9 +279,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Price High to Low")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Price High to Low") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Price High to Low") && "font-bold"
+                }`}
             >
               Price High to Low
               {checkIfFilterIsApplied("Price High to Low") && (
@@ -299,9 +289,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Popularity")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Popularity") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Popularity") && "font-bold"
+                }`}
             >
               Popularity
               {checkIfFilterIsApplied("Popularity") && (
@@ -316,9 +305,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
             <button
               onClick={() => handleFilters("All")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("All") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("All") && "font-bold"
+                }`}
             >
               All
               {checkIfFilterIsApplied("All") && (
@@ -327,9 +315,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Aldi")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Aldi") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Aldi") && "font-bold"
+                }`}
             >
               Aldi
               {checkIfFilterIsApplied("Aldi") && (
@@ -338,9 +325,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Auchan")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Auchan") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Auchan") && "font-bold"
+                }`}
             >
               Auchan
               {checkIfFilterIsApplied("Auchan") && (
@@ -349,9 +335,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Continente")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Continente") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Continente") && "font-bold"
+                }`}
             >
               Continente
               {checkIfFilterIsApplied("Continente") && (
@@ -360,9 +345,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Lidl")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Lidl") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Lidl") && "font-bold"
+                }`}
             >
               Lidl
               {checkIfFilterIsApplied("Lidl") && (
@@ -371,9 +355,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Mercadona")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Mercadona") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Mercadona") && "font-bold"
+                }`}
             >
               Mercadona
               {checkIfFilterIsApplied("Mercadona") && (
@@ -382,9 +365,8 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
             </button>
             <button
               onClick={() => handleFilters("Pingo Doce")}
-              className={`relative flex items-center ${
-                checkIfFilterIsApplied("Pingo Doce") && "font-bold"
-              }`}
+              className={`relative flex items-center ${checkIfFilterIsApplied("Pingo Doce") && "font-bold"
+                }`}
             >
               Pingo Doce
               {checkIfFilterIsApplied("Pingo Doce") && (
@@ -397,7 +379,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
       default:
         return "All";
     }
-  };
+  }
 
   return (
     <div className="fixed h-screen w-screen top-0 left-0 z-[99999999999]">
@@ -414,7 +396,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, locati
           {filters &&
             filters.map((filterItem, index) => (
               <div key={index} className="flex flex-col">
-                <h2 className="font-semibold text-lg">{filterItem}</h2>
+                <h2 className="font-semibold text-lg">{filterItem !== "Category" ? filterItem : ""}</h2>
                 {displayFilters(filterItem)}
               </div>
             ))}
@@ -430,7 +412,6 @@ FilterOverlay.propTypes = {
   setFilter: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   hideFilters: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
 };
 
 export default FilterOverlay;

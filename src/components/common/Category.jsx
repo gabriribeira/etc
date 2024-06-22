@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Category = ({ category, value, onChange, filter, specificationsProps }) => {
+const Category = ({ category, value, onChange, filter, specificationsProps, categoriesProps }) => {
   return (
     category && (
       <button
@@ -9,7 +9,7 @@ const Category = ({ category, value, onChange, filter, specificationsProps }) =>
         className={`w-auto py-1 px-2 rounded-2xl text-base font-normal text-center transition-all duration-300 cursor-pointer border-2 border-black ${value ? "bg-black text-white" : "bg-white text-black"}`}
         type="button"
       >
-        {specificationsProps ? category.name : category.title}
+        {specificationsProps || categoriesProps ? category.name : category.title}
       </button>
     )
   );
@@ -21,6 +21,7 @@ Category.propTypes = {
   onChange: PropTypes.func,
   filter: PropTypes.bool,
   specificationsProps: PropTypes.bool,
+  categoriesProps: PropTypes.bool,
 };
 
 export default Category;
