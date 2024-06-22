@@ -1,10 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import { useGetProductsByCategoryQuery } from "../../app/api";
 import { BsPlusCircleFill } from "react-icons/bs";
+import Overlay from "./Overlay";
+import { CSSTransition } from "react-transition-group";
 
 const ScrollProducts = ({ label, type, products }) => {
   const { data: response, error, isLoading } = useGetProductsByCategoryQuery(type, { skip: !!products });
+
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const productList = products || (response?.data || []);
 
@@ -16,6 +21,12 @@ const ScrollProducts = ({ label, type, products }) => {
       return name.substring(0, 22) + '...';
     }
     return name;
+  };
+
+  const handleOverlay = (productId) => {
+    setSelectedProductId(productId); // Set the selected product ID
+    setShowOverlay(true); // Show the overlay
+    console.log(productId);
   };
 
   return (
@@ -38,7 +49,7 @@ const ScrollProducts = ({ label, type, products }) => {
                       <p className="text-lg text-red-600 font-bold">{(product.value * 0.9).toFixed(2)}€</p>
                     </div>
                     <div className="flex items-end">
-                      <BsPlusCircleFill size={45} />
+                      <BsPlusCircleFill size={45} onClick={() => handleOverlay(product.id)} />
                     </div>
                   </div>
                 </div>
@@ -47,6 +58,26 @@ const ScrollProducts = ({ label, type, products }) => {
           ))}
         </div>
       </div>
+      <CSSTransition
+        in={showOverlay}
+        timeout={500}
+        classNames="menu-primary"
+        className="fixed bottom-0 left-0 w-full bg-white z-[101] h-auto shadow-xl rounded-t-2xl p-5"
+        unmountOnExit
+      >
+        <Overlay
+          label="Add to List"
+          options={[
+            "New List",
+            "Search",
+            "Lists",
+          ]}
+          links={[null, null, null]}
+          hideOverlay={() => setShowOverlay(false)}
+          onClicks={[() => {}, () => {}, () => {}]}
+          productId={selectedProductId}
+        />
+      </CSSTransition>
     </div>
   );
 }

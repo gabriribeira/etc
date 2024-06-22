@@ -9,8 +9,10 @@ import { useSelector } from "react-redux";
 import ImageUpload from "../components/common/ImageUpload";
 import { updateUserState } from "../app/authSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const EditUser = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -37,7 +39,7 @@ const EditUser = () => {
 
   useEffect(() => {
     if (userSpecifications) {
-      setSpecifications(userSpecifications.data);
+      setSpecifications(userSpecifications.data.map(spec => spec.id));
     }
   }, [userSpecifications]);
 
@@ -50,24 +52,28 @@ const EditUser = () => {
       formData.append("username", username);
       formData.append("name", name);
       formData.append("description", description);
-      formData.append("specifications", JSON.stringify(specifications));
       if (imageFile) {
         formData.append("image", imageFile);
       }
+  
+      // Send user update request
       const response = await updateUser({ id: user.data.id, formData }).unwrap();
+  
+      // Send user specifications update request
+      await addUserSpecifications({ userId: user.data.id, specifications }).unwrap();
+  
       dispatch(updateUserState(response.data));
-      await addUserSpecifications({ userId: user.data.id, specifications: specifications.map(spec => spec.id) }).unwrap();
-      alert("User updated successfully");
+      navigate("/profile");
     } catch (error) {
       console.error("Failed to update user:", error);
       alert("Failed to update user");
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || isSpecificationsLoading) return <div>Loading...</div>;
 
   return (
-    user && !isSpecificationsLoading && (
+    user && (
       <div>
         <TopBar />
         <main className="mt-32 bg-white">
