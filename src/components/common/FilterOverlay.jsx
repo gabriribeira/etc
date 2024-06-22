@@ -6,7 +6,7 @@ import { IoCheckmark } from "react-icons/io5";
 import { useGetTagsQuery } from "../../app/api";
 
 //eslint-disable-next-line
-const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters, location }) => {
+const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
   const { data: tagsData } = useGetTagsQuery();
   //eslint-disable-next-line
   const [categories, setCategories] = useState([]);
@@ -412,7 +412,6 @@ FilterOverlay.propTypes = {
   setFilter: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   hideFilters: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
 };
 
 export default FilterOverlay;
