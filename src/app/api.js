@@ -16,6 +16,12 @@ const api = createApi({
         body: credentials,
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "GET",
+      }),
+    }),
     register: builder.mutation({
       query: (user) => ({
         url: "/auth/register",
@@ -145,13 +151,6 @@ const api = createApi({
         url: "/households/createRequest",
         method: "POST",
         body: request,
-      }),
-    }),
-    updateRequestStatus: builder.mutation({
-      query: (requestStatus) => ({
-        url: "/households/updateRequestStatus",
-        method: "POST",
-        body: requestStatus,
       }),
     }),
     getHousehold: builder.query({
@@ -308,11 +307,28 @@ const api = createApi({
     getCategories: builder.query({
       query: () => `/categories`,
     }),
+    getRequests: builder.query({
+      query: () => '/households/requests',
+    }),
+    updateRequestStatus: builder.mutation({
+      query: ({ requestId, status }) => ({
+        url: '/households/updateRequestStatus',
+        method: 'POST',
+        body: { requestId, status },
+      }),
+    }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
+  useLogoutMutation,
   useRegisterMutation,
   useUpdateUserMutation,
   useCheckAuthQuery,
@@ -335,7 +351,6 @@ export const {
   useCreateHouseholdMutation,
   useAddMembersMutation,
   useCreateRequestMutation,
-  useUpdateRequestStatusMutation,
   useGetHouseholdQuery,
   useGetUserQuery,
   useGetUserHouseholdsQuery,
@@ -370,5 +385,8 @@ export const {
   useGetCompletedHouseholdGoalsQuery,
   useLazyGetHouseholdGoalProgressQuery,
   useGetCategoriesQuery,
+  useGetRequestsQuery,
+  useUpdateRequestStatusMutation,
+  useDeleteUserMutation,
 } = api;
 export default api;
