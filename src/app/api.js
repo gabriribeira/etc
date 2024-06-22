@@ -219,7 +219,15 @@ const api = createApi({
     getProductById: builder.query({
       query: (id) => `/products/${id}`,
     }),
-
+    getAllProducts: builder.query({
+      query: () => `/products`,
+    }),
+    getProductsBySupermarket: builder.query({
+      query: (supermarket) => `/products/supermarket/${supermarket}`,
+    }),
+    getProductsOrderedByPrice: builder.query({
+      query: (order) => `/products/orderByPrice?order=${order}`,
+    }),
     getProductsByCategory: builder.query({
       query: (categoryId) => `/products/category/${categoryId}`,
     }),
@@ -297,6 +305,9 @@ const api = createApi({
     getHouseholdGoalProgress: builder.query({
       query: (householdGoalId) => `/goals/${householdGoalId}/progress`,
     }),
+    getCategories: builder.query({
+      query: () => `/categories`,
+    }),
   }),
 });
 
@@ -336,7 +347,10 @@ export const {
   useGetExpensesQuery,
   useGetExpenseQuery,
   useSearchProductsQuery,
+  useGetAllProductsQuery,
   useGetProductsByCategoryQuery,
+  useGetProductsBySupermarketQuery,
+  useGetProductsOrderedByPriceQuery,
   useGetProductByIdQuery,
   useGetTagsQuery,
   useAddHouseholdTagsMutation,
@@ -355,5 +369,6 @@ export const {
   useIncrementGoalMutation,
   useGetCompletedHouseholdGoalsQuery,
   useLazyGetHouseholdGoalProgressQuery,
+  useGetCategoriesQuery,
 } = api;
 export default api;
