@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { RxDotsVertical } from "react-icons/rx";
 import { CSSTransition } from "react-transition-group";
@@ -7,13 +7,29 @@ import ConfirmationDialog from "../common/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineCheck } from "react-icons/hi";
 import { useDeleteItemMutation } from "../../app/api";
+import { FaExclamationTriangle } from "react-icons/fa"; // Import warning icon
 
-const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
+const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser, harmfulItems }) => {
   const [showEditItem, setShowEditItem] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [isHarmful, setIsHarmful] = useState(false);
+  const [harmfulReason, setHarmfulReason] = useState("");
   const navigate = useNavigate();
   const [deleteItem] = useDeleteItemMutation();
+
+  useEffect(() => {
+    if (harmfulItems) {
+      const harmfulItem = harmfulItems.find(hItem => hItem.name === item.name);
+      if (harmfulItem) {
+        setIsHarmful(true);
+        setHarmfulReason(harmfulItem.reason);
+      } else {
+        setIsHarmful(false);
+        setHarmfulReason("");
+      }
+    }
+  }, [harmfulItems, item.name]);
 
   const handleCheck = () => {
     if (!isListLocked || isListLockedByUser) {
@@ -46,9 +62,9 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
   };
 
   return (
-    <div className="w-full flex items-center justify-between bg-black rounded-2xl p-3 gap-x-3">
+    <div className={`w-full flex items-center justify-between bg-black rounded-2xl p-3 gap-x-3 ${isHarmful ? 'border border-red-500' : ''}`}>
       <div className="flex items-center gap-x-3">
-        <div className="relative h-6 w-6">
+        <div className="relative h-6 w-6 flex-shrink-0 flex-nowrap">
           <input
             type="checkbox"
             checked={checked}
@@ -66,11 +82,9 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
           className={`flex flex-col justify-between h-full gap-x-3 text-lg leading-5 text-white grow`}
         >
           <h1
-            className={`font-medium text-lg leading-5 ${
-              checked ? "line-through" : ""
-            }`}
+            className={`font-medium text-lg leading-5 ${checked ? "line-through" : ""}`}
           >
-            {truncateName(item.name)}
+            {truncateName(item.name)} {isHarmful && <FaExclamationTriangle className="text-red-500 inline ml-1" />}
           </h1>
           {item.brand && <p className="font-light text-sm">{item.brand}</p>}
           {item.amount && item.unit && (
@@ -79,6 +93,9 @@ const Item = ({ item, list_id, refetch, isListLocked, isListLockedByUser }) => {
             </p>
           )}
           {item.store && <p className="font-medium text-sm">{item.store}</p>}
+          {isHarmful && (
+            <p className="text-red-500 text-sm">{harmfulReason}</p>
+          )}
         </div>
       </div>
 
@@ -145,6 +162,7 @@ Item.propTypes = {
   refetch: PropTypes.func.isRequired,
   isListLocked: PropTypes.bool.isRequired,
   isListLockedByUser: PropTypes.bool.isRequired,
+  harmfulItems: PropTypes.array.isRequired,
 };
 
 export default Item;
