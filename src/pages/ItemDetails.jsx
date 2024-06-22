@@ -34,7 +34,7 @@ const ItemDetails = () => {
   const [details, setDetails] = useState("");
   const [brand, setBrand] = useState("");
   const [store, setStore] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [isSuggestions, setIsSuggestions] = useState(false);
   const { data: item, isLoading, isError } = useGetItemQuery(itemId, { skip: itemId === "0" });
@@ -42,6 +42,10 @@ const ItemDetails = () => {
   const { data: recommendations } = useSearchProductsQuery(debouncedName, {
     skip: !debouncedName || debouncedName.length < 2 || !showRecommendations,
   });
+
+  useEffect(() => {
+    console.log(category);
+  }, [category]);
 
   useEffect(() => {
     if (item) {
@@ -53,7 +57,7 @@ const ItemDetails = () => {
       setDetails(item.details);
       setBrand(item.brand);
       setStore(item.store);
-      setCategory(item.category);
+      setCategory(item.category_id);
       setPhoto(item.img_url);
       setIsSuggestions(item.is_suggestion);
     }
@@ -71,7 +75,6 @@ const ItemDetails = () => {
       amount,
       unit,
       members,
-      category,
       img_url: photo,
       is_suggestion: isSuggestions,
       is_expense: false,
@@ -96,7 +99,7 @@ const ItemDetails = () => {
     setUnit(product.unit);
     setBrand(product.brand);
     setStore(product.store);
-    setCategory(product.category);
+    setCategory(product.category_id); // Ensure category_id is used here
     setPhoto(product.img_url);
     setShowRecommendations(false);
     setIsSuggestions(false);
@@ -139,7 +142,6 @@ const ItemDetails = () => {
                         <p className="text-sm text-gray-500">{product.brand}</p>
                       </div>
                     </div>
-                    
                   </div>
                 ))}
               </div>
