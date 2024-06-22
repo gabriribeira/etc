@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCheckAuthQuery } from '../app/api';
-import { setAuthState } from '../app/authSlice';
+import { clearAuthState, setAuthState } from '../app/authSlice';
 import TopBar from '../components/common/TopBar';
 import { Link } from 'react-router-dom';
 import { GoInfo } from 'react-icons/go';
@@ -9,10 +9,43 @@ import { SlArrowRight } from "react-icons/sl";
 import { BiPencil } from 'react-icons/bi';
 import { TbUser } from "react-icons/tb";
 import { FiLock } from 'react-icons/fi';
+import BottomBar from '../components/common/BottomBar';
+import { useNavigate } from 'react-router-dom';
+import { useDeleteUserMutation, useLogoutMutation } from '../app/api';
+import ConfirmationDialog from '../components/common/ConfirmationDialog';
 
 const Settings = () => {
     const dispatch = useDispatch();
     const { data, isFetching } = useCheckAuthQuery();
+    const [deleteUser] = useDeleteUserMutation();
+    const navigate = useNavigate();
+    const user = useSelector((state) => state.auth.user);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [logout] = useLogoutMutation();
+
+    const handleLogout = async () => {
+        try {
+          await logout().unwrap();
+          dispatch(clearAuthState()); // Clear user data from the state
+          alert("Logged out successfully");
+          navigate("/login"); // Redirect to the login page
+        } catch (err) {
+          console.error("Failed to log out:", err);
+          alert("Failed to log out. Please try again.");
+        }
+      };
+
+    const handleDelete = async () => {
+        try {
+            await deleteUser(user.id).unwrap();
+            alert("User deleted successfully");
+            navigate("/login");
+        } catch (err) {
+            console.error("Failed to delete user:", err);
+            alert("Failed to delete user. Please try again.");
+        }
+    };
 
     useEffect(() => {
         if (data && !isFetching) {
@@ -67,7 +100,7 @@ const Settings = () => {
                             <SlArrowRight />
                         </div>
                     </Link>
-                    <Link to="/settings" className="p-2 flex items-center justify-between">
+                    <button type='button' onClick={() => setShowConfirmation(true)} className="p-2 flex items-center justify-between">
                         <div className='flex items-center gap-x-3'>
                             <div className='text-2xl'>
                                 <TbUser />
@@ -77,9 +110,31 @@ const Settings = () => {
                         <div className='text-xl'>
                             <SlArrowRight />
                         </div>
-                    </Link>
+                    </button>
+                    <ConfirmationDialog
+                        title="Log Out"
+                        details="Are you sure you want to log out?"
+                        label="Log Out"
+                        bg="bg-red-600"
+                        showConfirmation={showConfirmation}
+                        setShowConfirmation={setShowConfirmation}
+                        action={handleLogout}
+                    />
+                    <button type='button' onClick={() => setShowConfirmation(true)} className='w-full flex items-center justify-center text-red-500 text-sm text-light mt-5'>
+                        Delete Account
+                    </button>
+                    <ConfirmationDialog
+                        title="Delete Account"
+                        details="Are you sure you want to delete your account? This action cannot be undone."
+                        label="Delete"
+                        bg="bg-red-600"
+                        showConfirmation={showDeleteConfirmation}
+                        setShowConfirmation={setShowDeleteConfirmation}
+                        action={handleDelete}
+                    />
                 </div>
             </div>
+            <BottomBar />
         </div>
     );
 };
