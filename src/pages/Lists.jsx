@@ -1,4 +1,3 @@
-// Lists.js
 import React from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
@@ -7,6 +6,7 @@ import Button from "../components/common/Button";
 import { BsStars } from 'react-icons/bs';
 import { PiArchive } from "react-icons/pi";
 import { useGetHouseholdListsQuery } from "../app/api";
+import Loader from "../components/common/Loader";
 
 const Lists = () => {
   const { data: lists, error, isLoading } = useGetHouseholdListsQuery();
@@ -42,17 +42,19 @@ const Lists = () => {
                   </span>
                 } 
                 bg="bg-black text-white text-left" 
-                to="/lists" 
+                to="/lists/listarchive" 
                 aria="Button See Archive"
                 className="text-left"
               />
             </div>
-            {isLoading && <p>Loading lists...</p>}
+            {isLoading && <Loader />}
             {error && <p>Error fetching lists: {error.message}</p>}
             {lists && lists.length > 0 ? (
-              lists.map((list, index) => (
-                <ShoppingList list={list} key={index} />
-              ))
+              lists
+                .filter((list) => list.is_finished !== true) // Filter out finished lists
+                .map((list, index) => (
+                  <ShoppingList list={list} key={index} />
+                ))
             ) : (
               <p>No lists found for this household.</p>
             )}

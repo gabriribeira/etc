@@ -13,6 +13,7 @@ import { BiPencil } from "react-icons/bi";
 import Cookies from "js-cookie";
 import { useGetHouseholdListsQuery, useAddItemMutation, useGetProductByIdQuery } from "../../app/api"; // Import your API hooks
 import SearchInput from "./SearchInput";
+import Loader from "./Loader";
 
 const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) => {
   const navigate = useNavigate();
@@ -122,23 +123,26 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
               <div className="relative mt-3">
                 <SearchInput label="Search" placeholder="Find List" value={search} onChange={setSearch} />
               </div>
-              {isLoading && <div>Loading...</div>}
+              {isLoading && <Loader />}
               {error && <div>Error loading lists</div>}
-              {productLoading && <div>Loading product...</div>}
+              {productLoading && <Loader />}
               {productError && <div>Error loading product</div>}
 
-              {filteredLists && filteredLists.map((list, idx) => (
-                <div key={idx} className="flex items-center gap-x-2 mb-2">
-                  <input 
-                    type="checkbox" 
-                    id={`list-${list.id}`} 
-                    className="w-6 h-6" 
-                    checked={selectedLists.includes(list.id)} 
-                    onChange={() => handleCheckboxChange(list.id)} 
-                  />
-                  <label htmlFor={`list-${list.id}`} className="text-lg">{list.name}</label>
-                </div>
+              {filteredLists && filteredLists
+                .filter((list) => list.is_finished !== true) // Filter out finished lists
+                .map((list, idx) => (
+                  <div key={idx} className="flex items-center gap-x-2 mb-2">
+                    <input 
+                      type="checkbox" 
+                      id={`list-${list.id}`} 
+                      className="w-6 h-6" 
+                      checked={selectedLists.includes(list.id)} 
+                      onChange={() => handleCheckboxChange(list.id)} 
+                    />
+                    <label htmlFor={`list-${list.id}`} className="text-lg">{list.name}</label>
+                  </div>
               ))}
+
 
             </React.Fragment>
           ) : (

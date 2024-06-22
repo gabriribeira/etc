@@ -82,6 +82,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     const balancePageRegex = /\/expenses\/balance/;
     const newExpensePageRegex = /\/expenses\/new/;
     const newListPageRegex = /\/lists\/new/;
+    const archiveListPageRegex = /\/lists\/listarchive/;
     const newHouseholdPageRegex = /\/households\/new/;
     const editProfilePageRegex = /\/profile\/edit/;
     const editHouseholdPageRegex = /\/household\/edit/;
@@ -90,6 +91,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       balancePageRegex.test(location.pathname) ||
       newExpensePageRegex.test(location.pathname) ||
       newListPageRegex.test(location.pathname) ||
+      archiveListPageRegex.test(location.pathname) ||
       newHouseholdPageRegex.test(location.pathname) ||
       editProfilePageRegex.test(location.pathname) ||
       editHouseholdPageRegex.test(location.pathname)
@@ -202,7 +204,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
                       <span>Select lists</span>
                     </div>
                   ]}
-                  links={["/lists"]}
+                  links={["/lists/archive"]}
                   hideOverlay={() => setShowListOptions(false)}
                 />
               </CSSTransition>
@@ -362,7 +364,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
               "Edit shopping list",
               "Delete shopping list",
             ]}
-            links={[null, null, null]}
+            links={[null, "/lists/edit/" + id_List, null]}
             hideOverlay={() => setShowEditList(false)}
             onClicks={[() => { listClosed ? unlockList() : lockList() }, () => { }, () => setShowConfirmation(true)]}
           />
