@@ -17,7 +17,7 @@ const ConfirmationDialog = ({ title, details, label, bg, showConfirmation, setSh
             {label !== "CloseX" &&
             <button className="bg-white border-2 border-black text-black px-8 py-2 rounded-md mr-3" style={{minWidth: '120px'}} onClick={() => setShowConfirmation(false)}>Cancel</button>
             }
-            <button className={`${bg === "bg-red-600" ? "bg-red-600" : "bg-blue"} text-white px-8 py-2 rounded-md`} style={{minWidth: '120px'}} onClick={action}>{label}</button>
+            <button className={`${bg === "bg-red-600" ? "bg-red-600" : "bg-black"} text-white px-8 py-2 rounded-md`} style={{minWidth: '120px'}} onClick={action}>{label}</button>
 
           </div>
         </div>

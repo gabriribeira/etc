@@ -103,16 +103,16 @@ function ListArchive() {
           )}
         </div>
 
-        <div className="flex justify-around py-4 mb-4 bg-white100">
+        <div className="flex justify-around py-4 mb-4 bg-white100 ">
           <button
-            className={`${isButtonsDisabled ? "text-gray-400" : "text-black"}`}
+            className={`${isButtonsDisabled ? "text-gray-400 px-6 py-2" : "text-black border border-solid border-black border-2 px-6 py-2 rounded-xl"}`}
             disabled={isButtonsDisabled}
             onClick={handleArchiveClick}
           >
             Archive
           </button>
           <button
-            className={`${isButtonsDisabled ? "text-gray-400" : "text-black"}`}
+            className={`${isButtonsDisabled ? "text-gray-400 px-6 py-2" : "text-black border border-solid border-black border-2 px-6 py-2 rounded-xl"}`}
             disabled={isButtonsDisabled}
             onClick={handleDeleteClick}
           >
