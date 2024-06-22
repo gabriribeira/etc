@@ -8,6 +8,7 @@ import {
   useUnlockListMutation,
   useEstimateListValueMutation,
   useGetCategoriesQuery,
+  useCheckFoodRestrictionsMutation,
 } from "../../app/api";
 import Item from "./Item";
 import { SlArrowRight } from "react-icons/sl";
@@ -36,8 +37,10 @@ const ListDisplay = () => {
   const [lockList] = useLockListMutation();
   const [unlockList] = useUnlockListMutation();
   const [estimateListValue] = useEstimateListValueMutation();
+  const [checkListFoodRestrictions] = useCheckFoodRestrictionsMutation();
   const [estimatedValue, setEstimatedValue] = useState(null);
   const [newItem, setNewItem] = useState("");
+  const [foodRestrictions, setFoodRestrictions] = useState(null);
 
   useEffect(() => {
     if (categories && !categoriesLoading) {
@@ -85,6 +88,8 @@ const ListDisplay = () => {
       await lockList(list.id).unwrap();
       const response = await estimateListValue(list.id).unwrap();
       setEstimatedValue(response.data.estimatedValue);
+      const response2 = await checkListFoodRestrictions(list.id).unwrap();
+      setFoodRestrictions(response2.data.harmfulItems);
 
       refetchList();
     } catch (error) {
@@ -159,6 +164,11 @@ const ListDisplay = () => {
                         Estimated Market Value: €{estimatedValue.toFixed(2)}
                       </p>
                     )}
+                    {foodRestrictions !== null && (
+                      <p className="mt-2">
+                        This list contains items that may not be suitable for one member due to food restrictions.
+                      </p>
+                    )}
                     <p className="mt-2">
                       If you want to add more items, you need to unlock the
                       Shopping List.
@@ -201,6 +211,7 @@ const ListDisplay = () => {
                             refetch={refetchItems}
                             isListLocked={list.is_closed}
                             isListLockedByUser={isListLockedByUser}
+                            harmfulItems={foodRestrictions}
                           />
                         ))}
                       </div>
@@ -218,6 +229,7 @@ const ListDisplay = () => {
                             refetch={refetchItems}
                             isListLocked={list.is_closed}
                             isListLockedByUser={isListLockedByUser}
+                            harmfulItems={foodRestrictions}
                           />
                         ))}
                       </div>
