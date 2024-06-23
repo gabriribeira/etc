@@ -116,10 +116,10 @@ const MembersInput = ({ value, onChange, label }) => {
           </h1>
         </div>
 
-        {selectedUsers.length > 0 && (
+        {selectedUsers?.length > 0 && (
           <div className="flex flex-wrap items-center gap-x-2 gap-y-2 w-full bg-black20 rounded-xl py-2 pl-2 mt-0">
             {users &&
-              users.data.map(
+              users?.data?.map(
                 (user, index) =>
                   value.includes(user.id) && (
                     <div
