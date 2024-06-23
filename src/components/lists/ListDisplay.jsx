@@ -69,7 +69,6 @@ const ListDisplay = () => {
       members: [],
       is_suggestion: false,
       is_expense: false,
-      category_id: null,
       created_at: new Date().toISOString(),
       created_by: null,
     };
