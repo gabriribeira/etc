@@ -8,13 +8,17 @@ import ImageUpload from "../components/common/ImageUpload";
 import { useGetHouseholdQuery, useUpdateHouseholdMutation, useGetHouseholdTagsQuery, useUpdateHouseholdTagsMutation } from "../app/api";
 import { useSelector } from "react-redux";
 import Loader from "../components/common/Loader";
+import ConfirmationDialog from "../components/common/ConfirmationDialog";
+import { useNavigate } from "react-router-dom";
 
 const EditHouseHold = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [tags, setTags] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation dialog
   const householdId = useSelector((state) => state.auth.currentHouseholdId);
+  const navigate = useNavigate();
 
   const { data: household, isLoading: isHouseholdLoading } = useGetHouseholdQuery(householdId, {
     skip: !householdId,
@@ -52,11 +56,16 @@ const EditHouseHold = () => {
       }
       await updateHousehold({ id: householdId, formData }).unwrap();
       await updateHouseholdTags({ householdId, tags }).unwrap();
-      alert("Household updated successfully");
+      setShowConfirmation(true); // Show confirmation dialog
     } catch (error) {
       console.error("Failed to update household:", error);
       alert("Failed to update household");
     }
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    navigate("/household");
   };
 
   if (isHouseholdLoading || isTagsLoading) return <Loader />;
@@ -108,6 +117,17 @@ const EditHouseHold = () => {
           </div>
         </main>
         <BottomBar />
+        {showConfirmation && (
+          <ConfirmationDialog
+            title="Success"
+            details="Household updated successfully!"
+            label="Close"
+            bg="bg-black"
+            showConfirmation={showConfirmation}
+            setShowConfirmation={setShowConfirmation}
+            action={handleCloseConfirmation}
+          />
+        )}
       </div>
     )
   );
