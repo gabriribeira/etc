@@ -46,6 +46,7 @@ const ItemDetails = () => {
     skip: !debouncedName || debouncedName.length < 2 || !showRecommendations,
   });
 
+
   useEffect(() => {
     if (item) {
       setName(item.name);
@@ -89,7 +90,7 @@ const ItemDetails = () => {
       navigate(`/lists/${listId}`);
     } catch (error) {
       console.error("Failed to update Item:", error);
-      alert("Failed to update Item");
+      navigate(`/lists/${listId}`);
     }
   };
 

@@ -8,21 +8,32 @@ import ImageUpload from "../components/common/ImageUpload";
 import { useGetHouseholdQuery, useUpdateHouseholdMutation, useGetHouseholdTagsQuery, useUpdateHouseholdTagsMutation } from "../app/api";
 import { useSelector } from "react-redux";
 import Loader from "../components/common/Loader";
+import { useNavigate, useNavigationType } from "react-router-dom";
 
 const EditHouseHold = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [tags, setTags] = useState([]);
   const householdId = useSelector((state) => state.auth.currentHouseholdId);
 
-  const { data: household, isLoading: isHouseholdLoading } = useGetHouseholdQuery(householdId, {
+  const { data: household, isLoading: isHouseholdLoading, refetch } = useGetHouseholdQuery(householdId, {
     skip: !householdId,
   });
 
-  const { data: householdTags, isLoading: isTagsLoading } = useGetHouseholdTagsQuery(householdId, {
+  const { data: householdTags, isLoading: isTagsLoading, refetch: refetchHouseholdCategories } = useGetHouseholdTagsQuery(householdId, {
     skip: !householdId,
   });
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+      refetchHouseholdCategories();
+    }
+  }, [navigationType, refetch, refetchHouseholdCategories]);
 
   const [updateHousehold] = useUpdateHouseholdMutation();
   const [updateHouseholdTags] = useUpdateHouseholdTagsMutation();
@@ -52,10 +63,10 @@ const EditHouseHold = () => {
       }
       await updateHousehold({ id: householdId, formData }).unwrap();
       await updateHouseholdTags({ householdId, tags }).unwrap();
-      alert("Household updated successfully");
+      navigate("/household");
     } catch (error) {
       console.error("Failed to update household:", error);
-      alert("Failed to update household");
+      navigate("/household");
     }
   };
 

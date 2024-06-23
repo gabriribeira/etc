@@ -7,9 +7,18 @@ import { useGetHouseholdListsQuery, useGetUserQuery, useUnarchiveListMutation } 
 import Loader from "../components/common/Loader";
 import ConfirmationDialog from "../components/common/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigationType } from "react-router-dom";
 
 function Archive() {
-  const { data: lists, error, isLoading } = useGetHouseholdListsQuery();
+  const { data: lists, error, isLoading, refetch } = useGetHouseholdListsQuery();
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
 
   return (
     <div>

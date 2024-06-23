@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import ConfirmationDialog from "../components/common/ConfirmationDialog";
+import { useNavigationType } from "react-router-dom";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -29,13 +30,22 @@ const EditUser = () => {
   const userId = useSelector((state) => state.auth.user?.id);
   const dispatch = useDispatch();
 
-  const { data: user, isLoading } = useGetUserQuery(userId, {
+  const { data: user, isLoading, refetch } = useGetUserQuery(userId, {
     skip: !userId,
   });
 
-  const { data: userSpecifications, isLoading: isSpecificationsLoading } = useGetUserSpecificationsQuery(userId, {
+  const { data: userSpecifications, isLoading: isSpecificationsLoading, refetch: refetchUserSpecifications } = useGetUserSpecificationsQuery(userId, {
     skip: !userId,
   });
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+      refetchUserSpecifications();
+    }
+  }, [navigationType, refetch, refetchUserSpecifications]);
 
   useEffect(() => {
     if (user) {
@@ -74,7 +84,6 @@ const EditUser = () => {
       setShowConfirmation(true); // Show confirmation dialog
     } catch (error) {
       console.error("Failed to update user:", error);
-      alert("Failed to update user");
     }
   };
 

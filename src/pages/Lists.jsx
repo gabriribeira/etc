@@ -7,9 +7,19 @@ import { BsStars } from 'react-icons/bs';
 import { PiArchive } from "react-icons/pi";
 import { useGetHouseholdListsQuery } from "../app/api";
 import Loader from "../components/common/Loader";
+import { useEffect } from "react";
+import { useNavigationType } from "react-router-dom";
 
 const Lists = () => {
-  const { data: lists, error, isLoading } = useGetHouseholdListsQuery();
+  const { data: lists, error, isLoading, refetch } = useGetHouseholdListsQuery();
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
 
   return (
     <div className="relative bg-white min-h-screen">

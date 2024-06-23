@@ -6,12 +6,21 @@ import Expense from "../components/expenses/Expense";
 import Balances from "../components/expenses/Balances";
 import { useGetExpensesQuery } from "../app/api";
 import { useSelector } from "react-redux";
+import { useNavigationType } from "react-router-dom";
 
 const Expenses = () => {
-  const { data: expensesData, error, isLoading } = useGetExpensesQuery();
+  const { data: expensesData, error, isLoading, refetch } = useGetExpensesQuery();
   const [activeTab, setActiveTab] = useState(0);
   const [expenses, setExpenses] = useState(null);
   const authUser = useSelector((state) => state.auth.user);
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
+
 
   useEffect(() => {
     if (expensesData && authUser) {

@@ -61,8 +61,8 @@ const ExpenseDetail = () => {
   const handleMarkWholeExpensePaid = async () => {
     try {
       await markWholeExpensePaid({ expenseId }).unwrap();
-      refetch();
       setShowMarkWholeExpenseConfirmation(false);
+      refetch();
     } catch (error) {
       console.error("Error marking the whole expense as paid:", error);
     }
