@@ -6,6 +6,7 @@ import { useGetUserHouseholdsQuery, useGetUserSpecificationsQuery } from "../app
 import { useSelector } from "react-redux";
 import Image from "../assets/imgs/etc/logo_dots.png";
 import { Link } from "react-router-dom";
+import { useNavigationType } from "react-router-dom";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
@@ -14,14 +15,24 @@ const Profile = () => {
     data: households,
     isLoading: householdsLoading,
     error: householdsError,
+    refetch,
   } = useGetUserHouseholdsQuery(user.id);
   const {
     data: specifications,
     isLoading: specificationsLoading,
     error: specificationsError,
+    refetch: refetchUserSpecifications,
   } = useGetUserSpecificationsQuery(user.id);
 
-  console.log('Specifications data:', specifications);
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+      refetchUserSpecifications();
+    }
+  }, [navigationType, refetch]);
 
   useEffect(() => {
     if (user.img_url) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetHouseholdQuery } from "../app/api";
 import TopBar from "../components/common/TopBar";
 import BottomBar from "../components/common/BottomBar";
@@ -6,11 +6,20 @@ import HouseholdInfo from "../components/household/HouseholdInfo";
 import Members from "../components/household/Members";
 import SustainableGoal from "../components/household/SustainableGoal";
 import Overlay from "../components/common/Overlay";
+import { useNavigationType } from "react-router-dom";
 
 const Household = () => {
-  const { data: household, isLoading: isHouseholdLoading, error } = useGetHouseholdQuery();
+  const { data: household, isLoading: isHouseholdLoading, error, refetch } = useGetHouseholdQuery();
   const [openOverlay, setOpenOverlay] = useState(false);
   const [openOverlayFromParent, setOpenOverlayFromParent] = useState(false);
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
 
   if (isHouseholdLoading) {
     return <div>Loading...</div>;

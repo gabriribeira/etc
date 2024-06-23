@@ -167,11 +167,9 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     try {
       await deleteList(id_List).unwrap();
       setShowConfirmation(false);
-      //alert("List deleted successfully");
       navigate("/lists");
     } catch (error) {
       console.error("Failed to delete the list:", error);
-      alert("Failed to delete the list. Please try again.");
     }
   };
 

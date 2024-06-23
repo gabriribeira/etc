@@ -4,10 +4,19 @@ import TopBar from "../components/common/TopBar";
 import SearchInput from "../components/common/SearchInput";
 import Notification from "../components/common/Notification";
 import { useGetRequestsQuery } from "../app/api";
+import { useNavigationType } from "react-router-dom";
 
 const Notifications = () => {
   const [search, setSearch] = useState("");
-  const { data: requests, error, isLoading } = useGetRequestsQuery();
+  const { data: requests, error, isLoading, refetch } = useGetRequestsQuery();
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
 
   useEffect(() => {
     console.log("Requests:", requests);

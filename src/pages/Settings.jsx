@@ -27,23 +27,19 @@ const Settings = () => {
     const handleLogout = async () => {
         try {
           await logout().unwrap();
-          dispatch(clearAuthState()); // Clear user data from the state
-          alert("Logged out successfully");
-          navigate("/login"); // Redirect to the login page
+          dispatch(clearAuthState());
+          navigate("/login");
         } catch (err) {
           console.error("Failed to log out:", err);
-          alert("Failed to log out. Please try again.");
         }
       };
 
     const handleDelete = async () => {
         try {
             await deleteUser(user.id).unwrap();
-            alert("User deleted successfully");
             navigate("/login");
         } catch (err) {
             console.error("Failed to delete user:", err);
-            alert("Failed to delete user. Please try again.");
         }
     };
 

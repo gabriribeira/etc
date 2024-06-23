@@ -4,15 +4,25 @@ import TopBar from "../components/common/TopBar";
 import { useGetUserHouseholdsQuery, useGetUserQuery } from "../app/api";
 import DefaultProfilePicture from "../assets/imgs/etc/logo_dots.png";
 import { useLocation } from "react-router-dom";
+import { useNavigationType } from "react-router-dom";
 
 const User = () => {
   const location = useLocation();
-  const { data: user } = useGetUserQuery(location.pathname.split("/")[2]);
+  const { data: user, refetch } = useGetUserQuery(location.pathname.split("/")[2]);
   const {
     data: households,
     isLoading: isLoadingHouseholds,
     error: householdsError,
   } = useGetUserHouseholdsQuery(location.pathname.split("/")[2]);
+
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
 
   const [imageUrl, setImageUrl] = useState(DefaultProfilePicture);
 

@@ -10,20 +10,32 @@ import {
   useLazyGetHouseholdGoalProgressQuery,
 } from "../../app/api";
 import { Link } from "react-router-dom";
+import { useNavigationType } from "react-router-dom";
 
 const SustainableGoal = () => {
   const householdId = useSelector((state) => state.auth.currentHouseholdId);
   const userId = useSelector((state) => state.auth.user?.id);
-  const { data: householdGoalsData, isLoading: isHouseholdGoalsLoading } = useGetHouseholdGoalsQuery(householdId, {
+  const { data: householdGoalsData, isLoading: isHouseholdGoalsLoading, refetch: refetchGetHouseholdGoals } = useGetHouseholdGoalsQuery(householdId, {
     skip: !householdId,
   });
-  const { data: householdTagsData, isLoading: isHouseholdTagsLoading } = useGetHouseholdTagsQuery(householdId, {
+  const { data: householdTagsData, isLoading: isHouseholdTagsLoading, refetch: refetchGetTags } = useGetHouseholdTagsQuery(householdId, {
     skip: !householdId,
   });
-  const { data: completedGoalsData, isLoading: isCompletedGoalsLoading } = useGetCompletedHouseholdGoalsQuery(householdId, {
+  const { data: completedGoalsData, isLoading: isCompletedGoalsLoading, refetch: refetchCompletedHouseholdGoals } = useGetCompletedHouseholdGoalsQuery(householdId, {
     skip: !householdId,
   });
   const [getHouseholdGoalProgress] = useLazyGetHouseholdGoalProgressQuery();
+
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetchGetHouseholdGoals();
+      refetchGetTags();
+      refetchCompletedHouseholdGoals();
+    }
+  }, [navigationType, refetchGetHouseholdGoals, refetchGetTags, refetchCompletedHouseholdGoals]);
 
   const [householdGoals, setHouseholdGoals] = useState([]);
   const [completedGoals, setCompletedGoals] = useState([]);
@@ -60,7 +72,7 @@ const SustainableGoal = () => {
     try {
       const response = await incrementGoal({ householdGoalId, userId }).unwrap();
       if (response.is_completed) {
-        alert('Goal completed!');
+        refetchGetHouseholdGoals();
       } else if (response) {
         setProgressData((prevData) => ({
           ...prevData,
@@ -71,27 +83,11 @@ const SustainableGoal = () => {
           goal.id === householdGoalId ? { ...goal, Goal_Records: [...goal.Goal_Records, response] } : goal
         );
         setHouseholdGoals(updatedGoals);
-      } else {
-        alert('Failed to increment goal');
       }
     } catch (error) {
       console.error('Error incrementing goal:', error);
-      if (error?.data?.message === 'You can only increment once a day') {
-        alert('You can only increment once a day');
-      } else if (error?.data?.message === 'Goal already completed') {
-        alert('Goal already completed');
-      } else {
-        alert('Failed to increment goal');
-      }
     }
   };
-
-  useEffect(() => {
-    console.log("Household Goals:", householdGoals);
-    console.log("Completed Goals:", completedGoals);
-    console.log("Tags:", tags);
-    console.log("Progress Data:", progressData);
-  }, [householdGoals, completedGoals, tags, progressData]);
 
   if (isHouseholdGoalsLoading || isHouseholdTagsLoading || isCompletedGoalsLoading) return <div>Loading...</div>;
 

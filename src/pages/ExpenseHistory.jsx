@@ -4,11 +4,19 @@ import BottomBar from "../components/common/BottomBar";
 import Expense from "../components/expenses/Expense";
 import { useGetExpensesHistoryQuery } from "../app/api";
 import { useSelector } from "react-redux";
+import { useNavigationType } from "react-router-dom";
 
 const ExpenseHistory = () => {
-    const { data: expensesData, error, isLoading } = useGetExpensesHistoryQuery();
+    const { data: expensesData, error, isLoading, refetch } = useGetExpensesHistoryQuery();
     const [expenses, setExpenses] = useState(null);
     const authUser = useSelector((state) => state.auth.user);
+    const navigationType = useNavigationType();
+
+    useEffect(() => {
+      if (navigationType === "PUSH" || navigationType === "POP") {
+        refetch();
+      }
+    }, [navigationType, refetch]);
 
     useEffect(() => {
         if (expensesData && authUser) {
