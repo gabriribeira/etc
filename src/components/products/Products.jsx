@@ -4,15 +4,15 @@ import BottomBar from "../common/BottomBar";
 import SearchInput from "../common/SearchInput";
 import CategoriesInput from "../common/CategoriesInput";
 import ScrollProducts from "../common/ScrollProducts";
-import { useGetProductsBySupermarketQuery, useGetProductsOrderedByPriceQuery, useGetAllProductsQuery, useGetProductsByCategoryQuery } from "../../app/api";
+import { useGetProductsBySupermarketQuery, useGetProductsOrderedByPriceQuery, useGetAllProductsQuery, useGetProductsByCategoryQuery, useSearchProductsQuery } from "../../app/api";
 
 const Products = () => {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState([]);
   const [filters, setFilters] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [products, setProducts] = useState([]);
-
+  
   const selectedSupermarket = filters.find(f => !['Price Low to High', 'Price High to Low', 'Popularity'].includes(f));
   const priceOrder = filters.find(f => ['Price Low to High', 'Price High to Low'].includes(f)) ?
     (filters.includes('Price Low to High') ? 'asc' : 'desc') : null;
@@ -28,13 +28,18 @@ const Products = () => {
   );
 
   const { data: productsByCategory, error: categoryError } = useGetProductsByCategoryQuery(
-    category,
-    { skip: !category }
+    category.length ? category[0] : null,
+    { skip: !category.length }
   );
 
   const { data: allProducts, error: allProductsError } = useGetAllProductsQuery(
     undefined,
     { skip: isFiltered }
+  );
+
+  const { data: searchedProducts, error: searchError } = useSearchProductsQuery(
+    search,
+    { skip: !search }
   );
 
   const handleCategoryChange = (selectedCategory) => {
@@ -47,12 +52,14 @@ const Products = () => {
   };
 
   useEffect(() => {
-    setIsFiltered(filters.length > 0 || category !== null || search.length > 0);
+    setIsFiltered(filters.length > 0 || category.length > 0 || search.length > 0);
   }, [filters, category, search]);
 
   useEffect(() => {
     let filteredProducts = [];
-    if (productsBySupermarket && productsBySupermarket.data) {
+    if (search && searchedProducts && searchedProducts.length > 0) {
+      filteredProducts = searchedProducts;
+    } else if (productsBySupermarket && productsBySupermarket.data) {
       filteredProducts = productsBySupermarket.data;
     } else if (productsOrderedByPrice && productsOrderedByPrice.data) {
       filteredProducts = productsOrderedByPrice.data;
@@ -62,12 +69,12 @@ const Products = () => {
       filteredProducts = allProducts.data;
     }
 
-    if (category) {
-      filteredProducts = filteredProducts.filter(product => product.category_id === category);
+    if (category.length) {
+      filteredProducts = filteredProducts.filter(product => category.includes(product.category_id));
     }
 
     setProducts(filteredProducts);
-  }, [productsBySupermarket, productsOrderedByPrice, productsByCategory, allProducts, category]);
+  }, [search, searchedProducts, productsBySupermarket, productsOrderedByPrice, productsByCategory, allProducts, category]);
 
   return (
     <div className="bg-white min-h-screen">
@@ -90,14 +97,13 @@ const Products = () => {
               onChange={handleCategoryChange}
               categorySelected={category}
               label="Categories"
-              type="List"
               categoriesProps={true}
             />
           </div>
 
           {isFiltered ? (
             <>
-              {(supermarketError || priceError || categoryError) ? (
+              {(supermarketError || priceError || categoryError || searchError) ? (
                 <div>Error loading products</div>
               ) : (
                 <div className="my-3">
