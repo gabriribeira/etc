@@ -70,7 +70,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       setFilters(["State", "Products For", "Include", "Category"]);
 
     } else if (location.pathname === "/expenses") {
-      setFilters(["Paid by", "Category"]);
+      setFilters(["Paid by", "Category", "History"]);
     }
     else if (location.pathname === "/products") {
       setFilters(["Order by", "Supermarket", "Category"]);
@@ -145,6 +145,8 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       location.pathname === "/notifications" ||
       location.pathname === "/about" ||
       location.pathname === "/goals" ||
+      location.pathname === "/expenses/history" ||
+      location.pathname === "/invite" ||
       location.pathname === "/privacy-policy"
     ) {
       setShowBackButton(true);
@@ -428,7 +430,7 @@ TopBar.propTypes = {
   onBack: PropTypes.func,
   lockList: PropTypes.func,
   unlockList: PropTypes.func,
-  id_List: PropTypes.string.isRequired,
+  id_List: PropTypes.string,
   onFiltersChange: PropTypes.func,
 };
 

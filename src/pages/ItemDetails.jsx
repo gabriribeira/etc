@@ -56,7 +56,7 @@ const ItemDetails = () => {
       setDetails(item.details);
       setBrand(item.brand);
       setStore(item.store);
-      setCategory([item.category_id]); // Ensure category_id is used here
+      setCategory(item.category_id ? [item.category_id] : []);
       setPhoto(item.img_url);
       setIsSuggestions(item.is_suggestion);
     }
@@ -66,7 +66,7 @@ const ItemDetails = () => {
     try {
       const formData = new FormData();
       formData.append("list_id", Number(listId));
-      category.length && formData.append("category_id", category[0]);
+      category.length && category != null && category != undefined && category != [] && formData.append("category_id", category[0]);
       formData.append("name", name);
       formData.append("price", Number(value));
       formData.append("details", details);

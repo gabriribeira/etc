@@ -29,13 +29,15 @@ const EditHouseHold = () => {
 
   useEffect(() => {
     if (household) {
-      setName(household.data.name);
-      setDescription(household.data.description ? household.data.description : "");
+      console.log("Household data:", household.data);
+      setName(household.data.name || "");
+      setDescription(household.data.description || "");
     }
   }, [household]);
 
   useEffect(() => {
     if (householdTags) {
+      console.log("Household tags:", householdTags.data);
       setTags(householdTags.data.map(tag => tag.id));
     }
   }, [householdTags]);
@@ -78,8 +80,22 @@ const EditHouseHold = () => {
               )}
             </div>
             <div className="p-4 flex flex-col gap-y-4">
-              <Input label="Household Name" value={name} onChange={(e) => setName(e.target.value)} />
-              <Input label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+              <Input
+                label="Household Name"
+                value={name}
+                onChange={(value) => {
+                  console.log("Household Name Change:", value);
+                  setName(value);
+                }}
+              />
+              <Input
+                label="Description"
+                value={description}
+                onChange={(value) => {
+                  console.log("Description Change:", value);
+                  setDescription(value);
+                }}
+              />
               <CategoriesInput
                 label="Tags"
                 onChange={setTags}

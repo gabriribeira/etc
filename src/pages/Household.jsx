@@ -28,7 +28,7 @@ const Household = () => {
             label="SETTINGS"
             options={["About", "Logout"]}
             links={["/about", "/login"]}
-            hideOverlay={() => setOpenOverlay(false)}
+            hideOverlay={() => {setOpenOverlay(false);}}
           />
         )}
         <div className="relative bg-white min-h-screen">
@@ -41,7 +41,7 @@ const Household = () => {
                 openOverlayFromParent={() => setOpenOverlayFromParent(true)}
               />
               <SustainableGoal />
-              <Members users={household.data.Users} />
+              <Members users={household.data.Users} household={household.data} />
             </div>
           </main>
           <BottomBar changeHousehold={true} openOverlayFromParent={openOverlayFromParent} />

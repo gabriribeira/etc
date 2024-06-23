@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import SearchInput from "../components/common/SearchInput";
@@ -8,6 +8,10 @@ import { useGetRequestsQuery } from "../app/api";
 const Notifications = () => {
   const [search, setSearch] = useState("");
   const { data: requests, error, isLoading } = useGetRequestsQuery();
+
+  useEffect(() => {
+    console.log("Requests:", requests);
+  }, [requests]);
 
   const handleSearchChange = (value) => {
     setSearch(value);
@@ -27,8 +31,8 @@ const Notifications = () => {
           <p>Loading...</p>
         ) : error ? (
           <p>Error loading requests</p>
-        ) : requests && requests.length > 0 ? (
-          requests.map((request, index) => (
+        ) : requests && requests.data && requests.data.length > 0 ? (
+          requests.data.map((request, index) => (
             <Notification key={index} activity={request} />
           ))
         ) : (

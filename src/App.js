@@ -38,6 +38,8 @@ import Archive from "./pages/Archive";
 import EditList from "./components/lists/EditList";
 import Settings from "./pages/Settings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ExpenseHistory from "./pages/ExpenseHistory";
+import RegisterStepProvider from "./pages/RegisterStepProvider";
 // import io from "socket.io-client";
 
 function App() {
@@ -97,6 +99,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/register/step2" element={<RegisterStep2 />} />
+          <Route path="/register/provider" element={<RegisterStepProvider />} />
           <Route path="/household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route path="/expense-details/:expenseId" element={<ExpenseDetail />} />
@@ -112,6 +115,7 @@ function App() {
           <Route path="/lists/new" element={<NewList />} />
           <Route path="/lists/edit/:list" element={<EditList />} />
           <Route path="/expenses/new" element={<NewExpense />} />
+          <Route path="/expenses/history" element={<ExpenseHistory />} />
           <Route path="/households/onboarding" element={<HouseholdOnboarding />} />
           <Route path="/households/join" element={<JoinHousehold />} />
           <Route path="/households/new" element={<NewHousehold />} />

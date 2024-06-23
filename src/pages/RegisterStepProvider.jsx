@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
-import ImageUpload from "../components/common/ImageUpload";
 import CategoriesInput from "../components/common/CategoriesInput";
 import { useNavigate } from "react-router-dom";
 import { useUpdateUserMutation, useAddUserSpecificationsMutation } from "../app/api";
@@ -10,11 +9,10 @@ import { useSelector } from "react-redux";
 import { updateUserState } from "../app/authSlice";
 import { useDispatch } from "react-redux";
 
-const RegisterStep2 = () => {
+const RegisterStepProvider = () => {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [imageFile, setImageFile] = useState(null);
   const [specifications, setSpecifications] = useState([]);
   const [updateUser] = useUpdateUserMutation();
   const [addUserSpecifications] = useAddUserSpecificationsMutation();
@@ -27,10 +25,6 @@ const RegisterStep2 = () => {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("name", `${firstName} ${lastName}`);
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
-
     try {
       const response = await updateUser({ id: user.id, formData }).unwrap();
       console.log("Update user response:", response);
@@ -54,7 +48,6 @@ const RegisterStep2 = () => {
           handleUpdateUser();
         }}
       >
-        <ImageUpload onImageUpload={setImageFile} />
         <Input label="Username" value={username} onChange={setUsername} />
         <Input label="First Name" value={firstName} onChange={setFirstName} />
         <Input label="Last Name" value={lastName} onChange={setLastName} />
@@ -72,4 +65,4 @@ const RegisterStep2 = () => {
   );
 };
 
-export default RegisterStep2;
+export default RegisterStepProvider;

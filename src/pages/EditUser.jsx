@@ -40,8 +40,8 @@ const EditUser = () => {
   useEffect(() => {
     if (user) {
       setName(user.data.name);
-      setUsername(user.data.username);
-      setDescription(user.data.description);
+      setUsername(user.data.username ? user.data.username : "");
+      setDescription(user.data.description ? user.data.description : "");
     }
   }, [user]);
 
