@@ -5,7 +5,7 @@ import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import BottomBar from "../components/common/BottomBar";
 import ProgressBar from "../components/common/ProgressBar";
-import { useCreateHouseholdMutation, useCreateRequestMutation, useAddHouseholdTagsMutation, useGetGoalsByTagsQuery, useAssignGoalsToHouseholdMutation } from "../app/api";
+import { useCreateHouseholdMutation, useCreateRequestMutation, useUpdateHouseholdTagsMutation, useGetGoalsByTagsQuery, useAssignGoalsToHouseholdMutation } from "../app/api";
 import { useSelector } from "react-redux";
 import AddMembers from "./AddMembers";
 import CategoriesInput from "../components/common/CategoriesInput";
@@ -22,10 +22,10 @@ const NewHousehold = () => {
   const [createHousehold, { isLoading, isError }] = useCreateHouseholdMutation();
   const [members, setMembers] = useState([]);
   const [createRequest] = useCreateRequestMutation();
-  const [addHouseholdTags] = useAddHouseholdTagsMutation();
+  const [addHouseholdTags] = useUpdateHouseholdTagsMutation();
   const [tags, setTags] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
-  const { data: fetchedGoals } = useGetGoalsByTagsQuery(tags?.map((tag) => tag.id));
+  const { data: fetchedGoals } = useGetGoalsByTagsQuery(tags, { skip: tags.length === 0 });
   const [assignGoals] = useAssignGoalsToHouseholdMutation();
 
   const toggleGoal = (goal) => {
@@ -76,7 +76,7 @@ const NewHousehold = () => {
 
   const handleTags = async () => {
     try {
-      await addHouseholdTags({ householdId: household.id, tags: tags.map((tag) => tag.id) }).unwrap();
+      await addHouseholdTags({ householdId: household.id, tags }).unwrap();
       setStep(4);
     } catch (error) {
       console.error("Error adding tags:", error);

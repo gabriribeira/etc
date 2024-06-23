@@ -120,7 +120,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
     const listPageRegex = /^\/lists\/\d+$/;
     const imagePageRegex = /^\/image\/\d+$/;
     const editItemPageRegex = /\/lists\/\d+\/item\/\d+/;
-    const expenseDetailsPageRegex = /^\/expenses\/expensedetails\/\d+$/;
+    const expenseDetailsPageRegex = /^\/expense-details\/\d+$/;
     const editUserPageRegex = /^\/users\/\d+\/edit$/;
     const userPageRegex = /^\/users\/\d+$/;
     const editProfilePageRegex = /\/profile\/edit/;
@@ -144,6 +144,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       location.pathname === "/settings" ||
       location.pathname === "/notifications" ||
       location.pathname === "/about" ||
+      location.pathname === "/goals" ||
       location.pathname === "/privacy-policy"
     ) {
       setShowBackButton(true);

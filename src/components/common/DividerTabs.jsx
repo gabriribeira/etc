@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const DividerTabs = ({ tabs, activeTab, setActiveTab }) => {
   return (
-    <div className="flex items-center justify-start w-full">
+    <div className="flex items-center justify-start w-full gap-x-2">
       {tabs &&
         tabs.map((tab, index) => (
           <button

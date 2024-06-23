@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Expense = ({ expense }) => {
+  console.log(expense);
   const authUser = useSelector((state) => state.auth.user);
   const paid = expense.paid;
 
@@ -17,7 +18,7 @@ const Expense = ({ expense }) => {
   return (
     authUser && expense && (
       <Link to={{
-        pathname: `/expenses/expensedetails/${expense.id}`,
+        pathname: `/expense-details/${expense.id}`,
         state: { expense }
       }} className="w-full">
         <div
@@ -26,13 +27,13 @@ const Expense = ({ expense }) => {
         >
           <div className={`flex justify-start w-full text-white`} id="1">
             <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1">
-              {/* <img
+              <img
                 //eslint-disable-next-line
-                src={require(`../../assets/data/users/${user.img}`)}
+                src={expense?.users[0]?.img_url}
                 alt="User Profile Picture"
                 className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
                 referrerPolicy="no-referrer"
-              /> */}
+              />
             </div>
             <div className="flex flex-col ml-2 grow">
               <h2 className="text-lg font-normal">{expense.title}</h2>
@@ -49,9 +50,9 @@ const Expense = ({ expense }) => {
               {expense.users?.length} member
               <span className={expense.users?.length > 1 ? "" : "hidden"}>s</span>
             </p>
-            <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit ml-2">
+            {/* <p className="font-semibold text-sm bg-white text-black py-1 px-5 rounded-full w-fit ml-2">
               {expense.category}
-            </p>
+            </p> */}
             {paid && (
               <p className="font-semibold text-sm bg-salmon text-black py-1 px-5 rounded-full w-fit ml-2">
                 paid

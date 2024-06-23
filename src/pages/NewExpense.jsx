@@ -3,8 +3,7 @@ import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
-import MembersInput from "../components/common/MembersInput";
-import CategoriesInput from "../components/common/CategoriesInput";
+import ExpenseMembersInput from "../components/common/ExpenseMembersInput";
 import { useNavigate } from "react-router-dom";
 import { useCreateExpenseMutation } from "../app/api";
 import { useSelector } from "react-redux";
@@ -15,7 +14,6 @@ const NewExpense = () => {
   const [details, setDetails] = useState("");
   const [value, setValue] = useState("");
   const [date, setDate] = useState("");
-  const [category, setCategory] = useState("");
   const [members, setMembers] = useState([]);
   const authUser = useSelector((state) => state.auth.user);
   const [createExpense, { isLoading }] = useCreateExpenseMutation();
@@ -26,12 +24,7 @@ const NewExpense = () => {
     }
   }, [authUser]);
 
-  useEffect(() => {
-    console.log(members);
-  }, [members]);
-
   const handleCreateExpense = async () => {
-    console.log(date);
     try {
       const newExpense = {
         title,
@@ -40,8 +33,7 @@ const NewExpense = () => {
         date,
         is_paid: false,
         user_id: authUser.id,
-        users: members,
-        category,
+        members,
       };
       await createExpense(newExpense).unwrap();
       navigate("/expenses");
@@ -73,29 +65,17 @@ const NewExpense = () => {
 
             <Input label="Title" value={title} onChange={setTitle} />
             <Input label="Details" value={details} onChange={setDetails} />
-
             <div className="flex w-full gap-x-2">
               <div className="w-50">
                 <Input label="Value" value={value} onChange={setValue} />
               </div>
-
               <Input label="Date" value={date} onChange={setDate} />
             </div>
-
-            <MembersInput
+            <ExpenseMembersInput
               value={members}
               onChange={setMembers}
               label={"Edit members"}
             />
-
-            <CategoriesInput
-              label={"Category"}
-              onChange={setCategory}
-              value={category}
-              categorySelected={category}
-              type="Expense"
-            />
-
             <Button
               label="Create Expense"
               action={handleCreateExpense}

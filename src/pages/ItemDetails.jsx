@@ -34,7 +34,7 @@ const ItemDetails = () => {
   const [details, setDetails] = useState("");
   const [brand, setBrand] = useState("");
   const [store, setStore] = useState("");
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState([]);
   const [photo, setPhoto] = useState(null);
   const [isSuggestions, setIsSuggestions] = useState(false);
   const { data: item, isLoading, isError } = useGetItemQuery(itemId, { skip: itemId === "0" });
@@ -42,10 +42,6 @@ const ItemDetails = () => {
   const { data: recommendations } = useSearchProductsQuery(debouncedName, {
     skip: !debouncedName || debouncedName.length < 2 || !showRecommendations,
   });
-
-  useEffect(() => {
-    console.log(category);
-  }, [category]);
 
   useEffect(() => {
     if (item) {
@@ -57,7 +53,7 @@ const ItemDetails = () => {
       setDetails(item.details);
       setBrand(item.brand);
       setStore(item.store);
-      setCategory(item.category_id);
+      setCategory([item.category_id]); // Ensure category_id is used here
       setPhoto(item.img_url);
       setIsSuggestions(item.is_suggestion);
     }
@@ -67,7 +63,7 @@ const ItemDetails = () => {
     try {
       const formData = new FormData();
       formData.append("list_id", Number(listId));
-      category && formData.append("category_id", category);
+      category.length && formData.append("category_id", category[0]);
       formData.append("name", name);
       formData.append("price", Number(value));
       formData.append("details", details);
@@ -100,7 +96,7 @@ const ItemDetails = () => {
     setUnit(product.unit);
     setBrand(product.brand);
     setStore(product.store);
-    setCategory(product.category_id); // Ensure category_id is used here
+    setCategory([product.category_id]); // Ensure category_id is used here
     setPhoto(product.img_url);
     setShowRecommendations(false);
     setIsSuggestions(false);
@@ -169,9 +165,8 @@ const ItemDetails = () => {
             <Input label="Brand" value={brand} onChange={setBrand} />
             <CategoriesInput
               onChange={setCategory}
-              value={category}
-              label="Category"
               categorySelected={category}
+              label="Category"
               categoriesProps={true}
               type="List"
             />

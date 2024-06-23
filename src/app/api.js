@@ -351,6 +351,29 @@ const api = createApi({
         method: 'POST',
       }),
     }),
+    markExpensePaid: builder.mutation({
+      query: ({ expenseId }) => ({
+        url: `/expenses/mark-paid`,
+        method: 'POST',
+        body: { expenseId },
+      }),
+    }),
+    deleteExpense: builder.mutation({
+      query: (expenseId) => ({
+        url: `/expenses/${expenseId}`,
+        method: 'DELETE',
+      }),
+    }),
+    getAllHouseholdUsersExpense: builder.query({
+      query: () => `/users/all-households`,
+    }),
+    markWholeExpensePaid: builder.mutation({
+      query: ({ expenseId }) => ({
+      url: '/expenses/mark-whole-paid',
+      method: 'POST',
+      body: { expenseId },
+      }),
+      }),
   }),
 });
 
@@ -420,5 +443,9 @@ export const {
   useUpdateRequestStatusMutation,
   useDeleteUserMutation,
   useCheckFoodRestrictionsMutation,
+  useMarkExpensePaidMutation,
+  useDeleteExpenseMutation,
+  useGetAllHouseholdUsersExpenseQuery,
+  useMarkWholeExpensePaidMutation,
 } = api;
 export default api;
