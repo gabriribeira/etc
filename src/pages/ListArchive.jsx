@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ShoppingList from "../components/lists/ShoppingList";
 import ConfirmationDialog from "../components/common/ConfirmationDialog";
 import { useGetHouseholdListsQuery, useArchiveListMutation, useDeleteListMutation } from "../app/api";
+import Loader from "../components/common/Loader";
 
 function ListArchive() {
   const [selectedLists, setSelectedLists] = useState([]);
@@ -61,8 +62,8 @@ function ListArchive() {
   const isButtonsDisabled = selectedLists.length === 0;
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen z-[101] bg-white">
-      <div className="w-full max-w-md px-5 mx-auto h-full flex flex-col">
+    <div className="w-screen h-screen z-[101] bg-white flex flex-col">
+      <div className="w-full max-w-md px-5 mx-auto flex-grow flex flex-col">
         <div className="flex justify-between items-center mb-4 my-4">
           <button className="text-black p-3" onClick={handleDoneClick}>
             Done
@@ -81,8 +82,8 @@ function ListArchive() {
           {selectedLists.length} selected
         </div>
 
-        <div className="space-y-4 flex-grow">
-          {isLoading && <p>Loading lists...</p>}
+        <div className="space-y-4 flex-grow overflow-y-auto mb-28"> {/* Added margin bottom */}
+          {isLoading && <Loader />}
           {error && <p>Error fetching lists: {error.message}</p>}
           {lists && lists.length > 0 ? (
             lists
@@ -102,24 +103,25 @@ function ListArchive() {
             <p>No lists found for this household.</p>
           )}
         </div>
-
-        <div className="flex justify-around py-4 mb-4 bg-white100 ">
-          <button
-            className={`${isButtonsDisabled ? "text-gray-400 px-6 py-2" : "text-black border border-solid border-black border-2 px-6 py-2 rounded-xl"}`}
-            disabled={isButtonsDisabled}
-            onClick={handleArchiveClick}
-          >
-            Archive
-          </button>
-          <button
-            className={`${isButtonsDisabled ? "text-gray-400 px-6 py-2" : "text-black border border-solid border-black border-2 px-6 py-2 rounded-xl"}`}
-            disabled={isButtonsDisabled}
-            onClick={handleDeleteClick}
-          >
-            Delete
-          </button>
-        </div>
       </div>
+
+      <div className="fixed bottom-0 left-0 right-0 flex justify-around py-4  shadow-[0px_-10px_30px_-10px_rgba(0,0,0,0.5)] bg-white z-10"> {/* Fixed the button bar */}
+        <button
+          className={`flex-grow mx-2 ${isButtonsDisabled ? "text-black40 px-6 py-2" : "text-black px-6 py-2"}`}
+          disabled={isButtonsDisabled}
+          onClick={handleArchiveClick}
+        >
+          Archive
+        </button>
+        <button
+          className={`flex-grow mx-2 ${isButtonsDisabled ? "text-black40 px-6 py-2" : "text-black px-6 py-2 "}`}
+          disabled={isButtonsDisabled}
+          onClick={handleDeleteClick}
+        >
+          Delete
+        </button>
+      </div>
+
       <ConfirmationDialog
         title="Delete List?"
         details="The list will be removed from the shopping."
