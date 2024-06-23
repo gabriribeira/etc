@@ -39,6 +39,7 @@ import EditList from "./components/lists/EditList";
 import Settings from "./pages/Settings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ExpenseHistory from "./pages/ExpenseHistory";
+import RegisterStepProvider from "./pages/RegisterStepProvider";
 // import io from "socket.io-client";
 
 function App() {
@@ -98,6 +99,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/register/step2" element={<RegisterStep2 />} />
+          <Route path="/register/provider" element={<RegisterStepProvider />} />
           <Route path="/household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
           <Route path="/expense-details/:expenseId" element={<ExpenseDetail />} />

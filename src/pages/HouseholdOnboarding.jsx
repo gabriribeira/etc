@@ -1,6 +1,7 @@
 import React from "react";
 import Logo from "../assets/imgs/etc/logo_salmon.webp";
 import Button from "../components/common/Button";
+import BottomBar from "../components/common/BottomBar";
 
 const HouseholdOnboarding = () => {
   return (
@@ -22,6 +23,7 @@ const HouseholdOnboarding = () => {
           Choose one of the options to start.
         </p>
       </div>
+      <BottomBar />
     </div>
   );
 };

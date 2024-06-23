@@ -3,10 +3,19 @@ import PropTypes from "prop-types";
 import { RxDotsVertical } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
-const Members = ({ users }) => {
+const Members = ({ users, household }) => {
   return (
-    <div className="flex flex-col px-5 gap-y-3">
+    <div className="flex flex-col px-5 pb-5 gap-y-3">
       <h1 className="font-semibold text-lg">Members</h1>
+      {household.privacy !== true &&
+        <div className="flex items-center justify-center bg-transparent border-2 border-black text-black shadow-lg rounded-xl p-3">
+          <Link
+            to={`/invite`}
+            className="flex items-center gap-x-3"
+          >
+            Invite Members
+          </Link>
+        </div>}
       {users &&
         (users.length > 0 ? (
           users.map((user, index) => (
@@ -50,7 +59,7 @@ const Members = ({ users }) => {
 
 Members.propTypes = {
   users: PropTypes.array.isRequired,
-  admins: PropTypes.array,
+  household: PropTypes.object,
 };
 
 export default Members;

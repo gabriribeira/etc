@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SearchInput from "../components/common/SearchInput";
 import { useSearchUsersQuery } from "../app/api";
 
-const AddMembers = ({ authUser, authHousehold, members, setMembers }) => {
+const AddMembers = ({ authUser, authHousehold, members, setMembers, invite }) => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   //eslint-disable-next-line
@@ -28,7 +28,7 @@ const AddMembers = ({ authUser, authHousehold, members, setMembers }) => {
   return (
     authHousehold && (
       <div className="flex flex-col w-full pt-5">
-        <div className="rounded-2xl flex items-center gap-x-3">
+        {!invite && <div className="rounded-2xl flex items-center gap-x-3">
           <img
             src={authHousehold.img_url}
             alt="Authenticated User Profile Picture"
@@ -38,7 +38,7 @@ const AddMembers = ({ authUser, authHousehold, members, setMembers }) => {
           <h1 className="text-xl font-semibold text-black">
             {authHousehold.name}
           </h1>
-        </div>
+        </div>}
         <div className="w-full">
           <SearchInput
             label="Search for other users"
@@ -76,6 +76,7 @@ AddMembers.propTypes = {
   authHousehold: PropTypes.object.isRequired,
   members: PropTypes.array,
   setMembers: PropTypes.func.isRequired,
+  invite: PropTypes.bool,
 };
 
 export default AddMembers;
