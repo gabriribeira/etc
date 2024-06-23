@@ -36,7 +36,7 @@ const NewList = () => {
   const [addItem] = useAddItemMutation();
 
   const productId = new URLSearchParams(location.search).get('product_id');
-  
+
   const { data: product, isLoading: isLoadingProduct } = useGetProductByIdQuery(productId, {
     skip: !productId,
   });
@@ -106,7 +106,11 @@ const NewList = () => {
         await addItem(itemData).unwrap();
       }
 
-      navigate(`/lists/${newList.id}`);
+      if (newList && newList.data.id) {
+        navigate(`/lists/${newList.data.id}`);
+      } else {
+        console.error("Error: newList or newList.id is undefined");
+      }
     } catch (error) {
       console.error("Error creating list:", error);
       if (error.data) {
@@ -221,8 +225,8 @@ const NewList = () => {
                       value={description}
                       onChange={setDescription}
                       placeholder={`${eventSelected
-                          ? "Eg: Birthday dinner for 5 friends, picnic date"
-                          : "Eg: Vegetarian Lasagna, Gluten Free"
+                        ? "Eg: Birthday dinner for 5 friends, picnic date"
+                        : "Eg: Vegetarian Lasagna, Gluten Free"
                         }`}
                     />
                   )}
