@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import {
   useGetListQuery,
@@ -16,6 +16,7 @@ import TopBar from "../common/TopBar";
 import { FiLock } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import ConfirmationDialog from "../common/ConfirmationDialog";
+import NotificationPopup from "../common/NotificationPopup";
 
 const ListDisplay = () => {
   const location = useLocation();
@@ -44,6 +45,13 @@ const ListDisplay = () => {
   const [foodRestrictions, setFoodRestrictions] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationDetails, setConfirmationDetails] = useState("");
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setPopup({ message: location.state.message, isVisible: true });
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (categories && !categoriesLoading) {
@@ -80,6 +88,7 @@ const ListDisplay = () => {
       await addItem(newItemJson).unwrap();
       refetchItems();
       setNewItem("");
+      setPopup({ message: "Item Added", isVisible: true });
     } catch (error) {
       console.error("Error adding item:", error);
     }
@@ -258,6 +267,11 @@ const ListDisplay = () => {
           action={() => setShowConfirmation(false)}
         />
       )}
+      <NotificationPopup
+        message={popup.message}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
+      />
     </div>
   );
 };

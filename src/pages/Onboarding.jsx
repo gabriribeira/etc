@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
@@ -7,6 +7,8 @@ import iconSetup from "../assets/imgs/icon/setup.png";
 import iconCart from "../assets/imgs/icon/cart.png";
 import iconSustainable from "../assets/imgs/icon/sustainable.png";
 import iconAI from "../assets/imgs/icon/ai.png";
+import NotificationPopup from "../components/common/NotificationPopup";
+import { useLocation } from "react-router-dom";
 
 const OnboardingPage = ({ image, title, text }) => {
   return (
@@ -71,7 +73,15 @@ OnboardingPage.propTypes = {
 };
 
 const Onboarding = () => {
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
+  const [popup, setPopup] = useState({ isVisible: false, message: "" });
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setPopup({ message: location.state.message, isVisible: true });
+    }
+  }, [location.state]);
 
   const pages = [
     {
@@ -234,6 +244,11 @@ const Onboarding = () => {
           </div>
         )}
       </div>
+      <NotificationPopup
+        message={popup.message}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
+      />
     </div>
   );
 };

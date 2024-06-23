@@ -86,7 +86,7 @@ const NewHousehold = () => {
   const handleSubmit = async () => {
     try {
       await assignGoals({ householdId: household.id, goalIds: selectedGoals.map((goal) => goal.id) }).unwrap();
-      navigate("/household");
+      navigate("/household", { state: { message: "Household created" } });
     } catch (error) {
       console.error('Failed to assign goal:', error);
     }

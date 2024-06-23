@@ -6,6 +6,7 @@ import Button from "../common/Button";
 import ConfirmationDialog from "../common/ConfirmationDialog";
 import { useGetExpenseQuery, useMarkExpensePaidMutation, useDeleteExpenseMutation, useMarkWholeExpensePaidMutation } from "../../app/api";
 import { useSelector } from "react-redux";
+import NotificationPopup from "../common/NotificationPopup";
 
 const ExpenseDetail = () => {
   const location = useLocation();
@@ -17,6 +18,7 @@ const ExpenseDetail = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showMarkWholeExpenseConfirmation, setShowMarkWholeExpenseConfirmation] = useState(false);
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
 
   useEffect(() => {
     const id = location.pathname.split("/")[2];
@@ -43,6 +45,7 @@ const ExpenseDetail = () => {
     try {
       await markExpensePaid({ expenseId, userId: authUser.id }).unwrap();
       setShowConfirmation(false);
+      setPopup({ message: "Expense marked as paid", isVisible: true });
       refetch();
     } catch (error) {
       console.error("Error marking expense as paid:", error);
@@ -52,7 +55,7 @@ const ExpenseDetail = () => {
   const handleDeleteExpense = async () => {
     try {
       await deleteExpense(expenseId).unwrap();
-      navigate("/expenses");
+      navigate("/expenses", { state: { message: "Expense deleted" } });
     } catch (error) {
       console.error("Error deleting expense:", error);
     }
@@ -62,6 +65,7 @@ const ExpenseDetail = () => {
     try {
       await markWholeExpensePaid({ expenseId }).unwrap();
       setShowMarkWholeExpenseConfirmation(false);
+      setPopup({ message: "Expense marked as paid", isVisible: true });
       refetch();
     } catch (error) {
       console.error("Error marking the whole expense as paid:", error);
@@ -170,6 +174,11 @@ const ExpenseDetail = () => {
         showConfirmation={showDeleteConfirmation}
         setShowConfirmation={setShowDeleteConfirmation}
         action={handleDeleteExpense}
+      />
+      <NotificationPopup
+        message={popup.message}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
       />
     </div>
   );

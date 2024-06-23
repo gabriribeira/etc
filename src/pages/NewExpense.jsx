@@ -36,7 +36,7 @@ const NewExpense = () => {
         members,
       };
       await createExpense(newExpense).unwrap();
-      navigate("/expenses");
+      navigate("/expenses", { state: { message: "Expense created" } });
     } catch (error) {
       console.error("Error creating expense:", error);
     }

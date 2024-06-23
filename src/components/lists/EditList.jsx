@@ -62,7 +62,7 @@ const EditList = () => {
 
   const handleCloseConfirmation = () => {
     setShowConfirmation(false);
-    navigate(`/lists/${listId}`);
+    navigate(`/lists/${listId}`, { state: { message: "List updated successfully" } });
   };
 
   return (

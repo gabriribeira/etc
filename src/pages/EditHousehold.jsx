@@ -63,7 +63,7 @@ const EditHouseHold = () => {
       }
       await updateHousehold({ id: householdId, formData }).unwrap();
       await updateHouseholdTags({ householdId, tags }).unwrap();
-      navigate("/household");
+      navigate("/household", { state: { message: "Household updated" } });
     } catch (error) {
       console.error("Failed to update household:", error);
       navigate("/household");

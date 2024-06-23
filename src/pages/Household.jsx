@@ -6,12 +6,21 @@ import HouseholdInfo from "../components/household/HouseholdInfo";
 import Members from "../components/household/Members";
 import SustainableGoal from "../components/household/SustainableGoal";
 import Overlay from "../components/common/Overlay";
-import { useNavigationType } from "react-router-dom";
+import { useNavigationType, useLocation } from "react-router-dom";
+import NotificationPopup from "../components/common/NotificationPopup";
 
 const Household = () => {
+  const location = useLocation();
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
   const { data: household, isLoading: isHouseholdLoading, error, refetch } = useGetHouseholdQuery();
   const [openOverlay, setOpenOverlay] = useState(false);
   const [openOverlayFromParent, setOpenOverlayFromParent] = useState(false);
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setPopup({ message: location.state.message, isVisible: true });
+    }
+  }, [location.state]);
 
   const navigationType = useNavigationType();
 
@@ -37,7 +46,7 @@ const Household = () => {
             label="SETTINGS"
             options={["About", "Logout"]}
             links={["/about", "/login"]}
-            hideOverlay={() => {setOpenOverlay(false);}}
+            hideOverlay={() => { setOpenOverlay(false); }}
           />
         )}
         <div className="relative bg-white min-h-screen">
@@ -53,6 +62,11 @@ const Household = () => {
               <Members users={household.data.Users} household={household.data} />
             </div>
           </main>
+          <NotificationPopup
+            message={popup.message}
+            isVisible={popup.isVisible}
+            onClose={() => setPopup({ ...popup, isVisible: false })}
+          />
           <BottomBar changeHousehold={true} openOverlayFromParent={openOverlayFromParent} />
         </div>
       </>

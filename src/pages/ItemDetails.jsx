@@ -87,7 +87,7 @@ const ItemDetails = () => {
         await updateItem({ id: itemId, formData }).unwrap();
       }
       await refetchListItems();
-      navigate(`/lists/${listId}`);
+      navigate(`/lists/${listId}`, { state: { message: "Item Added" } });
     } catch (error) {
       console.error("Failed to update Item:", error);
       navigate(`/lists/${listId}`);

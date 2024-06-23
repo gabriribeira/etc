@@ -6,6 +6,7 @@ import Button from "../components/common/Button";
 import { useCreateRequestMutation, useGetHouseholdQuery } from "../app/api";
 import { useSelector } from "react-redux";
 import Image from "../assets/imgs/etc/logo_dots.png";
+import NotificationPopup from "../components/common/NotificationPopup";
 
 const InviteMembers = () => {
   const user = useSelector((state) => state.auth.user);
@@ -13,6 +14,7 @@ const InviteMembers = () => {
   const [createRequest] = useCreateRequestMutation();
   const [members, setMembers] = React.useState([]);
   const [step, setStep] = React.useState(0);
+  const [popup, setPopup] = React.useState({ message: "", isVisible: false });
 
   const handleInviteMembers = async () => {
     try {
@@ -26,6 +28,7 @@ const InviteMembers = () => {
         )
       );
       setStep(1);
+      setPopup({ message: "Requests sent!", isVisible: true });
     } catch (error) {
       console.error("Error inviting members:", error);
     }
@@ -86,6 +89,11 @@ const InviteMembers = () => {
           </div>
         </main>
       )}
+      <NotificationPopup
+        message={popup.message}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
+      />
       <BottomBar />
     </div>
   );

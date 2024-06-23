@@ -4,12 +4,14 @@ import ShoppingList from "../components/lists/ShoppingList";
 import ConfirmationDialog from "../components/common/ConfirmationDialog";
 import { useGetHouseholdListsQuery, useArchiveListMutation, useDeleteListMutation } from "../app/api";
 import Loader from "../components/common/Loader";
+import NotificationPopup from "../components/common/NotificationPopup";
 
 function ListArchive() {
   const [selectedLists, setSelectedLists] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showArchiveConfirmation, setShowArchiveConfirmation] = useState(false);
   const navigate = useNavigate();
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
 
   const { data: lists, error, isLoading, refetch } = useGetHouseholdListsQuery();
   const [archiveList] = useArchiveListMutation();
@@ -26,7 +28,7 @@ function ListArchive() {
 
   const handleDoneClick = () => {
     console.log("Done button clicked");
-    navigate("/lists");
+    navigate("/lists", { state: { message: "Lists archived" } });
   };
 
   const handleArchiveClick = () => {
@@ -43,6 +45,7 @@ function ListArchive() {
     console.log("Confirmed archive for lists:", selectedLists);
     for (const listId of selectedLists) {
       await archiveList(listId);
+      setPopup({ message: "List archived", isVisible: true });
     }
     setShowArchiveConfirmation(false);
     setSelectedLists([]);
@@ -53,6 +56,7 @@ function ListArchive() {
     console.log("Confirmed delete for lists:", selectedLists);
     for (const listId of selectedLists) {
       await deleteList(listId);
+      setPopup({ message: "List deleted", isVisible: true });
     }
     setShowDeleteConfirmation(false);
     setSelectedLists([]);
@@ -139,6 +143,11 @@ function ListArchive() {
         showConfirmation={showArchiveConfirmation}
         setShowConfirmation={setShowArchiveConfirmation}
         action={handleArchiveList}
+      />
+      <NotificationPopup
+        message={popup.message}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
       />
     </div>
   );

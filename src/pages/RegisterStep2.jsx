@@ -36,7 +36,7 @@ const RegisterStep2 = () => {
       console.log("Update user response:", response);
       await addUserSpecifications({ userId: user.id, specifications }).unwrap();
       dispatch(updateUserState(response.data));
-      navigate("/onboarding");
+      navigate("/onboarding", { state: { message: "User created" } });
     } catch (error) {
       console.error("Failed to update user:", error);
     }

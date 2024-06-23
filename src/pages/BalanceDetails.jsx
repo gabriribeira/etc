@@ -7,6 +7,7 @@ import Button from "../components/common/Button";
 import { useSelector } from "react-redux";
 import { useMarkExpensesAsPaidMutation } from "../app/api";
 import ConfirmationDialog from "../components/common/ConfirmationDialog";
+import NotificationPopup from "../components/common/NotificationPopup";
 
 const BalanceDetails = () => {
   const location = useLocation();
@@ -15,6 +16,7 @@ const BalanceDetails = () => {
   const authUser = useSelector((state) => state.auth.user);
   const [markExpensesAsPaid] = useMarkExpensesAsPaidMutation();
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
 
   useEffect(() => {
     console.log('BalanceDetails State:', { balance, user, expenses });
@@ -24,7 +26,7 @@ const BalanceDetails = () => {
     try {
       const expenseIds = expenses.map((expense) => expense.id);
       await markExpensesAsPaid(expenseIds).unwrap();
-      navigate("/expenses");
+      navigate("/expenses", { state: { message: "Expenses marked as paid" } });
     } catch (error) {
       console.error("Failed to mark expenses as paid:", error);
     }
@@ -114,6 +116,11 @@ const BalanceDetails = () => {
           action={handlePaidBalance}
         />
       </main>
+      <NotificationPopup
+          message={popup.message}
+          isVisible={popup.isVisible}
+          onClose={() => setPopup({ ...popup, isVisible: false })}
+        />
       <BottomBar />
     </div>
   );

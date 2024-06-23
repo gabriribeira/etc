@@ -6,9 +6,11 @@ import { useGetUserHouseholdsQuery, useGetUserSpecificationsQuery } from "../app
 import { useSelector } from "react-redux";
 import Image from "../assets/imgs/etc/logo_dots.png";
 import { Link } from "react-router-dom";
-import { useNavigationType } from "react-router-dom";
+import { useNavigationType, useLocation } from "react-router-dom";
+import NotificationPopup from "../components/common/NotificationPopup";
 
 const Profile = () => {
+  const location = useLocation();
   const user = useSelector((state) => state.auth.user);
   const [imageUrl, setImageUrl] = useState(user.img_url);
   const {
@@ -23,7 +25,13 @@ const Profile = () => {
     error: specificationsError,
     refetch: refetchUserSpecifications,
   } = useGetUserSpecificationsQuery(user.id);
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
 
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setPopup({ message: location.state.message, isVisible: true });
+    }
+  }, [location.state]);
 
   const navigationType = useNavigationType();
 
@@ -134,6 +142,11 @@ const Profile = () => {
             </div>
           </div>
         </main>
+        <NotificationPopup
+          message={popup.message}
+          isVisible={popup.isVisible}
+          onClose={() => setPopup({ ...popup, isVisible: false })}
+        />
         <BottomBar />
       </div>
     )

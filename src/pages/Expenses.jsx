@@ -6,14 +6,23 @@ import Expense from "../components/expenses/Expense";
 import Balances from "../components/expenses/Balances";
 import { useGetExpensesQuery } from "../app/api";
 import { useSelector } from "react-redux";
-import { useNavigationType } from "react-router-dom";
+import { useNavigationType, useLocation } from "react-router-dom";
+import NotificationPopup from "../components/common/NotificationPopup";
 
 const Expenses = () => {
+  const location = useLocation();
   const { data: expensesData, error, isLoading, refetch } = useGetExpensesQuery();
   const [activeTab, setActiveTab] = useState(0);
   const [expenses, setExpenses] = useState(null);
   const authUser = useSelector((state) => state.auth.user);
   const navigationType = useNavigationType();
+  const [popup, setPopup] = useState({ message: "", isVisible: false });
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setPopup({ message: location.state.message, isVisible: true });
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (navigationType === "PUSH" || navigationType === "POP") {
@@ -63,6 +72,11 @@ const Expenses = () => {
           )}
         </div>
       </main>
+      <NotificationPopup
+        message={popup.message}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
+      />
       <BottomBar />
     </div>
   );

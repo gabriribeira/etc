@@ -81,7 +81,7 @@ const EditUser = () => {
       await addUserSpecifications({ userId: user.data.id, specifications }).unwrap();
 
       dispatch(updateUserState(response.data));
-      setShowConfirmation(true); // Show confirmation dialog
+      setShowConfirmation(true);
     } catch (error) {
       console.error("Failed to update user:", error);
     }
@@ -89,7 +89,7 @@ const EditUser = () => {
 
   const handleCloseConfirmation = () => {
     setShowConfirmation(false);
-    navigate("/profile");
+    navigate("/profile", { state: { message: "User Updated" } });
   };
 
   if (isLoading || isSpecificationsLoading) return <Loader />;
