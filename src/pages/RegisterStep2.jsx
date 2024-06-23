@@ -15,7 +15,7 @@ const RegisterStep2 = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [selectedSpecifications, setSelectedSpecifications] = useState([]);
+  const [specifications, setSpecifications] = useState([]);
   const [updateUser] = useUpdateUserMutation();
   const [addUserSpecifications] = useAddUserSpecificationsMutation();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const RegisterStep2 = () => {
     try {
       const response = await updateUser({ id: user.id, formData }).unwrap();
       console.log("Update user response:", response);
-      await addUserSpecifications({ userId: user.id, specifications: selectedSpecifications.map(spec => spec.id) }).unwrap();
+      await addUserSpecifications({ userId: user.id, specifications }).unwrap();
       dispatch(updateUserState(response.data));
       navigate("/onboarding");
     } catch (error) {
@@ -58,10 +58,10 @@ const RegisterStep2 = () => {
         <Input label="Username" value={username} onChange={setUsername} />
         <Input label="First Name" value={firstName} onChange={setFirstName} />
         <Input label="Last Name" value={lastName} onChange={setLastName} />
-        <CategoriesInput 
-          label="Specifications" 
-          categorySelected={selectedSpecifications} 
-          onChange={setSelectedSpecifications} 
+        <CategoriesInput
+          label="Food Restrictions"
+          onChange={setSpecifications}
+          categorySelected={specifications}
           specificationsProps={true}
         />
         <div className="flex flex-col items-end">
