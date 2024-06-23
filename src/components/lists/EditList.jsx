@@ -8,6 +8,7 @@ import BottomBar from "../common/BottomBar";
 import { useGetListQuery, useUpdateListMutation } from "../../app/api";
 import { useSelector } from "react-redux";
 import Loader from "../common/Loader";
+import ConfirmationDialog from "../common/ConfirmationDialog";
 
 const EditList = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const EditList = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [members, setMembers] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const { data: list, isLoading: isLoadingList } = useGetListQuery(listId);
   const [updateList] = useUpdateListMutation();
@@ -48,7 +50,7 @@ const EditList = () => {
       console.log("Updated List Data:", updatedListData);
 
       await updateList(updatedListData).unwrap();
-      navigate(`/lists/${listId}`);
+      setShowConfirmation(true);
     } catch (error) {
       console.error("Error updating list:", error);
       if (error.data) {
@@ -56,6 +58,11 @@ const EditList = () => {
       }
       // Additional error handling logic can be added here
     }
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    navigate(`/lists/${listId}`);
   };
 
   return (
@@ -90,7 +97,6 @@ const EditList = () => {
                   label="Update List"
                   action={handleUpdateList}
                   turnDisabled={!name}
-                  
                 />
               </div>
             </form>
@@ -98,6 +104,17 @@ const EditList = () => {
         </div>
       </main>
       <BottomBar />
+      {showConfirmation && (
+        <ConfirmationDialog
+          title="Confirm Update"
+          details="Are you sure you want to update this list?"
+          label="Ok"
+          bg="bg-black"
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          action={handleCloseConfirmation}
+        />
+      )}
     </div>
   );
 };

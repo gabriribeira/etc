@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import { useGetHouseholdListsQuery, useAddItemMutation, useGetProductByIdQuery } from "../../app/api"; // Import your API hooks
 import SearchInput from "./SearchInput";
 import Loader from "./Loader";
+import ConfirmationDialog from "./ConfirmationDialog"; // Import ConfirmationDialog
 
 const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
   const [search, setSearch] = useState("");
   const [selectedLists, setSelectedLists] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation dialog
 
   useEffect(() => {
     // Setup an event listener to handle clicks outside the overlay content
@@ -94,12 +96,18 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
         await addItem(newItem).unwrap();
         console.log(`Added product with ID: ${productId} to list with ID: ${listId}`);
       }
-      hideOverlay();
+      setShowConfirmation(true);
+      
     } catch (error) {
       console.error("Error adding product to lists:", error);
       console.error(`Error details: ${JSON.stringify(error.data)}`);
       // Handle error accordingly
     }
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    hideOverlay();
   };
 
   return (
@@ -219,6 +227,19 @@ const Overlay = ({ label, options, links, hideOverlay, onClicks, productId }) =>
           <Button label={"Cancel"} action={hideOverlay} stroke={true} />
         )}
       </div>
+      {showConfirmation && (
+        <div className="fixed inset-0 z-[113] flex items-center justify-center">
+          <ConfirmationDialog
+            title="Success"
+            details="Product insert success!"
+            label="Close"
+            bg="bg-black"
+            showConfirmation={showConfirmation}
+            setShowConfirmation={setShowConfirmation}
+            action={handleCloseConfirmation}
+          />
+        </div>
+      )}
     </div>
   );
 };

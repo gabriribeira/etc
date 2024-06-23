@@ -6,6 +6,7 @@ import BottomBar from "../components/common/BottomBar";
 import { useGetHouseholdListsQuery, useGetUserQuery, useUnarchiveListMutation } from "../app/api";
 import Loader from "../components/common/Loader";
 import ConfirmationDialog from "../components/common/ConfirmationDialog";
+import { useNavigate } from "react-router-dom";
 
 function Archive() {
   const { data: lists, error, isLoading } = useGetHouseholdListsQuery();
@@ -33,6 +34,7 @@ function ListItem({ list }) {
   const { data: user, isLoading, error } = useGetUserQuery(list.user_id);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [unarchiveList] = useUnarchiveListMutation(); // Use the mutation hook
+  const navigate = useNavigate();
 
   console.log('User data:', user); // Log completo dos dados do usuário
 
@@ -46,7 +48,8 @@ function ListItem({ list }) {
     } catch (error) {
       console.error("Failed to unarchive the list: ", error);
     } finally {
-      setShowConfirmation(false); // Close the dialog after action
+      setShowConfirmation(false);
+      navigate("/lists/archive");
     }
   };
 
