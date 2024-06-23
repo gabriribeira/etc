@@ -16,6 +16,7 @@ import {
 } from "../../app/api";
 import { useSelector } from "react-redux";
 import Loader from "../common/Loader";
+import ConfirmationDialog from "../common/ConfirmationDialog";
 
 const NewList = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const NewList = () => {
   const [recipeSelected, setRecipeSelected] = useState(false);
   const [eventSelected, setEventSelected] = useState(false);
   const [members, setMembers] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const [createList, { isLoading: isLoadingCreate }] = useCreateListMutation();
   const [createListFromRecipe, { isLoading: isLoadingRecipe }] = useCreateListFromRecipeMutation();
@@ -106,8 +108,8 @@ const NewList = () => {
         await addItem(itemData).unwrap();
       }
 
-      if (newList && newList.data.id) {
-        navigate(`/lists/${newList.data.id}`);
+      if (newList && (newList.data?.id || newList.id)) {
+        setShowConfirmation(true);
       } else {
         console.error("Error: newList or newList.id is undefined");
       }
@@ -126,10 +128,16 @@ const NewList = () => {
     setDescription("");
   }, [aiToggle]);
 
+  const handleUnarchiveList = () => {
+    setShowConfirmation(false);
+
+    navigate('/lists');
+  };
+
   return (
     <div className="bg-white min-h-screen">
       <TopBar />
-      {(isLoadingRecipe || isLoadingProduct) && <Loader />}
+      {(isLoadingRecipe || isLoadingProduct || isLoadingEvent) && <Loader />}
       <main className="pt-32">
         <div className="flex flex-col px-5 fade-in">
           <div className="flex flex-col w-full gap-y-3">
@@ -247,6 +255,17 @@ const NewList = () => {
         </div>
       </main>
       <BottomBar />
+      {showConfirmation && (
+        <ConfirmationDialog
+          title="Success!"
+          details={`You have created ${name}.`}
+          label="Close"
+          bg="bg-black"
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          action={handleUnarchiveList}
+        />
+      )}
     </div>
   );
 };
