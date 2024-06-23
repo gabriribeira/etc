@@ -113,7 +113,7 @@ const api = createApi({
 
     unarchiveList: builder.mutation({
       query: (id) => ({
-        url: `/lists/${id}/finish`,
+        url: `/lists/${id}/unfinish`,
         method: "PATCH",
       }),
     }),
