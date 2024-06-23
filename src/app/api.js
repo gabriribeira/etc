@@ -135,17 +135,17 @@ const api = createApi({
       query: (id) => `/items/${id}`,
     }),
     addItem: builder.mutation({
-      query: (newItem) => ({
+      query: (formData) => ({
         url: `/items`,
         method: "POST",
-        body: newItem,
+        body: formData,
       }),
     }),
     updateItem: builder.mutation({
-      query: ({ id, ...patch }) => ({
+      query: ({ id, formData }) => ({
         url: `/items/${id}`,
         method: "PUT",
-        body: patch,
+        body: formData,
       }),
     }),
     deleteItem: builder.mutation({
@@ -345,6 +345,12 @@ const api = createApi({
         method: 'DELETE',
       }),
     }),
+    checkFoodRestrictions: builder.mutation({
+      query: (listId) => ({
+        url: `/lists/${listId}/check-food-restrictions`,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -413,5 +419,6 @@ export const {
   useGetRequestsQuery,
   useUpdateRequestStatusMutation,
   useDeleteUserMutation,
+  useCheckFoodRestrictionsMutation,
 } = api;
 export default api;

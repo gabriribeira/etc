@@ -20,31 +20,31 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
   };
 
   const handleTags = (category) => {
-    if (categorySelected === category.id) {
-      onChange(null); // Deselect if the same category is clicked
+    if (categorySelected.includes(category.id)) {
+      onChange(categorySelected.filter(id => id !== category.id)); // Deselect if the same category is clicked
     } else {
-      onChange(category.id); // Select the new category
+      onChange([...categorySelected, category.id]); // Select the new category
     }
   };
 
   const handleCategories = (spec) => {
-    if (categorySelected === spec.id) {
-      onChange(null); // Deselect if the same category is clicked
+    if (categorySelected.includes(spec.id)) {
+      onChange(categorySelected.filter(id => id !== spec.id)); // Deselect if the same category is clicked
     } else {
-      onChange(spec.id); // Select the new category
+      onChange([...categorySelected, spec.id]); // Select the new category
     }
   };
 
   const handleSpecifications = (spec) => {
-    if (categorySelected === spec.id) {
-      onChange(null); // Deselect if the same category is clicked
+    if (categorySelected.includes(spec.id)) {
+      onChange(categorySelected.filter(id => id !== spec.id)); // Deselect if the same category is clicked
     } else {
-      onChange(spec.id); // Select the new category
+      onChange([...categorySelected, spec.id]); // Select the new category
     }
   };
 
   const isCategorySelected = (id) => {
-    return categorySelected === id;
+    return categorySelected?.includes(id);
   };
 
   return (
@@ -113,7 +113,7 @@ const CategoriesInput = ({ label, categorySelected, onChange, filter, specificat
 CategoriesInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
-  categorySelected: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // Changed to allow single category selection
+  categorySelected: PropTypes.arrayOf(PropTypes.number), // Changed to allow multiple category selection
   filter: PropTypes.bool,
   specificationsProps: PropTypes.bool,
   categoriesProps: PropTypes.bool,
