@@ -15,6 +15,7 @@ import { SlArrowRight } from "react-icons/sl";
 import TopBar from "../common/TopBar";
 import { FiLock } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import ConfirmationDialog from "../common/ConfirmationDialog";
 
 const ListDisplay = () => {
   const location = useLocation();
@@ -41,6 +42,8 @@ const ListDisplay = () => {
   const [estimatedValue, setEstimatedValue] = useState(null);
   const [newItem, setNewItem] = useState("");
   const [foodRestrictions, setFoodRestrictions] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationDetails, setConfirmationDetails] = useState("");
 
   useEffect(() => {
     if (categories && !categoriesLoading) {
@@ -92,6 +95,8 @@ const ListDisplay = () => {
       setFoodRestrictions(response2.data.harmfulItems);
 
       refetchList();
+      setConfirmationDetails(`The list has been locked. Estimated Market Value: €${response.data.estimatedValue.toFixed(2)}`);
+      setShowConfirmation(true);
     } catch (error) {
       console.error("Error locking list:", error);
     }
@@ -101,6 +106,8 @@ const ListDisplay = () => {
     try {
       await unlockList(list.id).unwrap();
       refetchList();
+      setConfirmationDetails("The list has been unlocked.");
+      setShowConfirmation(true);
     } catch (error) {
       console.error("Error unlocking list:", error);
     }
@@ -241,6 +248,17 @@ const ListDisplay = () => {
           </main>
         </>
       ) : null}
+      {showConfirmation && (
+        <ConfirmationDialog
+          title="Action Completed"
+          details={confirmationDetails}
+          label="Close"
+          bg="bg-black"
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          action={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   );
 };

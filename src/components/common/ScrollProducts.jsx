@@ -38,15 +38,16 @@ const ScrollProducts = ({ label, type, products }) => {
         <div className="flex flex-nowrap">
           {productList.map((product, index) => (
             <div key={index} className="inline-block px-3">
-              <div className="w-48 h-80 max-w-xs overflow-hidden rounded-lg shadow-md bg-white100 p-4 flex flex-col justify-between">
+              <div className="w-48 h-80 max-w-xs overflow-hidden rounded-lg shadow-md bg-white100 p-4 flex flex-col justify-between space-y-0">
                 <img src={product.img_url} alt={product.name} className="w-full h-32 object-cover rounded-lg mb-4" />
                 <div className="text-left flex flex-col justify-end flex-grow">
                   <p className="text-lg font-semibold mb-1">{truncateName(product.name)}</p>
                   <p className="text-sm text-gray-600 mb-2">{product.amount} {product.unit}</p>
+                  <p className="text-sm text-gray-600 mb-2 mt-[-10px]">{product.store}</p>
                   <div className="flex items-end justify-between mt-auto">
                     <div className="flex flex-col">
                       <p className="text-sm text-gray-400 line-through">{product.value}€</p>
-                      <p className="text-lg text-red-600 font-bold">{(product.value * 0.9).toFixed(2)}€</p>
+                      <p className="text-lg text-red-600 font-bold mt-[-5px]">{(product.value * 0.9).toFixed(2)}€</p>
                     </div>
                     <div className="flex items-end">
                       <BsPlusCircleFill size={45} onClick={() => handleOverlay(product.id)} />
