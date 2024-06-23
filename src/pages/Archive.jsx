@@ -64,7 +64,7 @@ function ListItem({ list }) {
           title="Unarchive Shopping List?"
           details="You will unarchive this shopping list from your household."
           label="Unarchive"
-          bg="bg-red-600"
+          bg="bg-black"
           showConfirmation={showConfirmation}
           setShowConfirmation={setShowConfirmation}
           action={handleUnarchiveList}

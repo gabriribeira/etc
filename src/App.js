@@ -97,15 +97,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route path="/register/step2" element={<RegisterStep2 />} />
-          <Route
-            path="/household/edit"
-            element={<EditHousehold />}
-          />
+          <Route path="/household/edit" element={<EditHousehold />} />
           <Route path="/expenses/:expense" element={<Expense />} />
-          <Route
-            path="/expense-details/:expenseId"
-            element={<ExpenseDetail />}
-          />
+          <Route path="/expense-details/:expenseId" element={<ExpenseDetail />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/expenses/balance" element={<BalanceDetails />} />
           <Route path="/goals" element={<Goals />} />
