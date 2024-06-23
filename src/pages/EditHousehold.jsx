@@ -7,6 +7,7 @@ import CategoriesInput from "../components/common/CategoriesInput";
 import ImageUpload from "../components/common/ImageUpload";
 import { useGetHouseholdQuery, useUpdateHouseholdMutation, useGetHouseholdTagsQuery, useUpdateHouseholdTagsMutation } from "../app/api";
 import { useSelector } from "react-redux";
+import Loader from "../components/common/Loader";
 
 const EditHouseHold = () => {
   const [name, setName] = useState("");
@@ -58,7 +59,7 @@ const EditHouseHold = () => {
     }
   };
 
-  if (isHouseholdLoading || isTagsLoading) return <div>Loading...</div>;
+  if (isHouseholdLoading || isTagsLoading) return <Loader />;
 
   return (
     household && (

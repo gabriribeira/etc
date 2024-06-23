@@ -4,12 +4,19 @@ import TopBar from "../components/common/TopBar";
 import Input from "../components/common/Input";
 import CategoriesInput from "../components/common/CategoriesInput";
 import Button from "../components/common/Button";
-import { useGetUserQuery, useUpdateUserMutation, useAddUserSpecificationsMutation, useGetUserSpecificationsQuery } from "../app/api";
+import {
+  useGetUserQuery,
+  useUpdateUserMutation,
+  useAddUserSpecificationsMutation,
+  useGetUserSpecificationsQuery,
+} from "../app/api";
 import { useSelector } from "react-redux";
 import ImageUpload from "../components/common/ImageUpload";
 import { updateUserState } from "../app/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/common/Loader";
+import ConfirmationDialog from "../components/common/ConfirmationDialog";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -18,6 +25,7 @@ const EditUser = () => {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [specifications, setSpecifications] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation dialog
   const userId = useSelector((state) => state.auth.user?.id);
   const dispatch = useDispatch();
 
@@ -39,7 +47,7 @@ const EditUser = () => {
 
   useEffect(() => {
     if (userSpecifications) {
-      setSpecifications(userSpecifications.data.map(spec => spec.id));
+      setSpecifications(userSpecifications.data.map((spec) => spec.id));
     }
   }, [userSpecifications]);
 
@@ -55,22 +63,27 @@ const EditUser = () => {
       if (imageFile) {
         formData.append("image", imageFile);
       }
-  
+
       // Send user update request
       const response = await updateUser({ id: user.data.id, formData }).unwrap();
-  
+
       // Send user specifications update request
       await addUserSpecifications({ userId: user.data.id, specifications }).unwrap();
-  
+
       dispatch(updateUserState(response.data));
-      navigate("/profile");
+      setShowConfirmation(true); // Show confirmation dialog
     } catch (error) {
       console.error("Failed to update user:", error);
       alert("Failed to update user");
     }
   };
 
-  if (isLoading || isSpecificationsLoading) return <div>Loading...</div>;
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    navigate("/profile");
+  };
+
+  if (isLoading || isSpecificationsLoading) return <Loader />;
 
   return (
     user && (
@@ -79,16 +92,16 @@ const EditUser = () => {
         <main className="mt-32 bg-white">
           <div className="flex flex-col">
             <div className="flex flex-col text-center relative justify-center m-4 items-center">
-              {user.data.img_url ?
+              {user.data.img_url ? (
                 <img
                   src={user.data.img_url}
                   alt="User Profile Picture"
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
                   referrerPolicy="no-referrer"
                 />
-                :
+              ) : (
                 <ImageUpload onImageUpload={setImageFile} />
-              }
+              )}
             </div>
             <div className="p-4 flex flex-col gap-y-4">
               <Input
@@ -121,6 +134,17 @@ const EditUser = () => {
           </div>
         </main>
         <BottomBar />
+        {showConfirmation && (
+          <ConfirmationDialog
+            title="Confirm Update"
+            details="Are you sure you want to update this user?"
+            label="Ok"
+            bg="bg-black"
+            showConfirmation={showConfirmation}
+            setShowConfirmation={setShowConfirmation}
+            action={handleCloseConfirmation}
+          />
+        )}
       </div>
     )
   );

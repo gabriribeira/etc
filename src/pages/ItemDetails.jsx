@@ -16,6 +16,8 @@ import {
   useGetListItemsQuery,
 } from "../app/api";
 import { useDebounce } from "../hooks/useDebounce";
+import ConfirmationDialog from "../components/common/ConfirmationDialog";
+import Loader from "../components/common/Loader";
 
 const ItemDetails = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const ItemDetails = () => {
   const [category, setCategory] = useState([]);
   const [photo, setPhoto] = useState(null);
   const [isSuggestions, setIsSuggestions] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const { data: item, isLoading, isError } = useGetItemQuery(itemId, { skip: itemId === "0" });
   const debouncedName = useDebounce(name, 500);
   const { data: recommendations } = useSearchProductsQuery(debouncedName, {
@@ -90,9 +93,9 @@ const ItemDetails = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(category)
-  }, [category])
+  const handleConfirmSave = () => {
+    setShowConfirmation(true);
+  };
 
   const selectProduct = (product) => {
     setName(product.name);
@@ -111,7 +114,7 @@ const ItemDetails = () => {
     setShowRecommendations(true);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   if (isError) return <p>Error loading item data</p>;
 
   return (
@@ -181,11 +184,22 @@ const ItemDetails = () => {
               onChange={setDetails}
               placeholder="Details"
             />
-            <Button label="Done" action={handleSaveItem} />
+            <Button label="Done" action={handleConfirmSave} />
           </div>
         </div>
       </main>
       <BottomBar />
+      {showConfirmation && (
+        <ConfirmationDialog
+          title="Confirm Save"
+          details="Are you sure you want to save this item?"
+          label="Ok"
+          bg="bg-black"
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          action={handleSaveItem}
+        />
+      )}
     </div>
   );
 };
