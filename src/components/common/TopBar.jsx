@@ -146,6 +146,7 @@ const TopBar = ({ description, listTitle, listClosed, onBack, lockList, unlockLi
       location.pathname === "/about" ||
       location.pathname === "/goals" ||
       location.pathname === "/expenses/history" ||
+      location.pathname === "/invite" ||
       location.pathname === "/privacy-policy"
     ) {
       setShowBackButton(true);
