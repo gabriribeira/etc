@@ -38,6 +38,7 @@ import Archive from "./pages/Archive";
 import EditList from "./components/lists/EditList";
 import Settings from "./pages/Settings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ExpenseHistory from "./pages/ExpenseHistory";
 // import io from "socket.io-client";
 
 function App() {
@@ -112,6 +113,7 @@ function App() {
           <Route path="/lists/new" element={<NewList />} />
           <Route path="/lists/edit/:list" element={<EditList />} />
           <Route path="/expenses/new" element={<NewExpense />} />
+          <Route path="/expenses/history" element={<ExpenseHistory />} />
           <Route path="/households/onboarding" element={<HouseholdOnboarding />} />
           <Route path="/households/join" element={<JoinHousehold />} />
           <Route path="/households/new" element={<NewHousehold />} />

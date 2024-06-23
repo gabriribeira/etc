@@ -4,6 +4,7 @@ import Button from "./Button";
 // import CategoriesInput from "./CategoriesInput";
 import { IoCheckmark } from "react-icons/io5";
 import { useGetTagsQuery } from "../../app/api";
+import { Link } from "react-router-dom";
 
 //eslint-disable-next-line
 const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
@@ -264,6 +265,15 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
           </div>
         );
 
+      case "History":
+        return (
+          <Link
+            to={"/expenses/history"}
+          >
+            History
+          </Link>
+        );
+
       case "Order by":
         return (
           <div className="flex flex-col w-full ml-10 items-start font-normal gap-y-3">
@@ -377,7 +387,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
         );
 
       default:
-        return "All";
+        return "";
     }
   }
 
@@ -396,7 +406,7 @@ const FilterOverlay = ({ appliedFilters, setFilter, hideFilters, filters }) => {
           {filters &&
             filters.map((filterItem, index) => (
               <div key={index} className="flex flex-col">
-                <h2 className="font-semibold text-lg">{filterItem !== "Category" ? filterItem : ""}</h2>
+                <h2 className="font-semibold text-lg">{filterItem !== "Category" && filterItem !== "History" ? filterItem : ""}</h2>
                 {displayFilters(filterItem)}
               </div>
             ))}

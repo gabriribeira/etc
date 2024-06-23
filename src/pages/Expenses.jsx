@@ -15,11 +15,8 @@ const Expenses = () => {
 
   useEffect(() => {
     if (expensesData && authUser) {
-      const expensesAux = expensesData.data
-        .filter((expense) => expense.user_id === authUser.id || (expense.users && expense.users.includes(authUser.id)))
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      setExpenses(expensesAux);
+      setExpenses(expensesData.data);
     }
   }, [expensesData, authUser]);
 

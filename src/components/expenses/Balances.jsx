@@ -2,180 +2,65 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
-import { useGetHouseholdQuery } from "../../app/api";
 
 const Balances = ({ expenses }) => {
-  const [balances, setBalances] = useState(null);
-  const { data: household, isLoading } = useGetHouseholdQuery();
   const authUser = useSelector((state) => state.auth.user);
+  const [receivables, setReceivables] = useState([]);
+  const [payables, setPayables] = useState([]);
   const [showMoreCredits, setShowMoreCredits] = useState(false);
   const [showMoreDebts, setShowMoreDebts] = useState(false);
-  console.log(household);
+
   useEffect(() => {
-    if (expenses && authUser && household && !isLoading) {
-      const calculatedBalances = calculateBalances(
-        expenses,
-        household.data.Users,
-        authUser.id
-      );
-      setBalances(calculatedBalances);
+    if (expenses && authUser) {
+      calculateBalances(expenses, authUser.id);
     }
-  }, [expenses, isLoading, authUser, household]);
+  }, [expenses, authUser]);
 
-  const calculateBalances = (expenses, users, authenticatedUserId) => {
-    const userBalances = {};
-    const userExpenses = {};
-
-    users.forEach((user) => {
-      if (
-        user.id === authenticatedUserId ||
-        expenses.some(
-          (exp) =>
-            exp.users.some((expUser) => expUser.id === user.id) &&
-            exp.users.some((expUser) => expUser.id === authenticatedUserId)
-        )
-      ) {
-        userBalances[user.id] = 0;
-        userExpenses[user.id] = [];
-      }
-    });
+  const calculateBalances = (expenses, authenticatedUserId) => {
+    const receivables = {};
+    const payables = {};
 
     expenses.forEach((expense) => {
-      const expenseUsers = expense.users.map((user) => user.id);
-      console.log(expense);
-      if (
-        !expense.is_paid &&
-        (expenseUsers.includes(authenticatedUserId) ||
-          expense.user_id === authenticatedUserId)
-      ) {
-        const numberOfUsers = expense.users.length || 1;
-        const amountPerUser = expense.value / numberOfUsers;
+      const { user_id: payerId, users, value, is_paid } = expense;
+      const amountPerUser = value / users.length;
 
-        if (expense.user_id === authenticatedUserId) {
-          expense.users.forEach((expenseUser) => {
-            const userId = expenseUser.id;
-            if (userId !== authenticatedUserId) {
-              userBalances[userId] -= amountPerUser;
-              if (userExpenses[userId]) {
-                userExpenses[userId].push({
-                  ...expense,
-                  amountOwed: `+${amountPerUser.toFixed(2)}`,
-                });
+      if (!is_paid) {
+        users.forEach((user) => {
+          if (!user.Expense_User.is_paid) {
+            if (payerId === authenticatedUserId && user.id !== authenticatedUserId) {
+              if (!receivables[user.id]) {
+                receivables[user.id] = { user, balance: 0, expenses: [] };
               }
+              receivables[user.id].balance += amountPerUser;
+              receivables[user.id].expenses.push(expense);
+            } else if (user.id === authenticatedUserId && payerId !== authenticatedUserId) {
+              if (!payables[payerId]) {
+                payables[payerId] = { user: expense.payer, balance: 0, expenses: [] };
+              }
+              payables[payerId].balance -= amountPerUser;
+              payables[payerId].expenses.push(expense);
             }
-          });
-        } else if (expenseUsers.includes(authenticatedUserId)) {
-          userBalances[expense.user_id] += amountPerUser;
-          if (userExpenses[expense.user_id]) {
-            userExpenses[expense.user_id].push({
-              ...expense,
-              amountOwed: `-${amountPerUser.toFixed(2)}`,
-            });
           }
-        }
+        });
       }
     });
 
-    return { userBalances, userExpenses };
+    setReceivables(Object.values(receivables));
+    setPayables(Object.values(payables));
   };
-
-  const handleDetailsClick = (user) => {
-    return balances.userExpenses[user.id];
-  };
-
-  const totalCredits = Object.values(balances?.userBalances || {}).filter(
-    (balance) => balance < 0
-  ).length;
-  const totalDebts = Object.values(balances?.userBalances || {}).filter(
-    (balance) => balance > 0
-  ).length;
-
-  const creditUsers = household?.data.Users.filter(
-    (user) => user.id !== authUser?.id && balances?.userBalances[user.id] < 0
-  );
-  const debtUsers = household?.data.Users.filter(
-    (user) => user.id !== authUser?.id && balances?.userBalances[user.id] > 0
-  );
 
   return (
     <>
-      <p className="mt-3">My Receivables ({totalCredits})</p>
-      {balances &&
-        creditUsers
-          .slice(0, showMoreCredits ? creditUsers.length : 2)
-          .map((user) => (
-            <Link
-              to={"/expenses/balance"}
-              state={{
-                balance: balances.userBalances[user.id],
-                user: user,
-                expenses: handleDetailsClick(user),
-              }}
-              key={user.id}
-              className={`bg-black shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[130px]`}
-            >
-              <div className="flex flex-col h-full w-full justify-between">
-                <div className="flex justify-start w-full ">
-                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
-                    <img
-                      //eslint-disable-next-line
-                      src={require(`../../assets/data/users/${user.img}`)}
-                      alt="User Profile Picture"
-                      className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
-                    <img
-                      //eslint-disable-next-line
-                      src={require(`../../assets/data/users/${authUser.img}`)}
-                      alt="User Profile Picture"
-                      className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-
-                  <div className="flex ml-2 grow">
-                    <h2 className="text-lg text-white font-normal">
-                      <span className="font-medium">{user.name}</span>{" "}
-                      <span className="font-light">owes</span>
-                      <span className="font-semibold"> You </span>
-                    </h2>
-                  </div>
-
-                  <div className="flex ml-2 justify-end">
-                    <h2 className="text-lg text-white font-light">
-                      {Math.abs(balances.userBalances[user.id]).toFixed(2)}$
-                    </h2>
-                  </div>
-                </div>
-
-                <div className="flex flex-col">
-                  <h2 className="text-base text-white text-left w-full font-light mt-2">
-                    View details
-                  </h2>
-                </div>
-              </div>
-            </Link>
-          ))}
-      {totalCredits > 2 && (
-        <button
-          className="text-sm text-gray-500 mt-2 focus:outline-none"
-          onClick={() => setShowMoreCredits(!showMoreCredits)}
-        >
-          {showMoreCredits ? "Show less" : "Show more"}
-        </button>
-      )}
-
-      <p className="mt-3">My Payables ({totalDebts})</p>
-      {balances &&
-        debtUsers.slice(0, showMoreDebts ? debtUsers.length : 2).map((user) => (
+      <p className="mt-3">My Receivables ({receivables.length})</p>
+      {receivables
+        .slice(0, showMoreCredits ? receivables.length : 2)
+        .map(({ user, balance, expenses }) => (
           <Link
             to={"/expenses/balance"}
             state={{
-              balance: balances.userBalances[user.id],
+              balance: balance,
               user: user,
-              expenses: handleDetailsClick(user),
+              expenses: expenses,
             }}
             key={user.id}
             className={`bg-black shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[130px]`}
@@ -184,8 +69,7 @@ const Balances = ({ expenses }) => {
               <div className="flex justify-start w-full ">
                 <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
                   <img
-                    //eslint-disable-next-line
-                    src={require(`../../assets/data/users/${authUser.img}`)}
+                    src={user.img_url}
                     alt="User Profile Picture"
                     className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                     referrerPolicy="no-referrer"
@@ -193,8 +77,7 @@ const Balances = ({ expenses }) => {
                 </div>
                 <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
                   <img
-                    //eslint-disable-next-line
-                    src={require(`../../assets/data/users/${user.img}`)}
+                    src={authUser.img_url}
                     alt="User Profile Picture"
                     className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                     referrerPolicy="no-referrer"
@@ -203,15 +86,15 @@ const Balances = ({ expenses }) => {
 
                 <div className="flex ml-2 grow">
                   <h2 className="text-lg text-white font-normal">
-                    <span className="font-semibold">You</span>{" "}
-                    <span className="font-light">owe</span>
-                    <span className="font-medium"> {user.name} </span>
+                    <span className="font-medium">{user.name}</span>{" "}
+                    <span className="font-light">owes</span>
+                    <span className="font-semibold"> You </span>
                   </h2>
                 </div>
 
                 <div className="flex ml-2 justify-end">
-                  <h2 className="text-lg text-white font-light">
-                    {Math.abs(balances.userBalances[user.id]).toFixed(2)}$
+                  <h2 className="text-xl text-white font-medium">
+                    {Math.abs(balance).toFixed(2)}€
                   </h2>
                 </div>
               </div>
@@ -224,7 +107,74 @@ const Balances = ({ expenses }) => {
             </div>
           </Link>
         ))}
-      {totalDebts > 2 && (
+      {receivables.length > 2 && (
+        <button
+          className="text-sm text-gray-500 mt-2 focus:outline-none"
+          onClick={() => setShowMoreCredits(!showMoreCredits)}
+        >
+          {showMoreCredits ? "Show less" : "Show more"}
+        </button>
+      )}
+
+      <p className="mt-3">My Payables ({payables.length})</p>
+      {payables
+        .slice(0, showMoreDebts ? payables.length : 2)
+        .map(({ user, balance, expenses }) => (
+          user && ( // Ensure user is not undefined
+            <Link
+              to={"/expenses/balance"}
+              state={{
+                balance: balance,
+                user: user,
+                expenses: expenses,
+              }}
+              key={user.id}
+              className={`bg-black shadow-lg rounded-2xl flex justify-between items-center w-full p-3 h-[130px]`}
+            >
+              <div className="flex flex-col h-full w-full justify-between">
+                <div className="flex justify-start w-full ">
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0">
+                    <img
+                      src={authUser.img_url}
+                      alt="User Profile Picture"
+                      className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
+                    <img
+                      src={user.img_url}
+                      alt="User Profile Picture"
+                      className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+
+                  <div className="flex ml-2 grow">
+                    <h2 className="text-lg text-white font-normal">
+                      <span className="font-semibold">You</span>{" "}
+                      <span className="font-light">owe</span>
+                      <span className="font-medium"> {user.name} </span>
+                    </h2>
+                  </div>
+
+                  <div className="flex ml-2 justify-end">
+                    <h2 className="text-xl text-white font-medium">
+                      {Math.abs(balance).toFixed(2)}€
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="flex flex-col">
+                  <h2 className="text-base text-white text-left w-full font-light mt-2">
+                    View details
+                  </h2>
+                </div>
+              </div>
+            </Link>
+          )
+        ))}
+      {payables.length > 2 && (
         <button
           className="text-sm text-gray-500 mt-2 focus:outline-none"
           onClick={() => setShowMoreDebts(!showMoreDebts)}
