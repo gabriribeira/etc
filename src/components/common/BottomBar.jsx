@@ -68,7 +68,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <p className="text-[12px] absolute bottom-[-28px]">Household</p>
+                <p className="text-[12px] absolute bottom-[-23px]">Household</p>
               </div>
             </button>
           ) : (
@@ -88,7 +88,7 @@ const BottomBar = ({ changeHousehold, openOverlayFromParent }) => {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <p className="text-[12px] absolute bottom-[-28px]">Household</p>
+                <p className="text-[12px] absolute bottom-[-23px]">Household</p>
               </div>
             </Link>
           )}

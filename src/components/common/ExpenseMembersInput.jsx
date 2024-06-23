@@ -1,26 +1,20 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
-import { useGetHouseholdUsersQuery } from "../../app/api";
 import { GoPencil } from "react-icons/go";
 import Button from "./Button";
 import { useSelector } from "react-redux";
+import { useGetAllHouseholdUsersExpenseQuery } from "../../app/api";
 
-const MembersInput = ({ value, onChange, label }) => {
-  const householdId = useSelector((state) => state.auth.currentHouseholdId);
-  const { data: usersData } = useGetHouseholdUsersQuery(householdId);
+const ExpenseMembersInput = ({ value, onChange, label }) => {
+  const authUser = useSelector((state) => state.auth.user);
+  const { data: usersData } = useGetAllHouseholdUsersExpenseQuery();
   const [openOverlay, setOpenOverlay] = useState(false);
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const location = useLocation();
 
   useEffect(() => {
     if (usersData) {
-      setUsers(usersData);
-      if (location.pathname === "/lists/new") {
-        setSelectedUsers(usersData.data.map((user) => user.id));
-        onChange(usersData.data.map((user) => user.id));
-      }
+      setUsers(usersData.data);
     }
   }, [usersData]);
 
@@ -30,14 +24,12 @@ const MembersInput = ({ value, onChange, label }) => {
     }
   }, [value]);
 
-  let type;
-  if (location.pathname === "/lists/new") {
-    type = "list";
-  } else if (location.pathname.match(/\/lists\/\d+\/item/)) {
-    type = "product";
-  } else {
-    type = "expense";
-  }
+  useEffect(() => {
+    if (authUser && !selectedUsers.includes(authUser.id)) {
+      setSelectedUsers([...selectedUsers, authUser.id]);
+      onChange([...selectedUsers, authUser.id]);
+    }
+  }, [authUser]);
 
   return (
     <>
@@ -47,12 +39,12 @@ const MembersInput = ({ value, onChange, label }) => {
             <div className="flex flex-col">
               <h1 className="font-semibold text-lg">Members</h1>
               <p className="text-sm text-black50">
-                Assign the members taking part in this {type}.
+                Assign the members taking part in this expense.
               </p>
             </div>
             <div className="grid gap-3">
               {users &&
-                users.data.map((user, index) => (
+                users.map((user, index) => (
                   <button
                     key={index}
                     className={`transition-all duration-300 h-[3rem] rounded-2xl flex items-center justify-start col-span-1 relative ${selectedUsers.includes(user.id) ? "bg-black20 text-black" : "bg-black90 text-white opacity-60"
@@ -119,7 +111,7 @@ const MembersInput = ({ value, onChange, label }) => {
         {selectedUsers?.length > 0 && (
           <div className="flex flex-wrap items-center gap-x-2 gap-y-2 w-full bg-black20 rounded-xl py-2 pl-2 mt-0">
             {users &&
-              users?.data?.map(
+              users.map(
                 (user, index) =>
                   value.includes(user.id) && (
                     <div
@@ -142,10 +134,10 @@ const MembersInput = ({ value, onChange, label }) => {
   );
 };
 
-MembersInput.propTypes = {
+ExpenseMembersInput.propTypes = {
   value: PropTypes.arrayOf(PropTypes.number).isRequired,
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
 };
 
-export default MembersInput;
+export default ExpenseMembersInput;

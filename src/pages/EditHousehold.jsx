@@ -35,7 +35,7 @@ const EditHouseHold = () => {
 
   useEffect(() => {
     if (householdTags) {
-      setTags(householdTags.data);
+      setTags(householdTags.data.map(tag => tag.id));
     }
   }, [householdTags]);
 
@@ -48,7 +48,7 @@ const EditHouseHold = () => {
         formData.append("image", imageFile);
       }
       await updateHousehold({ id: householdId, formData }).unwrap();
-      await updateHouseholdTags({ householdId, tags: tags.map(tag => tag.id) }).unwrap();
+      await updateHouseholdTags({ householdId, tags }).unwrap();
       alert("Household updated successfully");
     } catch (error) {
       console.error("Failed to update household:", error);
@@ -84,6 +84,7 @@ const EditHouseHold = () => {
                 onChange={setTags}
                 categorySelected={tags}
                 specificationsProps={false}
+                categoriesProps={false}
               />
               <Button label="Save Changes" action={handleSaveChanges} aria="Button Save Changes" />
             </div>
