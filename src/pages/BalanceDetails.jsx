@@ -4,50 +4,30 @@ import BottomBar from "../components/common/BottomBar";
 import ExpenseInBalance from "../components/expenses/ExpenseInBalance";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
-import ExpensesData from "../data/expenses.json";
+import { useSelector } from "react-redux";
+import { useMarkExpensesAsPaidMutation } from "../app/api";
+import ConfirmationDialog from "../components/common/ConfirmationDialog";
 
 const BalanceDetails = () => {
-  const expensesData = ExpensesData;
   const location = useLocation();
   const navigate = useNavigate();
   const { balance, user, expenses } = location.state || {};
-  const [authUser, setAuthUser] = useState(null);
+  const authUser = useSelector((state) => state.auth.user);
+  const [markExpensesAsPaid] = useMarkExpensesAsPaidMutation();
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
-    const getCookieValue = (cookieName) => {
-      const cookies = document.cookie.split("; ");
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split("=");
-        if (name === cookieName) {
-          return JSON.parse(decodeURIComponent(value));
-        }
-      }
-      return null;
-    };
+    console.log('BalanceDetails State:', { balance, user, expenses });
+  }, [balance, user, expenses]);
 
-    const storedUser = getCookieValue("user");
-    if (storedUser) {
-      setAuthUser(storedUser);
+  const handlePaidBalance = async () => {
+    try {
+      const expenseIds = expenses.map((expense) => expense.id);
+      await markExpensesAsPaid(expenseIds).unwrap();
+      navigate("/expenses");
+    } catch (error) {
+      console.error("Failed to mark expenses as paid:", error);
     }
-  }, []);
-
-  const handlePaidBalance = () => {
-    expenses.forEach((expense) => {
-      expensesData.forEach((expenseData) => {
-        if (expenseData.id === expense.id) {
-          if (expenseData.users.length === 1) {
-            expenseData.paid = true;
-          } else {
-            expenseData.value =
-              expenseData.value - expense.value / expenseData.users.length;
-            expenseData.users = expenseData.users.filter(
-              (userIt) => userIt !== user.id
-            );
-          }
-        }
-      });
-    });
-    navigate("/expenses");
   };
 
   const getUserDisplayName = (user) => {
@@ -65,11 +45,10 @@ const BalanceDetails = () => {
       <main className="pt-28 flex-grow">
         <div className="flex flex-col px-5 mt-6 fade-in">
           <div className="bg-black rounded-2xl flex justify-start w-full relative text-white p-3 relative h-[72px]">
-            <div className="flex top-3 right-3 ">
+            <div className="flex top-3 right-3">
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0">
                 <img
-                  //eslint-disable-next-line
-                  src={require(`../assets/data/users/${authUser.img}`)}
+                  src={authUser.img_url}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
                   referrerPolicy="no-referrer"
@@ -77,11 +56,10 @@ const BalanceDetails = () => {
               </div>
               <div className="w-[45px] h-[45px] rounded-full flex items-center justify-center relative shrink-0 -ml-5">
                 <img
-                  //eslint-disable-next-line
-                  src={require(`../assets/data/users/${user.img}`)}
+                  src={user.img_url}
                   alt="User Profile Picture"
                   className="w-full h-full absolute top-0 left-0 object-center object-cover rounded-full"
-                  referrerPolicy="no-referrer"  
+                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>
@@ -105,16 +83,19 @@ const BalanceDetails = () => {
           </div>
           <div className="flex flex-col mt-6 pb-24 gap-y-3">
             <h2 className="text-lg font-normal">Expenses</h2>
-            {expenses &&
+            {expenses && expenses.length > 0 ? (
               expenses.map((expense, index) => (
                 <ExpenseInBalance expense={expense} authUser={authUser} key={index} />
-              ))}
+              ))
+            ) : (
+              <p>No expenses to display.</p>
+            )}
           </div>
         </div>
 
-        {balance < 0 ? (
+        {balance > 0 ? (
           <div className="fixed bottom-[80px] bg-white w-full p-5">
-            <Button label="Define as paid" action={handlePaidBalance} />
+            <Button label="Define as paid" action={() => setShowConfirmation(true)} />
           </div>
         ) : (
           <p className="font-light text-black text-sm w-full text-center mt-6">
@@ -123,6 +104,15 @@ const BalanceDetails = () => {
             this balance as paid!
           </p>
         )}
+        <ConfirmationDialog
+          title="Confirm Marking as Paid"
+          details="Are you sure you want to mark all these expenses as paid? This action cannot be undone."
+          label="Confirm"
+          bg="bg-red-600"
+          showConfirmation={showConfirmation}
+          setShowConfirmation={setShowConfirmation}
+          action={handlePaidBalance}
+        />
       </main>
       <BottomBar />
     </div>

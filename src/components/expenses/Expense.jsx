@@ -8,12 +8,12 @@ const Expense = ({ expense }) => {
   const authUser = useSelector((state) => state.auth.user);
   const paid = expense.paid;
 
-  // const getUserDisplayName = (user) => {
-  //   const nameParts = user.name.split(" ");
-  //   const firstName = nameParts[0];
-  //   const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
-  //   return `${firstName} ${lastNameInitial}.`;
-  // };
+  const getUserDisplayName = (name) => {
+    const nameParts = name.split(" ");
+    const firstName = nameParts[0];
+    const lastNameInitial = nameParts[nameParts.length - 1].charAt(0);
+    return `${firstName} ${lastNameInitial}.`;
+  };
 
   return (
     authUser && expense && (
@@ -29,7 +29,7 @@ const Expense = ({ expense }) => {
             <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center relative shrink-0 mt-1">
               <img
                 //eslint-disable-next-line
-                src={expense?.users[0]?.img_url}
+                src={expense?.payer?.img_url}
                 alt="User Profile Picture"
                 className={`w-full h-full absolute top-0 left-0 object-center object-cover rounded-full`}
                 referrerPolicy="no-referrer"
@@ -38,7 +38,7 @@ const Expense = ({ expense }) => {
             <div className="flex flex-col ml-2 grow">
               <h2 className="text-lg font-normal">{expense.title}</h2>
               <p className="font-light text-sm">
-                {/* paid by <span className="font-semibold">{getUserDisplayName(user)}</span> */}
+                paid by <span className="font-semibold">{getUserDisplayName(expense?.payer?.name)}</span>
               </p>
             </div>
             <div className="flex text-2xl font-semibold text-salmon">
