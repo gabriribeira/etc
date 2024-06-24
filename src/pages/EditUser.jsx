@@ -29,6 +29,7 @@ const EditUser = () => {
   const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation dialog
   const userId = useSelector((state) => state.auth.user?.id);
   const dispatch = useDispatch();
+  const [image, setImage] = useState(null);
 
   const { data: user, isLoading, refetch } = useGetUserQuery(userId, {
     skip: !userId,
@@ -92,6 +93,13 @@ const EditUser = () => {
     navigate("/profile", { state: { message: "User Updated" } });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
+
   if (isLoading || isSpecificationsLoading) return <Loader />;
 
   return (
@@ -101,16 +109,39 @@ const EditUser = () => {
         <main className="mt-32 bg-white">
           <div className="flex flex-col">
             <div className="flex flex-col text-center relative justify-center m-4 items-center">
-              {user.data.img_url ? (
+              {image ?
                 <img
-                  src={user.data.img_url}
+                  src={image}
                   alt="User Profile Picture"
                   className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
                   referrerPolicy="no-referrer"
                 />
-              ) : (
-                <ImageUpload onImageUpload={setImageFile} />
-              )}
+                :
+                user.data.img_url ? (
+                  <>
+
+                    <input
+                      type="file"
+                      id="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                    />
+                    <label
+                      htmlFor="file"
+                      className="z-[102] w-[150px] h-[150px] m-auto shadow-2xl rounded-full text-5xl flex justify-center items-center cursor-pointer relative my-6 shrink-0"
+                    >
+                      <img
+                        src={user.data.img_url}
+                        alt="User Profile Picture"
+                        className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                        referrerPolicy="no-referrer"
+                      />
+                    </label>
+                  </>
+                ) : (
+                  <ImageUpload onImageUpload={setImageFile} />
+                )}
             </div>
             <div className="p-4 flex flex-col gap-y-4">
               <Input

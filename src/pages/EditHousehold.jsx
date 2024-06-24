@@ -17,6 +17,7 @@ const EditHouseHold = () => {
   const [imageFile, setImageFile] = useState(null);
   const [tags, setTags] = useState([]);
   const householdId = useSelector((state) => state.auth.currentHouseholdId);
+  const [image, setImage] = useState(null);
 
   const { data: household, isLoading: isHouseholdLoading, refetch } = useGetHouseholdQuery(householdId, {
     skip: !householdId,
@@ -43,6 +44,8 @@ const EditHouseHold = () => {
       console.log("Household data:", household.data);
       setName(household.data.name || "");
       setDescription(household.data.description || "");
+      setImageFile(household.data.img_url || null)
+      setImage(null);
     }
   }, [household]);
 
@@ -70,6 +73,13 @@ const EditHouseHold = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
+
   if (isHouseholdLoading || isTagsLoading) return <Loader />;
 
   return (
@@ -79,16 +89,41 @@ const EditHouseHold = () => {
         <main className="mt-32 bg-white">
           <div className="flex flex-col">
             <div className="flex flex-col text-center relative justify-center m-4 items-center">
-              {household.data.img_url ? (
-                <img
-                  src={household.data.img_url}
-                  alt="Household Profile Picture"
-                  className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <ImageUpload onImageUpload={setImageFile} />
-              )}
+              <div className="flex flex-col text-center relative justify-center m-4 items-center">
+                {image ?
+                  <img
+                    src={image}
+                    alt="User Profile Picture"
+                    className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                    referrerPolicy="no-referrer"
+                  />
+                  :
+                  household.data.img_url ? (
+                    <>
+
+                      <input
+                        type="file"
+                        id="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageChange}
+                      />
+                      <label
+                        htmlFor="file"
+                        className="z-[102] w-[150px] h-[150px] m-auto shadow-2xl rounded-full text-5xl flex justify-center items-center cursor-pointer relative my-6 shrink-0"
+                      >
+                        <img
+                          src={household.data.img_url}
+                          alt="User Profile Picture"
+                          className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+                          referrerPolicy="no-referrer"
+                        />
+                      </label>
+                    </>
+                  ) : (
+                    <ImageUpload onImageUpload={setImageFile} />
+                  )}
+              </div>
             </div>
             <div className="p-4 flex flex-col gap-y-4">
               <Input

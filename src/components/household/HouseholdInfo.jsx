@@ -7,10 +7,10 @@ import Image from "../../assets/imgs/etc/logo_dots.png";
 const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
   return (
     <>
-      <div className="flex flex-col bg-black bg-gradient-to-br from-black to-white/20  text-center relative">
+      <div className="flex flex-col bg-black20 text-center relative">
         <Link
           to={"/household/edit"}
-          className="text-white font-light text-sm absolute top-3 right-3"
+          className="text-black font-light text-sm absolute top-3 right-3"
           aria-label="Edit household"
         >
           edit
@@ -20,20 +20,20 @@ const HouseholdInfo = ({ household, users, openOverlayFromParent }) => {
             //eslint-disable-next-line
             src={household.img_url ? household.img_url : Image}
             alt="Household Profile Picture"
-            className="object-center object-cover rounded-full w-[150px] h-[150px] shadow-2xl"
+            className="object-center object-cover rounded-full w-[150px] h-[150px]"
             referrerPolicy="no-referrer"
           />
-          <div className="flex items-center gap-x-2 text-white">
+          <div className="flex items-center gap-x-2 text-black">
             <h1 className="font-normal text-xl mt-2">{household.name}</h1>
             <button
               onClick={openOverlayFromParent}
-              className="text-2xl text-white mt-2"
+              className="text-2xl text-black mt-2"
               aria-label="Change household button"
             >
               <SlArrowDown />
             </button>
           </div>
-          <p className="font-light text-sm text-white">{users && users.length} {users && (users.length > 1 ? "Members" : "Member")}</p>
+          <p className="font-light text-sm text-black">{users && users.length} {users && (users.length > 1 ? "Members" : "Member")}</p>
         </div>
       </div>
       <div className="flex flex-col px-5">

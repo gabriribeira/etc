@@ -2,15 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useUpdateRequestStatusMutation } from "../../app/api";
 
-const Notification = ({ activity }) => {
+const Notification = ({ activity, refetchRequests }) => {
     const [updateRequestStatus] = useUpdateRequestStatusMutation();
 
     const handleAccept = async () => {
         await updateRequestStatus({ requestId: activity.id, status: 'accepted' });
+        refetchRequests();
     };
 
     const handleReject = async () => {
         await updateRequestStatus({ requestId: activity.id, status: 'rejected' });
+        refetchRequests();
     };
 
     const renderNotificationContent = (activity) => {
@@ -63,6 +65,7 @@ const Notification = ({ activity }) => {
 
 Notification.propTypes = {
     activity: PropTypes.object.isRequired,
+    refetchRequests: PropTypes.func.isRequired,
 };
 
 export default Notification;
