@@ -1,12 +1,20 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useNavigationType } from "react-router-dom";
 import BottomBar from "../components/common/BottomBar";
 import TopBar from "../components/common/TopBar";
 import { useGetItemQuery } from "../app/api";
 
 const Image = () => {
   const { id } = useParams();
-  const { data: item, error, isLoading } = useGetItemQuery(id);
+  const { data: item, error, isLoading, refetch } = useGetItemQuery(id);
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "PUSH" || navigationType === "POP") {
+      refetch();
+    }
+  }, [navigationType, refetch]);
 
   return (
     <>
