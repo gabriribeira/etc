@@ -42,7 +42,7 @@ const Notifications = () => {
           <p>Error loading requests</p>
         ) : requests && requests.data && requests.data.length > 0 ? (
           requests.data.map((request, index) => (
-            <Notification key={index} activity={request} />
+            <Notification key={index} activity={request} refetchRequests={refetch} />
           ))
         ) : (
           <p>You don&apos;t have any new notifications</p>
