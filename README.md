@@ -1,70 +1,124 @@
-# Getting Started with Create React App
+# Et.Cetera - Household Management App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Project Repository](https://img.shields.io/badge/repo-gabriribeira/etc-181717?style=flat-square&logo=github)](https://github.com/gabriribeira/etc)
 
-## Available Scripts
+**Et.Cetera** is a collaborative group project (CBL) for the Masters of Communication and Web Technologies at the University of Aveiro. It is a modern web application designed to streamline household management, helping individuals and families organize chores, tasks, and shared responsibilities in an intuitive, efficient manner.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Table of Contents
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Scripts](#scripts)
+- [Contributing](#contributing)
+- [License](#license)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## About
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Et.Cetera helps households manage daily life—track chores, assign tasks, and facilitate communication among members. Built as part of an academic program, it leverages modern JavaScript frameworks for fast, responsive, and scalable user experiences.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Chore Tracking:** Assign and schedule household chores.
+- **Task Management:** Create, update, and monitor tasks for all members.
+- **User Collaboration:** Multiple user support for shared living spaces.
+- **Progressive Web App (PWA):** Installable and works offline.
+- **Customizable Notifications:** Keep all members in the loop.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Frontend:** React (bootstrapped with Create React App)
+- **Styling:** Tailwind CSS
+- **State Management & Routing:** [Check `src/` for details]
+- **Tooling:** ESLint, Prettier
+- **Other:** Workbox for PWA, JavaScript (98.8%)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+etc/
+├── .github/              # GitHub configuration and workflows
+├── public/               # Static assets (HTML, images, etc.)
+├── src/                  # Main application source code
+│   ├── components/       # Reusable UI components
+│   ├── pages/            # Page-level components/routes
+│   ├── utils/            # Utility functions
+│   └── ...               # App logic, state, styles, etc.
+├── .eslintrc.js          # Linting configuration
+├── .gitignore
+├── package.json          # App dependencies and scripts
+├── tailwind.config.js    # Tailwind CSS configuration
+├── workbox-config.js     # PWA / service worker config
+└── README.md
+```
 
-## Learn More
+*For a full listing, browse the [repository files](https://github.com/gabriribeira/etc). Some directories or files may not be shown above due to listing limitations.*
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Getting Started
 
-### Code Splitting
+This project uses [Create React App](https://github.com/facebook/create-react-app).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Prerequisites
 
-### Analyzing the Bundle Size
+- Node.js (v16 or later recommended)
+- npm
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Installation
 
-### Making a Progressive Web App
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/gabriribeira/etc.git
+   cd etc
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-### Advanced Configuration
+3. **Start the local development server:**
+   ```bash
+   npm start
+   ```
+   Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## Scripts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- `npm start` – Runs the app in development mode.
+- `npm test` – Launches the test runner.
+- `npm run build` – Builds the app for production.
+- `npm run eject` – Ejects the Create React App setup (not reversible).
 
-### `npm run build` fails to minify
+For advanced usage and troubleshooting, see the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Contributing
+
+Contributions, feedback, and suggestions are welcome! Please open an issue or submit a pull request to help improve Et.Cetera.
+
+---
+
+## License
+
+This project does not currently specify a license. Contact the repository owner for more information.
+
+---
+
+> *CBL Group Project in Masters of Communication and Web Technologies, University of Aveiro.*
